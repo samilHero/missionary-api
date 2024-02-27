@@ -1,13 +1,13 @@
-package com.samill.missionary;
+package com.samill.missionaryBackend;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class MissionaryApplication {
+public class MissionaryBackendApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(MissionaryApplication.class, args);
+        SpringApplication.run(com.samill.missionaryBackend.MissionaryBackendApplication.class, args);
     }
 
 }
