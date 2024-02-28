@@ -1,13 +1,22 @@
 package com.samill.missionaryBackend;
 
+import com.samill.MissionaryModuleConfiguration;
+import com.samill.UserModuleConfiguration;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Import;
+
 
 @SpringBootApplication
+@Import({UserModuleConfiguration.class,MissionaryModuleConfiguration.class})
 public class MissionaryBackendApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(com.samill.missionaryBackend.MissionaryBackendApplication.class, args);
+        SpringApplication.run(MissionaryBackendApplication.class, args);
+
     }
 
 }
+
+
+
