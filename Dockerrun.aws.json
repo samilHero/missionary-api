@@ -1,7 +1,7 @@
 {
   "AWSEBDockerrunVersion": "1",
   "Image": {
-    "Name": "{AWS_ACCOUNT_ID}.dkr.ecr.ap-northeast-1.amazonaws.com/{REPOSITORY_NAME}:{TAG_NAME}",
+    "Name": "898673828537.dkr.ecr.ap-northeast-1.amazonaws.com/samill-missionary-api:latest",
     "Update": "true"
   },
   "Ports": [
