@@ -37,6 +37,7 @@ jobs:
           spring.datasource.url: ${{ secrets.RDS_URL }}
           spring.datasource.username: ${{ secrets.RDS_USERNAME }}
           spring.datasource.password: ${{ secrets.RDS_PASSWORD }}
+          server.port: ${{ vars.SERVER_PORT }}
 
       - name: Build with Gradle Wrapper
         run: ./gradlew build
