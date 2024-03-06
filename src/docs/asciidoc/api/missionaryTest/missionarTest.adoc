@@ -1,0 +1,11 @@
+=== 테스트 API
+
+==== HTTP Request Body
+
+include::{snippets}/HelloWorld/http-request.adoc[]
+include::{snippets}/HelloWorld/query-parameters.adoc[]
+
+==== HTTP Response
+
+include::{snippets}/HelloWorld/http-response.adoc[]
+include::{snippets}/HelloWorld/response-body.adoc[]
