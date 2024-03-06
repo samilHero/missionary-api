@@ -3,10 +3,17 @@ plugins {
     id 'org.springframework.boot' version '3.2.2'
     id 'io.spring.dependency-management' version '1.1.4'
     id 'org.asciidoctor.jvm.convert' version '3.3.2'
+    id 'com.epages.restdocs-api-spec' version '0.19.2'
 }
 
 group = 'com.samill'
 version = '0.0.1-SNAPSHOT'
+
+def env = System.getenv()
+
+// 환경 변수 "DB_USERNAME"의 값을 가져옵니다.
+def SERVER_PORT = env['SERVER_PORT']
+
 
 java {
     sourceCompatibility = '21'
@@ -49,7 +56,10 @@ dependencies {
     testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
     testImplementation 'org.springframework.security:spring-security-test'
     testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
+    testImplementation 'com.epages:restdocs-api-spec-mockmvc:0.19.2'
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0'
 }
+
 tasks.named('test') {
     outputs.dir snippetsDir
     useJUnitPlatform()
@@ -68,6 +78,16 @@ asciidoctor {
     dependsOn test
 }
 
+openapi3 {
+    servers = [
+            { url = "http://localhost:${SERVER_PORT}" },
+    ]
+    title = 'Post Service API'
+    description = 'Post Service API description'
+    version = '1.0.0'
+    format = 'json'
+}
+
 
 bootJar {
     dependsOn asciidoctor
@@ -76,10 +96,6 @@ bootJar {
     }
 }
 
-//tasks.named('asciidoctor') {
-//    inputs.dir snippetsDir
-//    dependsOn test
-//}
 
 jar {
     enabled = false
