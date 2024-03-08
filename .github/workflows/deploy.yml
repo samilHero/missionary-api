@@ -87,5 +87,4 @@ jobs:
           version_label: samill-missionary-api-${{steps.current-time.outputs.formattedTime}}
           region: ${{ secrets.AWS_REGION }}
           deployment_package: deploy/deploy.zip
-          # 회사 AWS 사용할 떄 권한 이슈 있음
-          wait_for_deployment: false
+          wait_for_environment_recovery: 200
