@@ -2,13 +2,9 @@ package com.samill.application;
 
 import java.util.List;
 
-public class MissionaryRegistrationService {
-    public MissionaryRegistration register(String userId, Long missionaryId) {
-        return null;
-    };
-    public void cancelRegistration(String userId, Long missionaryId) {};
-    public List<MissionaryRegistration> getRegisterationList(Long missionaryId) {
-        return null;
-    };
+public interface MissionaryRegistrationService {
+    MissionaryRegistration register(String userId, Long missionaryId);
+    void cancelRegistration(String userId, Long missionaryId);
+    List<MissionaryRegistration> getRegisterationList(Long missionaryId);
 
 }

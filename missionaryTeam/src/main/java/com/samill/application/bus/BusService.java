@@ -1,15 +1,8 @@
 package com.samill.application.bus;
 
-public class BusService {
-    public Bus createTeamBus(Bus bus) {
-        return null;
-    };
-    public Bus getTeamBus(Long busId) {
-        return null;
-    };
-    public Bus updateTeamBus(Bus bus) {
-        return null;
-    };
-    public void deleteTeamBus(Long busId) {
-    };
+public interface BusService {
+    Bus createTeamBus(Bus bus);
+    Bus getTeamBus(Long busId);
+    Bus updateTeamBus(Bus bus);
+    void deleteTeamBus(Long busId);
 }

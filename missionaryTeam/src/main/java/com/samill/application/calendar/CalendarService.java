@@ -1,15 +1,8 @@
 package com.samill.application.calendar;
 
-public class CalendarService {
-    public Calendar createTeamCalendar(Calendar calendar) {
-        return null;
-    };
-    public Calendar getTeamCalender(Long teamId) {
-        return null;
-    };
-    public Calendar updateTeamCalendar(Calendar calendar) {
-        return null;
-    };
-    public void deleteTeamCalendar(Long calendarId) {
-    };
+public interface CalendarService {
+    Calendar createTeamCalendar(Calendar calendar);
+    Calendar getTeamCalender(Long teamId);
+    Calendar updateTeamCalendar(Calendar calendar);
+    void deleteTeamCalendar(Long calendarId);
 }

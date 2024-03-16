@@ -4,15 +4,8 @@ import com.samill.application.team.Team;
 
 import java.util.List;
 
-public class MemberService {
-
-    public Member addTeamMember(String userId, Team team) {
-        return null;
-    };
-    public void deleteTeamMember(String userId, Team team) {
-
-    };
-    public List<Member> getTeamMemberList(Long teamId) {
-        return null;
-    };
+public interface MemberService {
+    Member addTeamMember(String userId, Team team);
+    void deleteTeamMember(String userId, Team team);
+    List<Member> getTeamMemberList(Long teamId);
 }
