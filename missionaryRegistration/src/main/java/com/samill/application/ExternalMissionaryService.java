@@ -1,5 +1,5 @@
 package com.samill.application;
 
-public interface MissionaryServiceInterface {
+public interface ExternalMissionaryService {
     Missionary getMissionary(Long missionaryId);
 }

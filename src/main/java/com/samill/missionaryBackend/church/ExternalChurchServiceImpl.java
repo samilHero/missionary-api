@@ -1,9 +1,9 @@
 package com.samill.missionaryBackend.church;
 
 import com.samill.application.Church;
-import com.samill.application.ChurchServiceInterface;
+import com.samill.application.ExternalChurchService;
 
-public class ChurchService implements ChurchServiceInterface {
+public class ExternalChurchServiceImpl implements ExternalChurchService {
     @Override
     public Church getChurch(Long churchId) {
         return null;

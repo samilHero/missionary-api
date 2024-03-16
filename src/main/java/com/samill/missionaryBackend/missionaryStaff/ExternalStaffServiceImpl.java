@@ -1,8 +1,8 @@
 package com.samill.missionaryBackend.missionaryStaff;
 
-import com.samill.application.MissionaryStaffServiceInterface;
+import com.samill.application.ExternalStaffService;
 
-public class MissionaryStaffServiceImpl implements MissionaryStaffServiceInterface {
+public class ExternalStaffServiceImpl implements ExternalStaffService {
     @Override
     public boolean isMissionaryStaff(String userId, Long missionaryId) {
         return false;
