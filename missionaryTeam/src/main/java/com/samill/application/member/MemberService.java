@@ -1,6 +1,5 @@
 package com.samill.application.member;
 
-import com.samill.application.User;
 import com.samill.application.team.Team;
 
 import java.util.List;
