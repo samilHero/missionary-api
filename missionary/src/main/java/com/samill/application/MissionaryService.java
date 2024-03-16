@@ -1,23 +1,20 @@
 package com.samill.application;
 
-import com.samill.missionaryRegistration.application.MissionaryRegistartion;
-import lombok.AllArgsConstructor;
-import org.springframework.stereotype.Service;
+import java.util.List;
 
-@AllArgsConstructor
-@Service
 public class MissionaryService {
-
-    private MissionaryUserServiceInterface missionaryUserService;
-
-
-    public String sayHelloWithUser(){
-        System.out.println("Hello MissionaryService");
-        return this.missionaryUserService.sayHello();
+    public Missionary createMissionary(Missionary missionary) {
+        return null;
+    };
+    public Missionary updateMissionary(Missionary missionary) {
+        return null;
+    };
+    public void deleteMissionary(Long missionaryId) {};
+    public Missionary getMissionary(Long missionaryId) {
+        return null;
     }
 
-
-    public MissionaryRegistartion register() {
+    public List<Missionary> getMissionaryList() {
         return null;
     }
 }

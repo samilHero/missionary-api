@@ -60,6 +60,11 @@ dependencies {
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0'
     implementation project(path: ':user')
     implementation project(path: ':missionary')
+    implementation project(path: ':missionaryTeam')
+    implementation project(path: ':missionaryStaff')
+    implementation project(path: ':missionaryAdmin')
+    implementation project(path: ':missionaryRegistration')
+    implementation project(path: ':church')
 }
 
 tasks.named('test') {

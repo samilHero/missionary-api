@@ -1,5 +1,9 @@
 rootProject.name = 'missionary-backend'
 include 'missionary'
 include 'user'
-include 'missionaryRegistartion'
+include 'missionaryRegistration'
+include 'missionaryTeam'
+include 'church'
+include 'missionaryStaff'
+include 'missionaryAdmin'
 
