@@ -8,4 +8,9 @@ public class ExternalMissionaryServiceImpl implements ExternalMissionaryService 
     public Missionary getMissionary(Long missionaryId) {
         return null;
     }
+
+    @Override
+    public boolean isMissionaryStaff(Long missionaryId, String userId) {
+        return false;
+    }
 }

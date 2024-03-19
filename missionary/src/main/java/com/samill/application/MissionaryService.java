@@ -8,4 +8,6 @@ public interface MissionaryService {
     void deleteMissionary(Long missionaryId);
     Missionary getMissionary(Long missionaryId);
     List<Missionary> getMissionaryList();
+    void insertMissionaryStaff(Long missionaryId, String userId);
+    void deleteMissionaryStaff(Long missionaryId, String userId);
 }

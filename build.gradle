@@ -61,8 +61,6 @@ dependencies {
     implementation project(path: ':user')
     implementation project(path: ':missionary')
     implementation project(path: ':missionaryTeam')
-    implementation project(path: ':missionaryStaff')
-    implementation project(path: ':missionaryAdmin')
     implementation project(path: ':missionaryRegistration')
     implementation project(path: ':church')
 }

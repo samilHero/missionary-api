@@ -4,6 +4,4 @@ include 'user'
 include 'missionaryRegistration'
 include 'missionaryTeam'
 include 'church'
-include 'missionaryStaff'
-include 'missionaryAdmin'
 
