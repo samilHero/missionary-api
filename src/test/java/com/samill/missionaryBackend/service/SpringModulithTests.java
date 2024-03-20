@@ -1,6 +1,6 @@
 package com.samill.missionaryBackend.service;
 
-import com.samill.missionaryBackend.MissionaryBackendApplication;
+import com.samill.missionary.MissionaryApplication;
 import org.junit.jupiter.api.Test;
 import org.springframework.modulith.core.ApplicationModules;
 import org.springframework.modulith.docs.Documenter;
@@ -9,7 +9,7 @@ import org.springframework.modulith.docs.Documenter.DiagramOptions.DiagramStyle;
 
 public class SpringModulithTests {
 
-    ApplicationModules modules = ApplicationModules.of(MissionaryBackendApplication.class);
+    ApplicationModules modules = ApplicationModules.of(MissionaryApplication.class);
 
     @Test
     void shouldBeCompliant() {
