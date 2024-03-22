@@ -1,6 +1,5 @@
-package com.samill.missionaryBackend;
+package com.samill.missionary_backend;
 
-import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest

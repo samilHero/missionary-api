@@ -1,7 +1,12 @@
 server:
   port: ${SERVER_PORT}
 
+
 spring:
+  modulith:
+    events:
+      jdbc-schema-initialization:
+        enabled: true
   datasource:
     url: ${RDS_URL}
     username: ${RDS_USERNAME}

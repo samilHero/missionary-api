@@ -1,4 +1,4 @@
-package com.samill.missionaryBackend;
+package com.samill.missionary_backend;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,12 +15,12 @@ public abstract class RestDocsSupport {
 
     protected MockMvc mockMvc;
     protected ObjectMapper objectMapper = new ObjectMapper();
-    
+
     @BeforeEach
     void setUp(RestDocumentationContextProvider provider) {
         this.mockMvc = MockMvcBuilders.standaloneSetup(initController())
-                .apply(documentationConfiguration(provider))
-                .build();
+            .apply(documentationConfiguration(provider))
+            .build();
     }
 
     protected abstract Object initController();
