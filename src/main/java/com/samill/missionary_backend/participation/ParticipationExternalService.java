@@ -2,7 +2,7 @@ package com.samill.missionary_backend.participation;
 
 public interface ParticipationExternalService {
 
-    boolean isParticipant();
+    boolean isParticipant(String missionaryId, String userId);
 
     void participate();
 
@@ -17,7 +17,7 @@ public interface ParticipationExternalService {
     void getParticipations();
 
     // 확정자인지 확인
-    boolean isConfirmedParticipant();
+    boolean isConfirmedParticipant(String participantId);
 
     // 확정처리
     void confirm();
