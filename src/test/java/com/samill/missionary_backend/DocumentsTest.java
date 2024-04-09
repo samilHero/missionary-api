@@ -2,6 +2,7 @@ package com.samill.missionary_backend;
 
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.springframework.modulith.core.ApplicationModule;
 import org.springframework.modulith.core.ApplicationModules;
 import org.springframework.modulith.docs.Documenter;
 
@@ -12,6 +13,10 @@ class DocumentationTests {
 
     @Test
     void shouldBeCompliant() {
+        for (ApplicationModule module : modules) {
+            System.out.println(module);
+        }
+        
         modules.verify();
     }
 

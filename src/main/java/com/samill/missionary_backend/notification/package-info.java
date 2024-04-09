@@ -1,6 +1,6 @@
 @org.springframework.modulith.ApplicationModule(
     allowedDependencies = {
-        "participation",
+        "member",
     }
 )
 package com.samill.missionary_backend.notification;

@@ -1,8 +1,8 @@
 @org.springframework.modulith.ApplicationModule(
-    allowedDependencies = {
-        "participation",
-        "team",
-    }
+        allowedDependencies = {
+                "member",
+                "church",
+        }
 )
 package com.samill.missionary_backend.missionary;
 
