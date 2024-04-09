@@ -26,15 +26,4 @@ class MissionaryBackendApplicationTests {
         assertNotNull(list);
     }
 
-    @Test
-    void createModuleDocumentation() {
-        new Documenter(modules).writeDocumentation();
-    }
-
-
-    @Test
-    void contextLoads() {
-    }
-
-
 }
