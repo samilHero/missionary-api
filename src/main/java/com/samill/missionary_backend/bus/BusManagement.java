@@ -7,4 +7,18 @@ import org.springframework.stereotype.Service;
 @Service
 public class BusManagement implements BusExternalService {
 
+    @Override
+    public void createBus(String busName, int maxCapacity) {
+
+    }
+
+    @Override
+    public void allocationBus(String busId, String teamMemberId) {
+
+    }
+
+    @Override
+    public void deallocateBus(String busId, String teamMemberId) {
+
+    }
 }

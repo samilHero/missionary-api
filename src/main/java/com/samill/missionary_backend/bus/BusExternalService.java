@@ -4,9 +4,7 @@ public interface BusExternalService {
     void createBus(
 
             String busName,
-            int maxCapacity,
-
-
+            int maxCapacity
             );
 
     void allocationBus(

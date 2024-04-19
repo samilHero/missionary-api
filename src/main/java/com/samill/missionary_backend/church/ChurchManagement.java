@@ -8,4 +8,8 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 class ChurchManagement implements ChurchExternalService {
 
+    @Override
+    public void addChurch() {
+
+    }
 }

@@ -6,6 +6,8 @@ import com.samill.missionary_backend.team.member.domain.service.TeamMemberServic
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @RequiredArgsConstructor
 @Component
 public class TeamMemberServiceImpl implements TeamMemberService {
@@ -35,5 +37,15 @@ public class TeamMemberServiceImpl implements TeamMemberService {
     @Override
     public boolean isExistTeamMember(String teamId, String userId) {
         return false;
+    }
+
+    @Override
+    public List<TeamMember> getTeamMembers(String teamId) {
+        return List.of();
+    }
+
+    @Override
+    public void updateRole(String teamMemberId, String roleId) {
+
     }
 }

@@ -1,12 +1,14 @@
 package com.samill.missionary_backend.team.team.infrastructure.entity;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import lombok.Getter;
 import org.springframework.data.domain.AbstractAggregateRoot;
 
 
 @Getter
+@Entity
 public class TeamEntity extends AbstractAggregateRoot<TeamEntity> {
 
     @Id
