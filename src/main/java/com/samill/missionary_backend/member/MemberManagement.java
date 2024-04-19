@@ -1,12 +1,45 @@
 package com.samill.missionary_backend.member;
 
-import com.samill.missionary_backend.authentication.AuthenticationExternalService;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-@Service
 @RequiredArgsConstructor
-class MemberManagement implements MemberExternalService {
+@Service
+public class MemberManagement implements MemberExternalService {
 
-    private final AuthenticationExternalService authenticationExternalService;
+    @Override
+    public void createUser() {
+
+    }
+
+    @Override
+    public void createAdmin() {
+
+    }
+
+    @Override
+    public void getMember() {
+
+    }
+
+    @Override
+    public void getUsers() {
+
+    }
+
+    @Override
+    public boolean isExistUser() {
+        return false;
+    }
+
+    @Override
+    public boolean isExistAdmin() {
+        return false;
+    }
+
+    @Override
+    public boolean checkDuplicatedUser() {
+        return false;
+    }
 }
