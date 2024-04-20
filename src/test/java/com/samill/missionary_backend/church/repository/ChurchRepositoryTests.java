@@ -1,24 +1,23 @@
 package com.samill.missionary_backend.church.repository;
 
 
-import com.samill.missionary_backend.RepositoryTestConfig;
 import com.samill.missionary_backend.church.entity.Church;
 import com.samill.missionary_backend.church.entity.VisitPurposeType;
 import com.samill.missionary_backend.common.entity.Address;
 import com.samill.missionary_backend.common.entity.Pastor;
+import com.samill.missionary_backend.configs.DateTimeProviderConfig;
+import com.samill.missionary_backend.configs.JpaConfig;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 
 import java.util.List;
 
 @DataJpaTest
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-@Import(RepositoryTestConfig.class)
+@Import({JpaConfig.class, DateTimeProviderConfig.class})
 class ChurchRepositoryTests {
 
     @Autowired

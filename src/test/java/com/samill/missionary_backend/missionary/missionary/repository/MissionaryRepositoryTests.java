@@ -1,8 +1,9 @@
 package com.samill.missionary_backend.missionary.missionary.repository;
 
-import com.samill.missionary_backend.RepositoryTestConfig;
 import com.samill.missionary_backend.common.entity.Pastor;
 import com.samill.missionary_backend.common.entity.Period;
+import com.samill.missionary_backend.configs.DateTimeProviderConfig;
+import com.samill.missionary_backend.configs.JpaConfig;
 import com.samill.missionary_backend.missionary.missionary.entity.Missionary;
 import com.samill.missionary_backend.missionary.missionary.entity.MissionaryPoster;
 import org.junit.jupiter.api.Test;
@@ -18,7 +19,7 @@ import java.util.UUID;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = Replace.NONE)
-@Import(RepositoryTestConfig.class)
+@Import({JpaConfig.class, DateTimeProviderConfig.class})
 class MissionaryRepositoryTests {
 
     @Autowired
@@ -41,7 +42,6 @@ class MissionaryRepositoryTests {
                                 .endDate(OffsetDateTime.now().plusDays(20))
                                 .build()
                 )
-
                 .pastor(
                         Pastor.builder()
                                 .name("염동욱")
@@ -64,9 +64,9 @@ class MissionaryRepositoryTests {
                 .build();
 
         final Missionary savedMissionary = missionaryRepository.save(missionary);
-
-        System.out.println(missionaryRepository.findAllInParticipationPeriod(OffsetDateTime.now()
-                .plusDays(5)));
+//
+//        System.out.println(missionaryRepository.findAllInParticipationPeriod(OffsetDateTime.now()
+//                .plusDays(5)));
 
     }
 
