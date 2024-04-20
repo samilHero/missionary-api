@@ -61,7 +61,9 @@ dependencies {
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0'
     implementation 'org.springframework.modulith:spring-modulith-starter-jpa'
     implementation 'org.springframework.modulith:spring-modulith-starter-test'
-
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+    annotationProcessor "org.mapstruct:mapstruct-processor:1.4.2.Final"
+    implementation 'org.mapstruct:mapstruct:1.4.2.Final'
 }
 
 dependencyManagement {
