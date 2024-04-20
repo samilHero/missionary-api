@@ -6,11 +6,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
-@RequiredArgsConstructor
-class MissionaryManagement implements MissionaryExternalService {
-
-    private final MemberExternalService memberExternalService;
-    private final ChurchExternalService churchExternalService;
+class MissionaryManagement {
+//
+//    private MemberExternalService memberExternalService;
+//    private ChurchExternalService churchExternalService;
 
 
 }

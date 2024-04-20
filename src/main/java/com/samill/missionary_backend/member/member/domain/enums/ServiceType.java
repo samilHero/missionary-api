@@ -1,7 +1,7 @@
 package com.samill.missionary_backend.member.member.domain.enums;
 
 
-import com.samill.missionary_backend.common.domain.enums.EnumModel;
+import com.samill.missionary_backend.common.enums.EnumModel;
 
 public enum ServiceType implements EnumModel {
     ADMIN_SERVICE("어드민"),
