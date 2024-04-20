@@ -6,7 +6,9 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-class NotificationManagement implements NotificationExternalService {
+public class NotificationManagement implements NotificationExternalService {
 
     private final MemberExternalService memberExternalService;
+
+    
 }
