@@ -1,11 +1,10 @@
 package com.samill.missionary_backend.church;
 
 
-import com.samill.missionary_backend.church.dto.CreateChurchDto;
-import com.samill.missionary_backend.church.dto.GetChurchDto;
-import com.samill.missionary_backend.church.dto.GetChurchesDto;
-import com.samill.missionary_backend.church.dto.UpdateChurchDto;
-import com.samill.missionary_backend.church.service.ChurchService;
+import com.samill.missionary_backend.church.church.dto.*;
+import com.samill.missionary_backend.church.church.service.ChurchService;
+import com.samill.missionary_backend.common.exception.BaseException;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -16,27 +15,30 @@ class ChurchManagement implements ChurchExternalService {
     private final ChurchService churchService;
 
     @Override
-    public GetChurchesDto getChurches() {
-        return null;
+    public GetChurchesResult getChurches(
+            GetChurchesRequest getChurchesRequest
+    ) {
+        return churchService.getChurches(getChurchesRequest);
     }
 
     @Override
-    public GetChurchDto getChurch(String id) {
-        return null;
+    public GetChurchResult getChurch(@NonNull String id) throws BaseException {
+        return churchService.getChurch(id);
     }
 
     @Override
-    public void addChurch(String adminId, CreateChurchDto createChurchDto) {
+    public void createChurch(String adminId, @NonNull CreateChurchRequest createChurchRequest) {
+        churchService.createChurch(adminId, createChurchRequest);
+    }
+
+    @Override
+    public void deleteChurch(String id, String memberId) {
+        churchService.deleteChurch(id, memberId);
 
     }
 
     @Override
-    public void removeChurch(String id, String adminId) {
-
-    }
-
-    @Override
-    public void updateChurch(String id, String adminId, UpdateChurchDto updateChurchDto) {
-
+    public void updateChurch(@NonNull String id, @NonNull String adminId, @NonNull UpdateChurchRequest updateChurchRequest) throws BaseException {
+        churchService.updateChurch(id, adminId, updateChurchRequest);
     }
 }

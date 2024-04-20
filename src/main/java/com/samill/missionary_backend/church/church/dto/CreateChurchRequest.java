@@ -1,8 +1,8 @@
-package com.samill.missionary_backend.church.dto;
+package com.samill.missionary_backend.church.church.dto;
 
 import lombok.NonNull;
 
-public record CreateChurchDto(
+public record CreateChurchRequest(
         @NonNull String name,
         @NonNull String pastorName,
         @NonNull String pastorPhone,

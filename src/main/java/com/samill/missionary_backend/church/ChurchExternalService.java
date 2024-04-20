@@ -1,19 +1,17 @@
 package com.samill.missionary_backend.church;
 
-import com.samill.missionary_backend.church.dto.CreateChurchDto;
-import com.samill.missionary_backend.church.dto.GetChurchDto;
-import com.samill.missionary_backend.church.dto.GetChurchesDto;
-import com.samill.missionary_backend.church.dto.UpdateChurchDto;
+import com.samill.missionary_backend.church.church.dto.*;
+import com.samill.missionary_backend.common.exception.BaseException;
 
 public interface ChurchExternalService {
 
-    GetChurchesDto getChurches();
+    GetChurchesResult getChurches(GetChurchesRequest getChurchesRequest);
 
-    GetChurchDto getChurch(String id);
+    GetChurchResult getChurch(String id) throws BaseException;
 
-    void addChurch(String adminId, CreateChurchDto createChurchDto);
+    void createChurch(String adminId, CreateChurchRequest createChurchRequest);
 
-    void removeChurch(String id, String adminId);
+    void deleteChurch(String id, String memberId);
 
-    void updateChurch(String id, String adminId, UpdateChurchDto updateChurchDto);
+    void updateChurch(String id, String adminId, UpdateChurchRequest updateChurchRequest) throws BaseException;
 }

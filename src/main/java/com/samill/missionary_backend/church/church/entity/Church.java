@@ -1,5 +1,6 @@
-package com.samill.missionary_backend.church.entity;
+package com.samill.missionary_backend.church.church.entity;
 
+import com.samill.missionary_backend.church.church.dto.UpdateChurchRequest;
 import com.samill.missionary_backend.common.entity.Address;
 import com.samill.missionary_backend.common.entity.BaseEntity;
 import com.samill.missionary_backend.common.entity.Pastor;
@@ -44,5 +45,18 @@ public class Church extends BaseEntity {
 
     private OffsetDateTime deletedAt;
 
+
+    public void update(UpdateChurchRequest updateChurchRequest) {
+        this.name = updateChurchRequest.name();
+        this.pastor = Pastor.builder()
+                .name(updateChurchRequest.pastorName())
+                .phone(updateChurchRequest.pastorPhone())
+                .build();
+        this.address = Address.builder()
+                .basic(updateChurchRequest.addressBasic())
+                .detail(updateChurchRequest.addressDetail())
+                .build();
+        this.visitPurpose = updateChurchRequest.visitPurpose();
+    }
 
 }

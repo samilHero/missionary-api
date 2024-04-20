@@ -1,20 +1,19 @@
 package com.samill.missionary_backend.common.entity;
 
+import jakarta.persistence.Access;
+import jakarta.persistence.AccessType;
 import jakarta.persistence.Embeddable;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 
 @Getter
 @Builder
 @NoArgsConstructor(
-    access = AccessLevel.PROTECTED
+        access = AccessLevel.PROTECTED
 )
 @AllArgsConstructor
 @Embeddable
+@Access(AccessType.FIELD)
 public class Address {
 
     private String basic;
@@ -24,5 +23,6 @@ public class Address {
     public String getFullAddress() {
         return basic + " " + detail;
     }
+
 
 }
