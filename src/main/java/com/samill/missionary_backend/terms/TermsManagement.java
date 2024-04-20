@@ -7,4 +7,13 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 class TermsManagement implements TermsExternalService {
 
+    @Override
+    public void createTerms() {
+
+    }
+
+    @Override
+    public void agreeTerms() {
+
+    }
 }
