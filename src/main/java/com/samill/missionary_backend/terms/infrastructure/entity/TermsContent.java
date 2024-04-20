@@ -1,22 +1,13 @@
 package com.samill.missionary_backend.terms.infrastructure.entity;
 
-import com.samill.missionary_backend.common.infrastructure.entity.BaseEntity;
+import com.samill.missionary_backend.common.entity.BaseEntity;
 import com.samill.missionary_backend.terms.domain.eums.TermsType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import java.time.OffsetDateTime;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import jakarta.persistence.*;
+import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Where;
+
+import java.time.OffsetDateTime;
 
 @Entity
 @Getter

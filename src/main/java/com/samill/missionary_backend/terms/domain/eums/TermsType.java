@@ -1,7 +1,7 @@
 package com.samill.missionary_backend.terms.domain.eums;
 
 
-import com.samill.missionary_backend.common.domain.enums.EnumModel;
+import com.samill.missionary_backend.common.enums.EnumModel;
 
 public enum TermsType implements EnumModel {
     USING_OF_SERVICE("서비스이용약관"),
