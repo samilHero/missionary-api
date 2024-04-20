@@ -1,5 +1,6 @@
 package com.samill.missionary_backend.church.mapper;
 
+import com.samill.missionary_backend.church.dto.CreateChurchDto;
 import com.samill.missionary_backend.church.dto.GetChurchDto;
 import com.samill.missionary_backend.church.entity.Church;
 import com.samill.missionary_backend.church.entity.VisitPurposeType;
@@ -50,4 +51,32 @@ class ChurchMapperTests {
 
     }
 
+
+    @Test
+    @DisplayName("CreateChurchDto to Church Test")
+    void createChurchDtoToChurch() {
+        /* Given */
+        final CreateChurchDto createChurchDto = new CreateChurchDto(
+                "삼일 교회",
+                "삼일 교회 목사",
+                "010-1234-5678",
+                "삼일 교회 사역",
+                "삼일교회 BASIC",
+                "삼일교회 DETAIL",
+                "CHILD_CARE"
+        );
+
+        // When
+        final Church church = ChurchMapper.INSTANCE.createChurchDtoToChurch(createChurchDto);
+
+        // Then
+        assertNotNull(church);
+        assertThat(church.getName()).isEqualTo(createChurchDto.name());
+        assertThat(church.getPastor().getName()).isEqualTo(createChurchDto.pastorName());
+        assertThat(church.getPastor().getPhone()).isEqualTo(createChurchDto.pastorPhone());
+        assertThat(church.getAddress().getBasic()).isEqualTo(createChurchDto.addressBasic());
+        assertThat(church.getAddress().getDetail()).isEqualTo(createChurchDto.addressDetail());
+        assertThat(church.getVisitPurpose()).isEqualTo(VisitPurposeType.CHILD_CARE.getKey());
+
+    }
 }

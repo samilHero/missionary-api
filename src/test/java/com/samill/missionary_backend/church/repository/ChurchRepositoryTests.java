@@ -57,10 +57,7 @@ class ChurchRepositoryTests {
                 )
                 .build();
 
-        churchRepository.save(
-                church
-        );
-
+        churchRepository.save(church);
     }
 
     @Test
