@@ -1,10 +1,10 @@
-package com.samill.missionary_backend.security;
+package com.samill.missionary_backend.gateway;
 
+import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.samill.missionary_backend.gateway.dto.ApiResponse;
 import com.samill.missionary_backend.member.dto.TokenDto;
 import org.apache.commons.lang3.StringUtils;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -21,7 +21,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class SecurityTests {
+@WithMockUser(username = "hanbyul.jung")
+public class ApiResponseTests {
 
     @Autowired
     private MockMvc mockMvc;
@@ -29,26 +30,12 @@ public class SecurityTests {
     private ObjectMapper jacksonObjectMapper;
 
     @Test
-    @WithMockUser(username = "hanbyul.jung")
-    public void authenticatedAccessTest() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.post("/api/auth/test")
+    public void getApiResponseTest() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/member/user")
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Authorization", getAuthorizationOfHeader()))
+                .andDo(print())
                 .andExpect(MockMvcResultMatchers.status().isOk());
-    }
-
-    @Test
-    public void unauthenticatedAccessTest() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.post("/api/auth/test")
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.status().isUnauthorized());
-    }
-
-
-    @Test
-    @WithMockUser(username = "hanbyul.jung")
-    public void getTokenTest() throws Exception {
-        getAuthorizationOfHeader();
     }
 
     private String getAuthorizationOfHeader() throws Exception {
