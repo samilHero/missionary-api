@@ -1,4 +1,4 @@
-package com.samill.missionary_backend.member.member.dto;
+package com.samill.missionary_backend.member.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
-@Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor

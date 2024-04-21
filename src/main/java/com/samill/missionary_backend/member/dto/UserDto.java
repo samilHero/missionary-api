@@ -1,4 +1,4 @@
-package com.samill.missionary_backend.member.member.dto;
+package com.samill.missionary_backend.member.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotNull;

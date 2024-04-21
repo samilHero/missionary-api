@@ -1,5 +1,7 @@
 package com.samill.missionary_backend.member;
 
+import com.samill.missionary_backend.member.dto.UserDto;
+
 public interface MemberExternalService {
 
     // crud 기본
@@ -9,6 +11,8 @@ public interface MemberExternalService {
 
     // 회원정보 가져오기
     void getMember();
+
+    UserDto getUser() throws Exception;
 
     void getUsers();
 

@@ -1,4 +1,4 @@
-package com.samill.missionary_backend.member.member.dto;
+package com.samill.missionary_backend.member.dto;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
