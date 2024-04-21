@@ -1,11 +1,13 @@
-package com.samill.missionary_backend.participation;
+package com.samill.missionary_backend.participation.domain.service;
 
-import com.samill.missionary_backend.participation.dto.ParticipationDto;
+import com.samill.missionary_backend.participation.domain.dto.ParticipationDto;
+import org.springframework.stereotype.Service;
 
 import java.awt.print.Pageable;
 import java.util.List;
 
-public interface ParticipationInternalService {
+@Service
+public interface ParticipationService {
     void participate(ParticipationDto participateDto);
     void cancelParticipation(ParticipationDto participationDto);
     List<Pageable> getParticipationList();
