@@ -47,19 +47,13 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 //    implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-web'
-
-    implementation 'org.projectlombok:lombok:1.18.30'
-    implementation 'org.mapstruct:mapstruct:1.5.5.Final'
-    implementation 'org.projectlombok:lombok-mapstruct-binding:0.2.0'
-    annotationProcessor 'org.projectlombok:lombok-mapstruct-binding:0.2.0'
-    annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.5.Final'
-    annotationProcessor 'org.projectlombok:lombok:1.18.30'
-
     compileOnly 'org.projectlombok:lombok:1.18.30'
+    implementation 'org.mapstruct:mapstruct:1.5.5.Final'
+    annotationProcessor 'org.projectlombok:lombok:1.18.30'
+    annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.5.Final'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
 //    developmentOnly 'org.springframework.boot:spring-boot-docker-compose'
     runtimeOnly 'org.postgresql:postgresql'
-
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.batch:spring-batch-test'
     testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
@@ -80,7 +74,11 @@ dependencies {
     runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-impl', version: '0.11.5'
     runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-jackson', version: '0.11.5'
 
-    runtimeOnly 'com.h2database:h2'
+    implementation 'com.querydsl:querydsl-jpa:5.1.0:jakarta'
+    annotationProcessor "com.querydsl:querydsl-apt:5.1.0:jakarta"
+    annotationProcessor "jakarta.annotation:jakarta.annotation-api"
+    annotationProcessor "jakarta.persistence:jakarta.persistence-api"
+
     annotationProcessor(
             // spring boot properties annotation processor
             "org.springframework.boot:spring-boot-configuration-processor",
@@ -97,6 +95,7 @@ dependencies {
             "javax.annotation:javax.annotation-api:1.3.2"
     )
 
+    testImplementation 'com.h2database:h2'
 }
 
 dependencyManagement {
@@ -114,6 +113,7 @@ tasks.named('test') {
 asciidoctor {
     inputs.dir snippetsDir
     configurations 'asciidoctorExt'
+
 
     sources {
         include("**/index.adoc")

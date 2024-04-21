@@ -2,7 +2,7 @@
     allowedDependencies = {
         "authentication",
         "common::entity",
-        "common::enums"
+        "common::enums",
     }
 )
 package com.samill.missionary_backend.member;

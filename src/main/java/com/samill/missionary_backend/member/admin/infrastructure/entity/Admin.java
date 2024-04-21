@@ -1,6 +1,6 @@
 package com.samill.missionary_backend.member.admin.infrastructure.entity;
 
-import com.samill.missionary_backend.common.infrastructure.entity.BaseEntity;
+import com.samill.missionary_backend.common.entity.BaseEntity;
 import com.samill.missionary_backend.member.member.infrastructure.entity.Member;
 import jakarta.persistence.*;
 import lombok.*;

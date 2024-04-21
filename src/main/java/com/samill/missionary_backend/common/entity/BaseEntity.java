@@ -1,22 +1,17 @@
-package com.samill.missionary_backend.common.infrastructure.entity;
+package com.samill.missionary_backend.common.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.MappedSuperclass;
-import java.time.OffsetDateTime;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.Setter;
 import lombok.experimental.Accessors;
-import org.springframework.data.annotation.CreatedBy;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedBy;
-import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.annotation.Version;
+import org.springframework.data.annotation.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import java.time.OffsetDateTime;
+
 @Getter
-@Setter
 @Accessors(chain = true)
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
@@ -39,4 +34,6 @@ public abstract class BaseEntity {
 
     @Version
     protected Integer version = 0;
+
+
 }

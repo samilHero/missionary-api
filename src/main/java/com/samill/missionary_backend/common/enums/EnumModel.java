@@ -1,4 +1,4 @@
-package com.samill.missionary_backend.common.domain.enums;
+package com.samill.missionary_backend.common.enums;
 
 public interface EnumModel {
 
