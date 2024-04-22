@@ -13,13 +13,13 @@ import lombok.*;
 )
 @AllArgsConstructor
 @Embeddable
-@Access(AccessType.FIELD)
 public class Address {
 
     private String basic;
     private String detail;
 
 
+    @Access(AccessType.FIELD)
     public String getFullAddress() {
         return basic + " " + detail;
     }

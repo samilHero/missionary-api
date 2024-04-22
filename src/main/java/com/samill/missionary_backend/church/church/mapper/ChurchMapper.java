@@ -41,4 +41,6 @@ public interface ChurchMapper {
 
     @Mapping(target = "churches", source = "churches", qualifiedByName = "churchToGetChurchesChurch")
     GetChurchesResult churchesToGetChurchesResult(List<Church> churches, Boolean hasNext);
+
+
 }

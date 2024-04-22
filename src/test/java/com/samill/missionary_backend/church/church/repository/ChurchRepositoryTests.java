@@ -15,6 +15,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Slice;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -74,21 +76,21 @@ class ChurchRepositoryTests {
     @DisplayName("find all with cursor")
     void findAllByCursor() {
 
-        final List<Church> churches = churchRepository.findAllWithCursor(
+        final Slice<Church> churcheSlice = churchRepository.findAllWithCursor(
                 new GetChurchesCursor(
                         this.churches.get(0).getId(),
                         this.churches.get(0).getName()
                 ),
-                3
+                PageRequest.of(0, 3)
         );
 
         final List<Church> sortedChurches = this.churches.stream().filter(
                         church -> {
 
-                            final int nameCompare = church.getName().compareTo(churches.get(0).getName());
+                            final int nameCompare = church.getName().compareTo(churcheSlice.getContent().get(0).getName());
 
                             if (nameCompare == 0) {
-                                return church.getId().compareTo(churches.get(0).getId()) >= 0;
+                                return church.getId().compareTo(churcheSlice.getContent().get(0).getId()) >= 0;
                             }
 
                             return nameCompare >= 0;
@@ -97,10 +99,10 @@ class ChurchRepositoryTests {
                 .sorted(Comparator.comparing(Church::getName).thenComparing(Church::getId))
                 .toList();
 
-        assertThat(churches).isNotEmpty();
+        assertThat(churcheSlice).isNotEmpty();
 
-        for (var i = 0; i < churches.size(); i++) {
-            assertThat(churches.get(i).getId()).isEqualTo(sortedChurches.get(i).getId());
+        for (var i = 0; i < churcheSlice.getSize(); i++) {
+            assertThat(churcheSlice.getContent().get(i).getId()).isEqualTo(sortedChurches.get(i).getId());
         }
 
     }

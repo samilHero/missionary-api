@@ -9,6 +9,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.SliceImpl;
 
 import java.util.List;
 
@@ -28,18 +31,25 @@ class ChurchServiceTests {
     @Test
     void getChurches() {
         // given
+        final GetChurchesRequest getChurchesRequest = new GetChurchesRequest(null, 10);
+
         final List<Church> churches = List.of(
                 mock(Church.class),
                 mock(Church.class)
         );
 
-        final GetChurchesRequest getChurchesRequest = new GetChurchesRequest(null, 10);
+        final Slice<Church> churcheSlice = new SliceImpl<>(
+                churches,
+                PageRequest.of(0, getChurchesRequest.pageSize()),
+                false
+        );
+
 
         when(churches.get(0).getId()).thenReturn("1");
         when(churches.get(0).getName()).thenReturn("바 교회");
         when(churches.get(1).getId()).thenReturn("2");
         when(churches.get(1).getName()).thenReturn("마 교회");
-        when(churchRepository.findAllWithCursor(getChurchesRequest.cursor(), getChurchesRequest.pageSize())).thenReturn(churches);
+        when(churchRepository.findAllWithCursor(getChurchesRequest.cursor(), PageRequest.of(0, getChurchesRequest.pageSize()))).thenReturn(churcheSlice);
 
         // when
         final GetChurchesResult getChurchesResult = churchService.getChurches(getChurchesRequest);

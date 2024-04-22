@@ -3,10 +3,10 @@ package com.samill.missionary_backend.church.church.repository;
 import com.samill.missionary_backend.church.church.dto.GetChurchesCursor;
 import com.samill.missionary_backend.church.church.entity.Church;
 import lombok.NonNull;
-
-import java.util.List;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 
 public interface ChurchRepositoryCustom {
 
-    List<Church> findAllWithCursor(GetChurchesCursor cursor, @NonNull Integer pageSize);
+    Slice<Church> findAllWithCursor(GetChurchesCursor cursor, @NonNull Pageable pageable);
 }
