@@ -2,20 +2,24 @@ package com.samill.missionary_backend.authentication.security;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.ServletRequest;
-import jakarta.servlet.ServletResponse;
+import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.StringUtils;
-import org.springframework.web.filter.GenericFilterBean;
+import org.springframework.web.filter.OncePerRequestFilter;
 
+
+@WebFilter(urlPatterns = "*")
+@Order(0)
 @RequiredArgsConstructor
-public class JwtFilter extends GenericFilterBean {
+public class JwtFilter extends OncePerRequestFilter {
 
     public static final String AUTHORIZATION_HEADER = "Authorization";
     private static final Logger logger = LoggerFactory.getLogger(JwtFilter.class);
@@ -24,9 +28,9 @@ public class JwtFilter extends GenericFilterBean {
     // 실제 필터릴 로직
     // 토큰의 인증정보를 SecurityContext에 저장하는 역할 수행
     @Override
-    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)
-        throws IOException, ServletException {
-        HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+        throws ServletException, IOException {
+        HttpServletRequest httpServletRequest = request;
         String jwt = resolveToken(httpServletRequest);
         String requestURI = httpServletRequest.getRequestURI();
 
@@ -38,7 +42,7 @@ public class JwtFilter extends GenericFilterBean {
             logger.debug("유효한 JWT 토큰이 없습니다, uri: {}", requestURI);
         }
 
-        filterChain.doFilter(servletRequest, servletResponse);
+        filterChain.doFilter(request, response);
     }
 
     // Request Header 에서 토큰 정보를 꺼내오기 위한 메소드

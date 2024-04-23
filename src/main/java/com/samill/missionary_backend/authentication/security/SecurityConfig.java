@@ -29,12 +29,20 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable);
         http.authorizeHttpRequests(
-            authorize -> authorize
-                .requestMatchers("/member/join").permitAll()
-                .requestMatchers("/auth/login").permitAll()
-                .anyRequest().authenticated()
-        );
+                authorize -> authorize
+                    .requestMatchers("/api/user/join").permitAll()
+                    .requestMatchers("/api/user/login").permitAll()
+                    .requestMatchers("/api/admin/login").permitAll()
+                    .requestMatchers("/api/staff/login").permitAll()
+                    .anyRequest().authenticated()
+            )
+            .exceptionHandling(exceptionHandling ->
+                exceptionHandling.authenticationEntryPoint(jwtAuthenticationEntryPoint))
+            .exceptionHandling(exceptionHandling ->
+                exceptionHandling.accessDeniedHandler(jwtAccessDeniedHandler))
+            .apply(new JwtSecurityConfig(tokenProvider));
         return http.build();
     }
+
 }
 

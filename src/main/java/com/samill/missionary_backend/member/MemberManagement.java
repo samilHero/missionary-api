@@ -1,6 +1,7 @@
 package com.samill.missionary_backend.member;
 
 
+import com.samill.missionary_backend.member.dto.UserDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +22,14 @@ public class MemberManagement implements MemberExternalService {
     @Override
     public void getMember() {
 
+    }
+
+    @Override
+    public UserDto getUser() throws Exception {
+        return UserDto.builder()
+            .userId("hanbyul.jung")
+            .username("정한별")
+            .build();
     }
 
     @Override
