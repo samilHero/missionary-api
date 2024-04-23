@@ -6,26 +6,25 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import java.time.OffsetDateTime;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 
 @Builder
 @Entity
 @Getter
-@Setter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Table(name = "app_user")
-public class AppUser extends BaseEntity {
+public class User extends BaseEntity {
 
     @Id
     @GeneratedValue(generator = "uuid2")
     @GenericGenerator(name = "uuid2", strategy = "uuid2")
-    private String userId;
+    private String id;
     private String loginId;
     private String name;
     private String identityNumber;
@@ -36,7 +35,7 @@ public class AppUser extends BaseEntity {
     private String email;
     //세례 여부
     @Builder.Default
-    private Boolean is_baptized = Boolean.FALSE;
+    private Boolean isBaptized = Boolean.FALSE;
 
     //세례 일시
     private OffsetDateTime baptizedAt;
