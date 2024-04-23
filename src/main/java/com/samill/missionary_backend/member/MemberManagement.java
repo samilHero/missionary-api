@@ -1,9 +1,6 @@
 package com.samill.missionary_backend.member;
 
 
-import com.samill.missionary_backend.common.exception.BaseException;
-import com.samill.missionary_backend.gateway.enums.ResponseCode;
-import com.samill.missionary_backend.gateway.exception.CommonException;
 import com.samill.missionary_backend.member.dto.UserDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -30,9 +27,9 @@ public class MemberManagement implements MemberExternalService {
     @Override
     public UserDto getUser() throws Exception {
         return UserDto.builder()
-                .userId("hanbyul.jung")
-                .username("정한별")
-                .build();
+            .userId("hanbyul.jung")
+            .username("정한별")
+            .build();
     }
 
     @Override
