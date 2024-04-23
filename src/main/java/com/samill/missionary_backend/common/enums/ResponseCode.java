@@ -1,7 +1,5 @@
-package com.samill.missionary_backend.gateway.enums;
+package com.samill.missionary_backend.common.enums;
 
-
-import com.samill.missionary_backend.common.enums.EnumModel;
 
 public enum ResponseCode implements EnumModel {
     COMMON_OK(0, "OK"),
@@ -26,7 +24,11 @@ public enum ResponseCode implements EnumModel {
         return getMessage();
     }
 
-    public Integer getCode() { return code; }
+    public Integer getCode() {
+        return code;
+    }
 
-    public String getMessage() { return message;}
+    public String getMessage() {
+        return message;
+    }
 }
