@@ -1,20 +1,18 @@
 package com.samill.missionary_backend.church.church.mapper;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import com.samill.missionary_backend.church.church.dto.CreateChurchRequest;
 import com.samill.missionary_backend.church.church.dto.GetChurchResult;
 import com.samill.missionary_backend.church.church.entity.Church;
-import com.samill.missionary_backend.church.church.entity.VisitPurposeType;
 import com.samill.missionary_backend.common.entity.Address;
 import com.samill.missionary_backend.common.entity.Pastor;
+import java.util.UUID;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-import java.util.UUID;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @ExtendWith(MockitoExtension.class)
 class ChurchMapperTests {
@@ -24,21 +22,20 @@ class ChurchMapperTests {
     void churchToGetChurchDtoTest() {
         /* Given */
         final Church cuhrch = Church.builder()
-                .id(UUID.randomUUID().toString())
-                .name("삼일 교회")
-                .visitPurpose(VisitPurposeType.CHILD_CARE.getKey())
-                .address(
-                        Address.builder()
-                                .basic("삼일교회 BASIC")
-                                .detail("삼일교회 DETAIL")
-                                .build()
-                ).pastor(
-                        Pastor.builder()
-                                .name("삼일 교회 목사")
-                                .phone("010-1234-5678")
-                                .build()
-                )
-                .build();
+            .id(UUID.randomUUID().toString())
+            .name("삼일 교회")
+            .address(
+                Address.builder()
+                    .basic("삼일교회 BASIC")
+                    .detail("삼일교회 DETAIL")
+                    .build()
+            ).pastor(
+                Pastor.builder()
+                    .name("삼일 교회 목사")
+                    .phone("010-1234-5678")
+                    .build()
+            )
+            .build();
 
         // When
         final GetChurchResult getChurchResult = ChurchMapper.INSTANCE.churchToGetChurchResult(cuhrch);
@@ -60,13 +57,11 @@ class ChurchMapperTests {
     void createChurchDtoToChurch() {
         /* Given */
         final CreateChurchRequest createChurchRequest = new CreateChurchRequest(
-                "삼일 교회",
-                "삼일 교회 목사",
-                "010-1234-5678",
-                "삼일 교회 사역",
-                "삼일교회 BASIC",
-                "삼일교회 DETAIL",
-                "CHILD_CARE"
+            "삼일 교회",
+            "삼일 교회 목사",
+            "010-1234-5678",
+            "삼일교회 BASIC",
+            "삼일교회 DETAIL"
         );
 
         /* When */
@@ -79,7 +74,6 @@ class ChurchMapperTests {
         assertThat(church.getPastor().getPhone()).isEqualTo(createChurchRequest.pastorPhone());
         assertThat(church.getAddress().getBasic()).isEqualTo(createChurchRequest.addressBasic());
         assertThat(church.getAddress().getDetail()).isEqualTo(createChurchRequest.addressDetail());
-        assertThat(church.getVisitPurpose()).isEqualTo(VisitPurposeType.CHILD_CARE.getKey());
 
     }
 
