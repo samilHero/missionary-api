@@ -1,4 +1,4 @@
-package com.samill.missionary_backend.church.church.dto;
+package com.samill.missionary_backend.gateway.dto;
 
 public record GetChurchesRequest(
         GetChurchesCursor cursor,

@@ -5,7 +5,7 @@ import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.StringExpressions;
 import com.querydsl.core.types.dsl.StringTemplate;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.samill.missionary_backend.church.church.dto.GetChurchesCursor;
+import com.samill.missionary_backend.church.church.dto.GetChurchesQueryCursor;
 import com.samill.missionary_backend.church.church.entity.Church;
 import com.samill.missionary_backend.church.church.entity.Churches;
 import lombok.NonNull;
@@ -22,7 +22,7 @@ public class ChurchRepositoryCustomImpl implements ChurchRepositoryCustom {
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public Slice<Church> findAllWithCursor(GetChurchesCursor cursor, @NonNull Pageable pageable) {
+    public Slice<Church> findAllWithCursor(GetChurchesQueryCursor cursor, @NonNull Pageable pageable) {
 
         final Churches churches = new Churches(
                 queryFactory.selectFrom(church)
@@ -40,14 +40,14 @@ public class ChurchRepositoryCustomImpl implements ChurchRepositoryCustom {
     }
 
 
-    private BooleanExpression findAllWithCursor(GetChurchesCursor cursor) {
+    private BooleanExpression findAllWithCursor(GetChurchesQueryCursor cursor) {
         if (cursor == null) {
             return null;
         }
 
         final StringTemplate nameTemplate = Expressions.stringTemplate("{0}", church.name);
 //
-        return StringExpressions.rpad(nameTemplate, 20, cursor.getCharPad()).concat(cursor.id()).gt(cursor.value());
+        return StringExpressions.rpad(nameTemplate, 20, cursor.getCharPad()).concat(cursor.lastChruchId()).gt(cursor.value());
 
     }
 }

@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Validated
 public class MemberGatewayManagement {
 
-    private final MemberManagement memberManagement;
+    private final MemberExternalService memberManagement;
 
     @PostMapping(USER_URI)
     // controller parameter 에 Usercontext 를 받으면 token 정보를 받아올수 있습니다.

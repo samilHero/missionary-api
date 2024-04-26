@@ -1,13 +1,16 @@
 @org.springframework.modulith.ApplicationModule(
-    allowedDependencies = {
-        "authentication",
-        "authentication::security",
-        "configs",
-        "common::exception",
-        "common::enums",
-        "common::dto",
-        "member::dto",
-        "member",
-    }
+        allowedDependencies = {
+				"authentication",
+                "authentication::security",
+                "configs",
+                "common::exception",
+                "common::enums",
+                "common::dto",
+                "common::entity",
+                "member::dto",
+                "member",
+                "church",
+                "church::dto"
+        }
 )
 package com.samill.missionary_backend.gateway;

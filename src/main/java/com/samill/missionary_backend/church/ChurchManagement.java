@@ -1,11 +1,7 @@
 package com.samill.missionary_backend.church;
 
 
-import com.samill.missionary_backend.church.church.dto.CreateChurchRequest;
-import com.samill.missionary_backend.church.church.dto.GetChurchResult;
-import com.samill.missionary_backend.church.church.dto.GetChurchesRequest;
-import com.samill.missionary_backend.church.church.dto.GetChurchesResult;
-import com.samill.missionary_backend.church.church.dto.UpdateChurchRequest;
+import com.samill.missionary_backend.church.church.dto.*;
 import com.samill.missionary_backend.church.church.service.ChurchService;
 import com.samill.missionary_backend.common.exception.CommonException;
 import lombok.NonNull;
@@ -20,21 +16,21 @@ class ChurchManagement implements ChurchExternalService {
     private final ChurchService churchService;
 
     @Override
-    public GetChurchesResult getChurches(
-        GetChurchesRequest getChurchesRequest
+    public GetChurchesQueryResult getChurches(
+            GetChurchesQuery getChurchesQuery
     ) {
-        return churchService.getChurches(getChurchesRequest);
+        return churchService.getChurches(getChurchesQuery);
     }
 
     @Override
-    public GetChurchResult getChurch(@NonNull String id) throws CommonException {
+    public GetChurchQueryResult getChurch(@NonNull String id) throws CommonException {
         return churchService.getChurch(id);
     }
 
     @Transactional
     @Override
-    public void createChurch(String adminId, @NonNull CreateChurchRequest createChurchRequest) {
-        churchService.createChurch(adminId, createChurchRequest);
+    public void createChurch(String adminId, @NonNull CreateChurchCommand createChurchCommand) {
+        churchService.createChurch(adminId, createChurchCommand);
     }
 
     @Transactional
@@ -45,7 +41,7 @@ class ChurchManagement implements ChurchExternalService {
 
     @Transactional
     @Override
-    public void updateChurch(@NonNull String id, @NonNull String adminId, @NonNull UpdateChurchRequest updateChurchRequest) throws CommonException {
-        churchService.updateChurch(id, adminId, updateChurchRequest);
+    public void updateChurch(@NonNull String id, @NonNull String adminId, @NonNull UpdateChurchCommand updateChurchCommand) throws CommonException {
+        churchService.updateChurch(id, adminId, updateChurchCommand);
     }
 }

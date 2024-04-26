@@ -4,8 +4,8 @@ import lombok.NonNull;
 
 import java.util.List;
 
-public record GetChurchesResult(
-        @NonNull List<GetChurchesChurch> churches,
+public record GetChurchesQueryResult(
+        @NonNull List<GetChurchesQueryResultChurch> churches,
         @NonNull Boolean hasNext
 ) {
 

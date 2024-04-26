@@ -1,10 +1,6 @@
 package com.samill.missionary_backend.church.church.service;
 
-import com.samill.missionary_backend.church.church.dto.CreateChurchRequest;
-import com.samill.missionary_backend.church.church.dto.GetChurchResult;
-import com.samill.missionary_backend.church.church.dto.GetChurchesRequest;
-import com.samill.missionary_backend.church.church.dto.GetChurchesResult;
-import com.samill.missionary_backend.church.church.dto.UpdateChurchRequest;
+import com.samill.missionary_backend.church.church.dto.*;
 import com.samill.missionary_backend.church.church.entity.Church;
 import com.samill.missionary_backend.church.church.exception.NotFoundChurchException;
 import com.samill.missionary_backend.church.church.mapper.ChurchMapper;
@@ -22,32 +18,32 @@ public class ChurchService {
 
     private final ChurchRepository churchRepository;
 
-    public GetChurchesResult getChurches(@NonNull GetChurchesRequest request) {
+    public GetChurchesQueryResult getChurches(@NonNull GetChurchesQuery request) {
 
         final PageRequest pageRequest = PageRequest.of(
-            0,
-            request.pageSize()
+                0,
+                request.pageSize()
         );
 
         final Slice<Church> churches = this.churchRepository.findAllWithCursor(request.cursor(), pageRequest);
 
         return ChurchMapper.INSTANCE.churchesToGetChurchesResult(
-            churches.toList(),
-            churches.hasNext()
+                churches.toList(),
+                churches.hasNext()
         );
 
     }
 
-    public GetChurchResult getChurch(String id) throws CommonException {
+    public GetChurchQueryResult getChurch(String id) throws CommonException {
 
         return ChurchMapper.INSTANCE.churchToGetChurchResult(
-            churchRepository.findById(id)
-                .orElseThrow(NotFoundChurchException::new)
+                churchRepository.findById(id)
+                        .orElseThrow(NotFoundChurchException::new)
         );
     }
 
-    public String createChurch(@NonNull String memberId, @NonNull CreateChurchRequest createChurchRequest) {
-        final Church church = churchRepository.save(ChurchMapper.INSTANCE.createChurchRequestToChurch(createChurchRequest));
+    public String createChurch(@NonNull String memberId, @NonNull CreateChurchCommand createChurchCommand) {
+        final Church church = churchRepository.save(ChurchMapper.INSTANCE.createChurchRequestToChurch(createChurchCommand));
         return church.getId();
     }
 
@@ -56,13 +52,13 @@ public class ChurchService {
     }
 
 
-    public void updateChurch(@NonNull String id, @NonNull String memberId, @NonNull UpdateChurchRequest updateChurchRequest) throws CommonException {
+    public void updateChurch(@NonNull String id, @NonNull String memberId, @NonNull UpdateChurchCommand updateChurchCommand) throws CommonException {
         final Church church = churchRepository.findById(id)
-            .orElseThrow(NotFoundChurchException::new);
+                .orElseThrow(NotFoundChurchException::new);
 
-        church.changeName(updateChurchRequest.name());
-        church.changeAddress(updateChurchRequest.address());
-        church.changePastor(updateChurchRequest.pastor());
+        church.changeName(updateChurchCommand.name());
+        church.changeAddress(updateChurchCommand.address());
+        church.changePastor(updateChurchCommand.pastor());
 
     }
 

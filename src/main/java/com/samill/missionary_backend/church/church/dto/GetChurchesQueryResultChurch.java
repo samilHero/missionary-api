@@ -1,6 +1,6 @@
 package com.samill.missionary_backend.church.church.dto;
 
-public record GetChurchesChurch(
+public record GetChurchesQueryResultChurch(
         String id,
         String name
 

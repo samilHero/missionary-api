@@ -1,18 +1,11 @@
 package com.samill.missionary_backend.church.church.service;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
-import com.samill.missionary_backend.church.church.dto.CreateChurchRequest;
-import com.samill.missionary_backend.church.church.dto.GetChurchResult;
-import com.samill.missionary_backend.church.church.dto.UpdateChurchRequest;
+import com.samill.missionary_backend.church.church.dto.CreateChurchCommand;
+import com.samill.missionary_backend.church.church.dto.GetChurchQueryResult;
+import com.samill.missionary_backend.church.church.dto.UpdateChurchCommand;
 import com.samill.missionary_backend.church.church.exception.NotFoundChurchException;
 import com.samill.missionary_backend.common.enums.ResponseCode;
 import com.samill.missionary_backend.common.exception.CommonException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -21,6 +14,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.UUID;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
 @WithMockUser(username = "dongwook.yeom")
@@ -39,20 +40,20 @@ class ChurchServiceTests {
     @BeforeEach
     void setUp() throws CommonException {
         churchIds =
-            new ArrayList<>(
-                Collections.singletonList(
-                    this.churchService.createChurch(
-                        "memberId",
-                        new CreateChurchRequest(
-                            "name",
-                            "pastorName",
-                            "pastorPhone",
-                            "addressBasic",
-                            "addressDetail"
+                new ArrayList<>(
+                        Collections.singletonList(
+                                this.churchService.createChurch(
+                                        "memberId",
+                                        new CreateChurchCommand(
+                                                "name",
+                                                "pastorName",
+                                                "pastorPhone",
+                                                "addressBasic",
+                                                "addressDetail"
+                                        )
+                                )
                         )
-                    )
-                )
-            );
+                );
 
     }
 
@@ -88,9 +89,9 @@ class ChurchServiceTests {
 //        assertNotNull(getChurchesResult);
 //        assertThat(getChurchesResult.hasNext()).isEqualTo(false);
 //        assertThat(getChurchesResult.churches().size()).isEqualTo(2);
-//        assertThat(getChurchesResult.churches().get(0).id()).isEqualTo("1");
+//        assertThat(getChurchesResult.churches().get(0).lastChruchId()).isEqualTo("1");
 //        assertThat(getChurchesResult.churches().get(0).name()).isEqualTo("바 교회");
-//        assertThat(getChurchesResult.churches().get(1).id()).isEqualTo("2");
+//        assertThat(getChurchesResult.churches().get(1).lastChruchId()).isEqualTo("2");
 //        assertThat(getChurchesResult.churches().get(1).name()).isEqualTo("마 교회");
     }
 
@@ -105,47 +106,47 @@ class ChurchServiceTests {
     @Test
     void createChurch() throws CommonException {
         final String churchId = this.churchService.createChurch(
-            "memberId",
-            new CreateChurchRequest(
-                "name",
-                "pastorName",
-                "pastorPhone",
-                "addressBasic",
-                "addressDetail"
-            )
+                "memberId",
+                new CreateChurchCommand(
+                        "name",
+                        "pastorName",
+                        "pastorPhone",
+                        "addressBasic",
+                        "addressDetail"
+                )
         );
 
-        final GetChurchResult getChurchResult = this.churchService.getChurch(churchId);
+        final GetChurchQueryResult getChurchQueryResult = this.churchService.getChurch(churchId);
 
-        System.out.println(getChurchResult);
+        System.out.println(getChurchQueryResult);
 
-        assertThat(getChurchResult.id()).isEqualTo(churchId);
+        assertThat(getChurchQueryResult.id()).isEqualTo(churchId);
     }
 
     @Test
     @Transactional
     void updateChurch() throws CommonException {
 
-        final UpdateChurchRequest updateChurchRequest = new UpdateChurchRequest(
-            "이름",
-            "목사님 이름",
-            "목사님 전화번호",
-            "주소 기본",
-            "주소 상세"
+        final UpdateChurchCommand updateChurchCommand = new UpdateChurchCommand(
+                "이름",
+                "목사님 이름",
+                "목사님 전화번호",
+                "주소 기본",
+                "주소 상세"
         );
 
         this.churchService.updateChurch(
-            churchIds.getFirst(),
-            "memberId",
-            updateChurchRequest
+                churchIds.getFirst(),
+                "memberId",
+                updateChurchCommand
         );
 
-        final GetChurchResult getChurchResult = this.churchService.getChurch(churchIds.getFirst());
+        final GetChurchQueryResult getChurchQueryResult = this.churchService.getChurch(churchIds.getFirst());
 
-        assertThat(getChurchResult.name()).isEqualTo(updateChurchRequest.name());
-        assertThat(getChurchResult.pastorName()).isEqualTo(updateChurchRequest.pastorName());
-        assertThat(getChurchResult.pastorPhone()).isEqualTo(updateChurchRequest.pastorPhone());
-        assertThat(getChurchResult.address()).isEqualTo(updateChurchRequest.addressBasic() + " " + updateChurchRequest.addressDetail());
+        assertThat(getChurchQueryResult.name()).isEqualTo(updateChurchCommand.name());
+        assertThat(getChurchQueryResult.pastorName()).isEqualTo(updateChurchCommand.pastorName());
+        assertThat(getChurchQueryResult.pastorPhone()).isEqualTo(updateChurchCommand.pastorPhone());
+        assertThat(getChurchQueryResult.address()).isEqualTo(updateChurchCommand.addressBasic() + " " + updateChurchCommand.addressDetail());
 
 
     }
