@@ -4,6 +4,7 @@
         "configs",
         "common::exception",
         "common::enums",
+        "common::dto",
         "member::dto",
         "member",
     }
