@@ -1,4 +1,4 @@
-package com.samill.missionary_backend.participation.domain.dto;
+package com.samill.missionary_backend.participation.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,7 +11,7 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @AllArgsConstructor
-public class ParticipantDto {
+public class CreateParticipantDto {
     private String id;
     private String name;
     private String gender;

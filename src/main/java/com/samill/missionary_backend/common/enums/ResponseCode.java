@@ -5,6 +5,7 @@ public enum ResponseCode implements EnumModel {
     COMMON_OK(0, "OK"),
     COMMON_BAD_REQUEST_ERROR(101, "Bad Request"),
     NOT_FOUND_ERROR(102, "Not Found"),
+    PARTICIPATION_NOT_ALLOWED(1101, "Participation is not allowed"),
     ;
     private Integer code;
     private String message;

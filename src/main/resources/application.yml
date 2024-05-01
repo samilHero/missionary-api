@@ -36,3 +36,19 @@ spring:
         show_sql: true
         highlight_sql: true
     defer-datasource-initialization: true
+
+# RabbitMQ 연결 정보
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+
+# RabbitMQ queue, exchange, routing-key 정보
+rabbitmq:
+  queue:
+    name: missionary
+  exchange:
+    name: missionary.exchange
+  routing:
+    key: missionary.key

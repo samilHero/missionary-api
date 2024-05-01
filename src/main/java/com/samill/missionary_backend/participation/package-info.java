@@ -1,9 +1,12 @@
 
 @org.springframework.modulith.ApplicationModule(
-    allowedDependencies = {
-        "member",
-        "missionary",
-        "notification",
-    }
+        allowedDependencies = {
+                "member",
+                "missionary",
+                "notification",
+                "common::entity",
+                "common::enums",
+                "common::exception"
+        }
 )
 package com.samill.missionary_backend.participation;
