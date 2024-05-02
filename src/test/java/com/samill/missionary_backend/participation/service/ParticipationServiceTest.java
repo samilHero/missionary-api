@@ -64,7 +64,7 @@ class ParticipationServiceImplTest {
                 try {
                     participationService.participate(createParticipationDto, missionaryMaxCount);
                 } catch (CommonException e) {
-                    System.out.println(e.getMessage());
+                    System.out.println(e.getResponseCode().getMessage());
                 } finally {
                     latch.countDown();
                 }

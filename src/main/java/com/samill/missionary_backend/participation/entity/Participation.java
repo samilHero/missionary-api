@@ -1,6 +1,7 @@
 package com.samill.missionary_backend.participation.entity;
 
 import com.samill.missionary_backend.common.entity.BaseEntity;
+import com.samill.missionary_backend.participation.service.IdentificationNumberConverter;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
@@ -30,6 +31,7 @@ public class Participation extends BaseEntity {
     private List<Participant> participant;
     private int applyFee;
     private boolean isPaid;
+    @Convert(converter = IdentificationNumberConverter.class)
     private String identificationNumber;
     private OffsetDateTime deletedAt;
 

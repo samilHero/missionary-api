@@ -5,12 +5,11 @@ import com.samill.missionary_backend.participation.dto.CreateParticipationDto;
 import com.samill.missionary_backend.participation.dto.UpdateParticipationDto;
 import com.samill.missionary_backend.participation.entity.Participation;
 
-import java.awt.print.Pageable;
 import java.util.List;
 
 public interface ParticipationService {
     void participate(CreateParticipationDto createParticipationDto, int maxCount) throws CommonException;
     void cancelParticipation(UpdateParticipationDto updateParticipationDto);
     List<Participation> getParticipations(String missionaryId);
-    void updateParticipation(CreateParticipationDto participationDto);
+    void updateParticipation(UpdateParticipationDto updateParticipationDto);
 }

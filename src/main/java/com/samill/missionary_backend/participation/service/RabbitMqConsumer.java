@@ -1,7 +1,5 @@
 package com.samill.missionary_backend.participation.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.samill.missionary_backend.participation.dto.CreateParticipationDto;
 import com.samill.missionary_backend.participation.dto.MessageDto;

@@ -8,7 +8,9 @@ jwt:
   token-validity-in-seconds: 86400
 
 #spring:
-
+aes:
+  encrypt:
+    key: aesencrypt
 
 
 spring:
@@ -21,10 +23,10 @@ spring:
     #    username: sa
     #    password:
     #    driver-class-name: org.h2.Driver
-    datasource:
-      url: ${RDS_URL}
-      username: ${RDS_USERNAME}
-      password: ${RDS_PASSWORD}
+  datasource:
+    url: ${RDS_URL}
+    username: ${RDS_USERNAME}
+    password: ${RDS_PASSWORD}
 
   #JPA
   jpa:
@@ -43,6 +45,12 @@ spring:
     port: 5672
     username: guest
     password: guest
+
+# redis
+  data:
+    redis:
+      host: localhost
+      port: 6379
 
 # RabbitMQ queue, exchange, routing-key 정보
 rabbitmq:

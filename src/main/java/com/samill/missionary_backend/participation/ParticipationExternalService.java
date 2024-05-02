@@ -11,4 +11,5 @@ public interface ParticipationExternalService {
     void participate(CreateParticipationDto createParticipationDto) throws CommonException;
     void cancelParticipation(UpdateParticipationDto updateParticipationDto);
     GetParticipationsDto getParticipations(String missionaryId);
+    void updateParticipation(UpdateParticipationDto updateParticipationDto);
 }

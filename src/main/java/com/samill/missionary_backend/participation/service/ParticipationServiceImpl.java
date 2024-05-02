@@ -14,7 +14,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.awt.print.Pageable;
 import java.util.List;
 
 @Service
@@ -31,12 +30,13 @@ public class ParticipationServiceImpl implements ParticipationService {
     public void participate(CreateParticipationDto createParticipationDto, int maxUserCount) throws CommonException{
         String missionaryId = createParticipationDto.getMissionaryId();
         Long count = participantCountRepository.increment(missionaryId);
-        System.out.println("Controller.postInput Thread: "+Thread.currentThread());
+
         if (count > maxUserCount) {
             participantCountRepository.set(missionaryId, String.valueOf(maxUserCount));
             throw new CommonException(ResponseCode.PARTICIPATION_NOT_ALLOWED);
         }
-        // 리스너에서 신청내역 저장
+
+        // 메시지 리스너에서 신청내역 저장
         rabbitMqProducer.sendMessage(new MessageDto(createParticipationDto));
     }
 
@@ -54,7 +54,8 @@ public class ParticipationServiceImpl implements ParticipationService {
     }
 
     @Override
-    public void updateParticipation(CreateParticipationDto participationDto) {
-
+    public void updateParticipation(UpdateParticipationDto updateParticipationDto) {
+        Participation participation = participationMapper.INSTANCE.updateParticipationDtoToEntity(updateParticipationDto);
+        participationRepository.save(participation);
     }
 }
