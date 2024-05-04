@@ -1,7 +1,7 @@
 package com.samill.missionary_backend.participation.entity;
 
 import com.samill.missionary_backend.common.entity.BaseEntity;
-import com.samill.missionary_backend.participation.service.IdentificationNumberConverter;
+import com.samill.missionary_backend.common.util.AesEncryptConverter;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
@@ -9,7 +9,6 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 
 import java.time.OffsetDateTime;
-import java.util.List;
 
 /**
  * 선교 신청정보
@@ -27,16 +26,12 @@ public class Participation extends BaseEntity {
     @GenericGenerator(name = "uuid2", strategy = "uuid2")
     private String id;
     private String missionaryId;
-    @OneToMany(mappedBy = "participation", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Participant> participant;
+    private String memberId;
+    private String name;
+    private String userId;
     private int applyFee;
     private boolean isPaid;
-    @Convert(converter = IdentificationNumberConverter.class)
+    @Convert(converter = AesEncryptConverter.class)
     private String identificationNumber;
     private OffsetDateTime deletedAt;
-
-
-    public void addParticipant(Participant participant) {
-        this.participant.add(participant);
-    }
 }

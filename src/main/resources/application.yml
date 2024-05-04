@@ -10,7 +10,7 @@ jwt:
 #spring:
 aes:
   encrypt:
-    key: aesencrypt
+    key: ${ENCRYPT_KEY}
 
 
 spring:
