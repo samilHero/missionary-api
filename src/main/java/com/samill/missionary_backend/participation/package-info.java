@@ -7,6 +7,7 @@
                 "common::entity",
                 "common::enums",
                 "common::exception",
+                "common::dto",
                 "common::util"
         }
 )
