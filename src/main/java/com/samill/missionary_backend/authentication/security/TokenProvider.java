@@ -47,7 +47,7 @@ public class TokenProvider implements InitializingBean {
         this.key = Keys.hmacShaKeyFor(keyBytes);
     }
 
-    public String createToken(Authentication authentication) {
+    public String createToken(Authentication authentication, Claims claims) {
         String authorities = authentication.getAuthorities().stream()
             .map(GrantedAuthority::getAuthority)
             .collect(Collectors.joining(","));
@@ -58,7 +58,8 @@ public class TokenProvider implements InitializingBean {
 
         return Jwts.builder()
             .setSubject(authentication.getName())
-            .claim(AUTHORITIES_KEY, authorities) // 정보 저장
+            .claim(AUTHORITIES_KEY, authorities)
+            .addClaims(claims)
             .signWith(key, SignatureAlgorithm.HS512) // 사용할 암호화 알고리즘과 , signature 에 들어갈 secret값 세팅
             .setExpiration(validity) // set Expire Time 해당 옵션 안넣으면 expire안함
             .compact();

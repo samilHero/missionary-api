@@ -3,6 +3,7 @@ package com.samill.missionary_backend.authentication.security;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -30,10 +31,8 @@ public class SecurityConfig {
         http.csrf(AbstractHttpConfigurer::disable);
         http.authorizeHttpRequests(
                 authorize -> authorize
-                    .requestMatchers("/api/user/join").permitAll()
-                    .requestMatchers("/api/user/login").permitAll()
-                    .requestMatchers("/api/admin/login").permitAll()
-                    .requestMatchers("/api/staff/login").permitAll()
+                    .requestMatchers(HttpMethod.PUT, "/api/member/user").permitAll()
+                    .requestMatchers(HttpMethod.POST, "/api/member/user/token").permitAll()
                     .anyRequest().authenticated()
             )
             .exceptionHandling(exceptionHandling ->
