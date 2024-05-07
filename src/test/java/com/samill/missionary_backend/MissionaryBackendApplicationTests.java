@@ -1,12 +1,11 @@
 package com.samill.missionary_backend;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.modulith.core.ApplicationModule;
 import org.springframework.modulith.core.ApplicationModules;
-import org.springframework.modulith.docs.Documenter;
+
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 
 @SpringBootTest
@@ -21,16 +20,6 @@ class MissionaryBackendApplicationTests {
             System.out.println(applicationModule);
         }
         assertNotNull(list);
-    }
-
-    @Test
-    void createModuleDocumentation() {
-        new Documenter(modules).writeDocumentation();
-    }
-
-
-    @Test
-    void contextLoads() {
     }
 
 

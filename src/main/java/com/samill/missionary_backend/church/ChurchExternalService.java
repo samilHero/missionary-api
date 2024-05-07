@@ -1,19 +1,17 @@
 package com.samill.missionary_backend.church;
 
-import com.samill.missionary_backend.church.dto.CreateChurchDto;
-import com.samill.missionary_backend.church.dto.GetChurchDto;
-import com.samill.missionary_backend.church.dto.GetChurchesDto;
-import com.samill.missionary_backend.church.dto.UpdateChurchDto;
+import com.samill.missionary_backend.church.church.dto.*;
+import com.samill.missionary_backend.common.exception.CommonException;
 
 public interface ChurchExternalService {
 
-    GetChurchesDto getChurches();
+    GetChurchesQueryResult getChurches();
 
-    GetChurchDto getChurch(String id);
+    GetChurchQueryResult getChurch(String id) throws CommonException;
 
-    void addChurch(String adminId, CreateChurchDto createChurchDto);
+    CreateChurchCommandResult createChurch(CreateChurchCommand createChurchCommand);
 
-    void removeChurch(String id, String adminId);
+    void deleteChurch(String id);
 
-    void updateChurch(String id, String adminId, UpdateChurchDto updateChurchDto);
+    void updateChurch(String id, UpdateChurchCommand updateChurchCommand) throws CommonException;
 }

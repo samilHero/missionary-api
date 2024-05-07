@@ -4,7 +4,7 @@ import static com.samill.missionary_backend.gateway.endPoint.MemberEndPoint.USER
 import static com.samill.missionary_backend.gateway.endPoint.MemberEndPoint.USER_URI;
 
 import com.samill.missionary_backend.common.dto.UserContext;
-import com.samill.missionary_backend.member.MemberManagement;
+import com.samill.missionary_backend.member.MemberExternalService;
 import com.samill.missionary_backend.member.dto.GetUserDto;
 import com.samill.missionary_backend.member.dto.PostTokenDto;
 import com.samill.missionary_backend.member.dto.PostTokenRequest;
@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Validated
 public class MemberGatewayManagement {
 
-    private final MemberManagement memberManagement;
+    private final MemberExternalService memberManagement;
 
     @PostMapping(USER_URI)
     // controller parameter 에 Usercontext 를 받으면 token 정보를 받아올수 있습니다.

@@ -20,12 +20,15 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 @SpringBootTest
 @AutoConfigureMockMvc
 @AutoConfigureRestDocs
-public class AbstractControllerTest {
+public abstract class AbstractControllerTest {
+
+    protected final String snippetPath = "{class-name}/{method-name}";
 
     @Autowired
-    private MockMvc mockMvc;
+    protected MockMvc mockMvc;
+
     @Autowired
-    private ObjectMapper jacksonObjectMapper;
+    protected ObjectMapper jacksonObjectMapper;
 
     protected String getAuthorizationOfHeader() throws Exception {
         var request = PostTokenRequest.builder()
