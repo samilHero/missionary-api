@@ -33,7 +33,9 @@ public class SecurityConfig {
                 authorize -> authorize
                     .requestMatchers(HttpMethod.GET, "/health-check").permitAll()
                     .requestMatchers(HttpMethod.POST, "/api/user/login").permitAll()
+                    .requestMatchers(HttpMethod.POST, "/api/admin/login").permitAll()
                     .requestMatchers(HttpMethod.POST, "/api/user/user").permitAll()
+                    .requestMatchers(HttpMethod.POST, "/api/admin/admin").permitAll()
                     .anyRequest().authenticated()
             )
             .exceptionHandling(exceptionHandling ->

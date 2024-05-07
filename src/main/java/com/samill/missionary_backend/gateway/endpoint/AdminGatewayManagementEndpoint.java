@@ -14,5 +14,7 @@ public class AdminGatewayManagementEndpoint {
 
     public static final String UPDATE_CHURCH = BASE_URL + "/churches/{churchId}";
 
+    public static final String ADMIN_LOGIN_URI = BASE_URL + "/login";
+    public static final String CREATE_ADMIN_URI = BASE_URL + "/admin";
 
 }

@@ -4,7 +4,6 @@ import static com.epages.restdocs.apispec.MockMvcRestDocumentationWrapper.docume
 import static com.samill.missionary_backend.gateway.endPoint.UserGatewayManagementEndPoint.GET_USER_URI;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
-import static org.springframework.restdocs.payload.PayloadDocumentation.subsectionWithPath;
 
 import com.samill.missionary_backend.common.AbstractControllerTest;
 import org.junit.jupiter.api.DisplayName;
@@ -47,11 +46,11 @@ public class ApiResponseTests extends AbstractControllerTest {
                         fieldWithPath("message").type(JsonFieldType.STRING).description("결과 메시지"),
                         fieldWithPath("data.id").type(JsonFieldType.STRING).description("user 아이디"),
                         fieldWithPath("data.name").type(JsonFieldType.STRING).description("이름")
-                    ).andWithPrefix("data.", // data 밑에 있는 필드들에 대해
+                    )/*.andWithPrefix("data.", // data 밑에 있는 필드들에 대해
                         // getMemberDto 필드를 문서화에서 제외한다.
                         subsectionWithPath("getMemberDto").ignored(),
                         subsectionWithPath("password").ignored()
-                    )
+                    )*/
                 ))
             .andExpect(MockMvcResultMatchers.status().isOk());
     }

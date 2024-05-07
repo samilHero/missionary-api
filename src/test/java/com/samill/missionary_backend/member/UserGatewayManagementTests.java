@@ -1,12 +1,14 @@
 package com.samill.missionary_backend.member;
 
 import static com.samill.missionary_backend.gateway.endPoint.UserGatewayManagementEndPoint.CREATE_USER_URI;
+import static com.samill.missionary_backend.gateway.endPoint.UserGatewayManagementEndPoint.USER_LOGIN_URI;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.samill.missionary_backend.common.AbstractControllerTest;
 import com.samill.missionary_backend.gateway.dto.CreateUserRequest;
+import com.samill.missionary_backend.gateway.dto.LoginUserRequest;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -21,7 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class MemberGatewayManagementTests extends AbstractControllerTest {
+public class UserGatewayManagementTests extends AbstractControllerTest {
 
     protected final String snippetPath = "{class-name}/{method-name}";
     @Autowired
@@ -32,7 +34,7 @@ public class MemberGatewayManagementTests extends AbstractControllerTest {
     @Test
     @DisplayName("user sign up test")
     @Transactional
-    public void putUserTest() {
+    public void createUserTest() {
         var request = CreateUserRequest.builder()
             .name("정한별")
             .phoneNumber("01084708097")
@@ -55,4 +57,22 @@ public class MemberGatewayManagementTests extends AbstractControllerTest {
         });
     }
 
+    @Test
+    @DisplayName("user login test")
+    @Transactional
+    public void userLoginTest() {
+        var request = LoginUserRequest.builder()
+            .loginId("hanbyul.jung")
+            .password("samil123!@#")
+            .build();
+
+        Assertions.assertDoesNotThrow(() -> {
+            mockMvc.perform(post(USER_LOGIN_URI)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .accept(MediaType.APPLICATION_JSON)
+                    .content(jacksonObjectMapper.writeValueAsString(request)))
+                .andDo(print())
+                .andExpect(MockMvcResultMatchers.status().isOk());
+        });
+    }
 }

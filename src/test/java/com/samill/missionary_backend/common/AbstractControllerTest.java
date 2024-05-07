@@ -5,7 +5,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.samill.missionary_backend.gateway.dto.ApiResponse;
-import com.samill.missionary_backend.member.dto.PostTokenRequest;
+import com.samill.missionary_backend.gateway.dto.LoginUserRequest;
 import java.util.LinkedHashMap;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +31,7 @@ public abstract class AbstractControllerTest {
     protected ObjectMapper jacksonObjectMapper;
 
     protected String getAuthorizationOfHeader() throws Exception {
-        var request = PostTokenRequest.builder()
+        var request = LoginUserRequest.builder()
             .loginId("hanbyul.jung")
             .password("samil123!@#")
             .build();
