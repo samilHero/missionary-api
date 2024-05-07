@@ -1,7 +1,7 @@
 package com.samill.missionary_backend.gateway;
 
 import static com.epages.restdocs.apispec.MockMvcRestDocumentationWrapper.document;
-import static com.samill.missionary_backend.gateway.endPoint.EndPoint.USER_URI;
+import static com.samill.missionary_backend.gateway.endPoint.MemberEndPoint.USER_URI;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.restdocs.payload.PayloadDocumentation.subsectionWithPath;

@@ -1,7 +1,7 @@
 package com.samill.missionary_backend.member;
 
-import static com.samill.missionary_backend.gateway.endPoint.EndPoint.USER_LOGIN_URI;
-import static com.samill.missionary_backend.gateway.endPoint.EndPoint.USER_URI;
+import static com.samill.missionary_backend.gateway.endPoint.MemberEndPoint.USER_LOGIN_URI;
+import static com.samill.missionary_backend.gateway.endPoint.MemberEndPoint.USER_URI;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;

@@ -31,6 +31,7 @@ public class SecurityConfig {
         http.csrf(AbstractHttpConfigurer::disable);
         http.authorizeHttpRequests(
                 authorize -> authorize
+                    .requestMatchers(HttpMethod.GET, "/health-check").permitAll()
                     .requestMatchers(HttpMethod.PUT, "/api/member/user").permitAll()
                     .requestMatchers(HttpMethod.POST, "/api/member/user/token").permitAll()
                     .anyRequest().authenticated()

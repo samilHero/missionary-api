@@ -1,7 +1,7 @@
 package com.samill.missionary_backend.gateway.management;
 
-import static com.samill.missionary_backend.gateway.endPoint.EndPoint.USER_LOGIN_URI;
-import static com.samill.missionary_backend.gateway.endPoint.EndPoint.USER_URI;
+import static com.samill.missionary_backend.gateway.endPoint.MemberEndPoint.USER_LOGIN_URI;
+import static com.samill.missionary_backend.gateway.endPoint.MemberEndPoint.USER_URI;
 
 import com.samill.missionary_backend.common.dto.UserContext;
 import com.samill.missionary_backend.member.MemberManagement;

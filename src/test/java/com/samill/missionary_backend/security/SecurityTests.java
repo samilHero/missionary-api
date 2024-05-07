@@ -1,7 +1,7 @@
 package com.samill.missionary_backend.security;
 
-import static com.samill.missionary_backend.gateway.endPoint.EndPoint.USER_LOGIN_URI;
-import static com.samill.missionary_backend.gateway.endPoint.EndPoint.USER_URI;
+import static com.samill.missionary_backend.gateway.endPoint.MemberEndPoint.USER_LOGIN_URI;
+import static com.samill.missionary_backend.gateway.endPoint.MemberEndPoint.USER_URI;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.samill.missionary_backend.common.AbstractControllerTest;
