@@ -1,6 +1,6 @@
 package com.samill.missionary_backend.gateway.resolver;
 
-import com.samill.missionary_backend.common.dto.UserContext;
+import com.samill.missionary_backend.common.dto.MemberContext;
 import com.samill.missionary_backend.member.MemberManagement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.MethodParameter;
@@ -13,13 +13,13 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 
 @Component
 @RequiredArgsConstructor
-public class UserContextHandlerResolver implements HandlerMethodArgumentResolver {
+public class MemberContextHandlerResolver implements HandlerMethodArgumentResolver {
 
     private final MemberManagement memberManagement;
 
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
-        return parameter.getParameterType().isAssignableFrom(UserContext.class);
+        return parameter.getParameterType().isAssignableFrom(MemberContext.class);
     }
 
     @Override
@@ -30,7 +30,7 @@ public class UserContextHandlerResolver implements HandlerMethodArgumentResolver
         var auth = SecurityContextHolder.getContext().getAuthentication();
         var getUserDto = memberManagement.getUserByMemberId(auth.getName());
         //TODO: hanbyul-member 정보 조회해서 맞는 값으로 변경
-        return UserContext.builder()
+        return MemberContext.builder()
             .memberId(auth.getName())
             .userId(getUserDto.id())
             .name(getUserDto.name())

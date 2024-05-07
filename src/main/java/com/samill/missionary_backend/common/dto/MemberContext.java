@@ -7,7 +7,7 @@ import lombok.Getter;
 @Getter
 @Builder
 @AllArgsConstructor
-public class UserContext {
+public class MemberContext {
 
     private String memberId;
     private String userId;
