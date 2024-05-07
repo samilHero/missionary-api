@@ -1,6 +1,6 @@
 package com.samill.missionary_backend.common;
 
-import static com.samill.missionary_backend.gateway.endPoint.EndPoint.USER_LOGIN_URI;
+import static com.samill.missionary_backend.gateway.endPoint.MemberEndPoint.USER_LOGIN_URI;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
