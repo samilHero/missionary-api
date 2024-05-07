@@ -1,9 +1,8 @@
 package com.samill.missionary_backend.member;
 
-import static com.samill.missionary_backend.gateway.endPoint.MemberEndPoint.USER_LOGIN_URI;
-import static com.samill.missionary_backend.gateway.endPoint.MemberEndPoint.USER_URI;
+import static com.samill.missionary_backend.gateway.endPoint.UserGatewayManagementEndPoint.CREATE_USER_URI;
+import static com.samill.missionary_backend.gateway.endPoint.UserGatewayManagementEndPoint.USER_LOGIN_URI;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -49,7 +48,7 @@ public class MemberGatewayManagementTests extends AbstractControllerTest {
             .build();
 
         Assertions.assertDoesNotThrow(() -> {
-            mockMvc.perform(put(USER_URI)
+            mockMvc.perform(post(CREATE_USER_URI)
                     .contentType(MediaType.APPLICATION_JSON)
                     .accept(MediaType.APPLICATION_JSON)
                     .content(jacksonObjectMapper.writeValueAsString(request)))
