@@ -6,8 +6,8 @@ public enum MissionaryBoardType implements EnumModel {
     NOTICE("공지사항"),
     BUS("버스"),
     ACCOMMODATION("숙소"),
-
     FAQ("자주 묻는 질문"),
+    SCHEDULE("일정"),
     ;
 
     private final String value;

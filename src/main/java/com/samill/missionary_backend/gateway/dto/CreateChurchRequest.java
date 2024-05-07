@@ -1,13 +1,18 @@
 package com.samill.missionary_backend.gateway.dto;
 
-import lombok.NonNull;
+import jakarta.validation.constraints.NotNull;
 
 public record CreateChurchRequest(
-        @NonNull String name,
-        @NonNull String pastorName,
-        @NonNull String pastorPhone,
-        @NonNull String addressBasic,
-        @NonNull String addressDetail
+    @NotNull
+    String name,
+    @NotNull
+    String pastorName,
+    @NotNull
+    String pastorPhone,
+    @NotNull
+    String addressBasic,
+    @NotNull
+    String addressDetail
 ) {
 
 

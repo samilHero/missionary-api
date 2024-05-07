@@ -45,18 +45,16 @@ public class ResponseWrapper implements ResponseBodyAdvice<Object> {
         ServerHttpResponse response
     ) {
 
-        if (body instanceof ProblemDetail) {
-            var problemDetail = (ProblemDetail) body;
+        if (body instanceof ProblemDetail problemDetail) {
             return ApiResponse.builder()
                 .statusCode(problemDetail.getStatus())
                 .message(problemDetail.getDetail())
                 .build();
         }
-        if (body instanceof CommonException) {
-            var commonException = (CommonException) body;
+        if (body instanceof CommonException commonException) {
             return ApiResponse.builder()
-                .statusCode(commonException.getResponseCode().getCode())
-                .message(commonException.getResponseCode().getMessage())
+                .statusCode(commonException.getCode())
+                .message(commonException.getMessage())
                 .build();
         }
         if (body instanceof Exception) {
