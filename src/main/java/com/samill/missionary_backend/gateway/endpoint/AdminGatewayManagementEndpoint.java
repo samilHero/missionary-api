@@ -1,4 +1,4 @@
-package com.samill.missionary_backend.gateway.endpoint;
+package com.samill.missionary_backend.gateway.endPoint;
 
 public class AdminGatewayManagementEndpoint {
 

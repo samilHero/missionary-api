@@ -7,7 +7,7 @@ import com.samill.missionary_backend.gateway.dto.CreateChurchResult;
 import com.samill.missionary_backend.gateway.dto.GetChurchResult;
 import com.samill.missionary_backend.gateway.dto.GetChurchesResult;
 import com.samill.missionary_backend.gateway.dto.UpdateChurchRequest;
-import com.samill.missionary_backend.gateway.endpoint.AdminGatewayManagementEndpoint;
+import com.samill.missionary_backend.gateway.endPoint.AdminGatewayManagementEndpoint;
 import com.samill.missionary_backend.gateway.mapper.ChurchGatewayMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
