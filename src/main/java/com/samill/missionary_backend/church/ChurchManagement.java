@@ -4,6 +4,7 @@ package com.samill.missionary_backend.church;
 import com.samill.missionary_backend.church.church.dto.*;
 import com.samill.missionary_backend.church.church.service.ChurchService;
 import com.samill.missionary_backend.common.exception.CommonException;
+import com.samill.missionary_backend.member.MemberExternalService;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,12 +15,12 @@ import org.springframework.transaction.annotation.Transactional;
 class ChurchManagement implements ChurchExternalService {
 
     private final ChurchService churchService;
+    private final MemberExternalService memberExternalService;
 
     @Override
     public GetChurchesQueryResult getChurches(
-            GetChurchesQuery getChurchesQuery
     ) {
-        return churchService.getChurches(getChurchesQuery);
+        return churchService.getChurches();
     }
 
     @Override
@@ -29,19 +30,20 @@ class ChurchManagement implements ChurchExternalService {
 
     @Transactional
     @Override
-    public void createChurch(String adminId, @NonNull CreateChurchCommand createChurchCommand) {
-        churchService.createChurch(adminId, createChurchCommand);
+    public CreateChurchCommandResult createChurch(@NonNull CreateChurchCommand createChurchCommand) {
+        final String churchId = churchService.createChurch(createChurchCommand);
+        return new CreateChurchCommandResult(churchId);
     }
 
     @Transactional
     @Override
-    public void deleteChurch(String id, String memberId) {
-        churchService.deleteChurch(id, memberId);
+    public void deleteChurch(String id) {
+        churchService.deleteChurch(id);
     }
 
     @Transactional
     @Override
-    public void updateChurch(@NonNull String id, @NonNull String adminId, @NonNull UpdateChurchCommand updateChurchCommand) throws CommonException {
-        churchService.updateChurch(id, adminId, updateChurchCommand);
+    public void updateChurch(@NonNull String id, @NonNull UpdateChurchCommand updateChurchCommand) throws CommonException {
+        churchService.updateChurch(id, updateChurchCommand);
     }
 }

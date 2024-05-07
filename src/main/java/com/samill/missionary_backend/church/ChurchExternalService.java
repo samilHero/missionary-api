@@ -5,13 +5,13 @@ import com.samill.missionary_backend.common.exception.CommonException;
 
 public interface ChurchExternalService {
 
-    GetChurchesQueryResult getChurches(GetChurchesQuery getChurchesQuery);
+    GetChurchesQueryResult getChurches();
 
     GetChurchQueryResult getChurch(String id) throws CommonException;
 
-    void createChurch(String adminId, CreateChurchCommand createChurchCommand);
+    CreateChurchCommandResult createChurch(CreateChurchCommand createChurchCommand);
 
-    void deleteChurch(String id, String memberId);
+    void deleteChurch(String id);
 
-    void updateChurch(String id, String adminId, UpdateChurchCommand updateChurchCommand) throws CommonException;
+    void updateChurch(String id, UpdateChurchCommand updateChurchCommand) throws CommonException;
 }
