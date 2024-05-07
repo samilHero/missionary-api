@@ -3,8 +3,8 @@ package com.samill.missionary_backend.member.user.service;
 import com.samill.missionary_backend.common.enums.ResponseCode;
 import com.samill.missionary_backend.common.exception.CommonException;
 import com.samill.missionary_backend.common.util.PasswordUtil;
+import com.samill.missionary_backend.member.dto.CreateUserCommand;
 import com.samill.missionary_backend.member.dto.GetUserDto;
-import com.samill.missionary_backend.member.dto.PutUserRequest;
 import com.samill.missionary_backend.member.mapper.UserMapper;
 import com.samill.missionary_backend.member.member.entity.Member;
 import com.samill.missionary_backend.member.user.entity.User;
@@ -19,7 +19,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordUtil passwordUtil;
 
-    public void createUser(PutUserRequest request, Member member) {
+    public void createUser(CreateUserCommand request, Member member) {
 
         var password = passwordUtil.encodePassword(request.getPassword());
         userRepository.save(User.builder()
@@ -36,6 +36,7 @@ public class UserService {
             .baptizedAt(request.getBaptizedAt())
             .build());
     }
+
 
     public GetUserDto getUserById(String id) throws Exception {
         var user = userRepository.findById(id);
@@ -61,4 +62,6 @@ public class UserService {
     public Boolean isExistedUserByLoginId(String loginId) {
         return userRepository.existsByLoginId(loginId);
     }
+
+
 }

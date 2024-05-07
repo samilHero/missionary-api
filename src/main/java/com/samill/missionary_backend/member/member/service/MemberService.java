@@ -1,6 +1,7 @@
 package com.samill.missionary_backend.member.member.service;
 
 import com.samill.missionary_backend.member.dto.CreateMemberDto;
+import com.samill.missionary_backend.member.dto.GetAdminDto;
 import com.samill.missionary_backend.member.dto.GetUserDto;
 import com.samill.missionary_backend.member.mapper.MemberMapper;
 import com.samill.missionary_backend.member.member.entity.Member;
@@ -39,6 +40,15 @@ public class MemberService {
             .setIssuedAt(java.util.Date.from(currentUtc.toInstant()));
         tokenClaims.put("userId", userDto.id());
         tokenClaims.put("name", userDto.name());
+        return tokenClaims;
+    }
+
+    public Claims createClaims(GetAdminDto adminDto, OffsetDateTime currentUtc) {
+        var tokenClaims = Jwts.claims()
+            .setSubject(adminDto.getMemberDto().memberId())
+            .setIssuedAt(java.util.Date.from(currentUtc.toInstant()));
+        tokenClaims.put("userId", adminDto.id());
+        tokenClaims.put("name", adminDto.name());
         return tokenClaims;
     }
 }
