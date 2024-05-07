@@ -1,7 +1,7 @@
 package com.samill.missionary_backend.gateway;
 
 import static com.epages.restdocs.apispec.MockMvcRestDocumentationWrapper.document;
-import static com.samill.missionary_backend.gateway.endPoint.MemberEndPoint.USER_URI;
+import static com.samill.missionary_backend.gateway.endPoint.UserGatewayManagementEndPoint.GET_USER_URI;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.restdocs.payload.PayloadDocumentation.subsectionWithPath;
@@ -33,7 +33,7 @@ public class ApiResponseTests extends AbstractControllerTest {
     @Test
     @DisplayName("get user test")
     public void getApiResponseTest() throws Exception {
-        mockMvc.perform(RestDocumentationRequestBuilders.post(USER_URI)
+        mockMvc.perform(RestDocumentationRequestBuilders.get(GET_USER_URI)
                 .contentType(MediaType.APPLICATION_JSON)
                 .header(HttpHeaders.AUTHORIZATION, getAuthorizationOfHeader()))
             .andDo(
