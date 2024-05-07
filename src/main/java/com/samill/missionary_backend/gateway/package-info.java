@@ -1,5 +1,6 @@
 @org.springframework.modulith.ApplicationModule(
     allowedDependencies = {
+        "authentication",
         "authentication::security",
         "configs",
         "common::exception",

@@ -6,6 +6,7 @@ import com.samill.missionary_backend.gateway.dto.ApiResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.MediaType;
+import org.springframework.http.ProblemDetail;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.http.server.ServerHttpRequest;
@@ -44,13 +45,21 @@ public class ResponseWrapper implements ResponseBodyAdvice<Object> {
         ServerHttpResponse response
     ) {
 
+        if (body instanceof ProblemDetail) {
+            var problemDetail = (ProblemDetail) body;
+            return ApiResponse.builder()
+                .statusCode(problemDetail.getStatus())
+                .message(problemDetail.getDetail())
+                .build();
+        }
         if (body instanceof CommonException) {
             var commonException = (CommonException) body;
             return ApiResponse.builder()
                 .statusCode(commonException.getResponseCode().getCode())
                 .message(commonException.getResponseCode().getMessage())
                 .build();
-        } else if (body instanceof Exception) {
+        }
+        if (body instanceof Exception) {
             return ApiResponse.builder()
                 .statusCode(ResponseCode.COMMON_BAD_REQUEST_ERROR.getCode())
                 .message(ResponseCode.COMMON_BAD_REQUEST_ERROR.getMessage())

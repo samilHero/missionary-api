@@ -1,5 +1,6 @@
 package com.samill.missionary_backend.authentication.security;
 
+import com.samill.missionary_backend.common.util.RequestContextUtil;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebFilter;
@@ -10,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.annotation.Order;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.StringUtils;
@@ -31,7 +33,7 @@ public class JwtFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
         throws ServletException, IOException {
         HttpServletRequest httpServletRequest = request;
-        String jwt = resolveToken(httpServletRequest);
+        String jwt = resolveToken();
         String requestURI = httpServletRequest.getRequestURI();
 
         if (StringUtils.hasText(jwt) && tokenProvider.validateToken(jwt)) {
@@ -41,13 +43,12 @@ public class JwtFilter extends OncePerRequestFilter {
         } else {
             logger.debug("유효한 JWT 토큰이 없습니다, uri: {}", requestURI);
         }
-
         filterChain.doFilter(request, response);
     }
 
     // Request Header 에서 토큰 정보를 꺼내오기 위한 메소드
-    private String resolveToken(HttpServletRequest request) {
-        String bearerToken = request.getHeader(AUTHORIZATION_HEADER);
+    private String resolveToken() {
+        String bearerToken = RequestContextUtil.getHeader(HttpHeaders.AUTHORIZATION);
 
         if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
             return bearerToken.substring(7);

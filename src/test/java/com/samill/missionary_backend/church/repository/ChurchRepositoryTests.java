@@ -7,16 +7,15 @@ import com.samill.missionary_backend.common.entity.Address;
 import com.samill.missionary_backend.common.entity.Pastor;
 import com.samill.missionary_backend.configs.DateTimeProviderConfig;
 import com.samill.missionary_backend.configs.JpaConfig;
+import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
 
-import java.util.List;
-
-@DataJpaTest
+@SpringBootTest
 @Import({JpaConfig.class, DateTimeProviderConfig.class})
 class ChurchRepositoryTests {
 
@@ -42,20 +41,20 @@ class ChurchRepositoryTests {
 
     void _generateChurch(String name) {
         Church church = Church.builder()
-                .name(name)
-                .visitPurpose(VisitPurposeType.CHILD_CARE.getKey())
-                .address(
-                        Address.builder()
-                                .basic("삼일교회 BASIC")
-                                .detail("삼일교회 DETAIL")
-                                .build()
-                ).pastor(
-                        Pastor.builder()
-                                .name("삼일 교회 목사")
-                                .phone("010-1234-5678")
-                                .build()
-                )
-                .build();
+            .name(name)
+            .visitPurpose(VisitPurposeType.CHILD_CARE.getKey())
+            .address(
+                Address.builder()
+                    .basic("삼일교회 BASIC")
+                    .detail("삼일교회 DETAIL")
+                    .build()
+            ).pastor(
+                Pastor.builder()
+                    .name("삼일 교회 목사")
+                    .phone("010-1234-5678")
+                    .build()
+            )
+            .build();
 
         churchRepository.save(church);
     }
@@ -67,8 +66,8 @@ class ChurchRepositoryTests {
         List<Church> churches = churchRepository.findAllWithCursorWithPageSize(null, 30);
 
         churches.stream()
-                .map((church) -> "id" + church.getId() + " name: " + church.getName() + " createdAt: " + church.getCreatedAt())
-                .forEach(System.out::println);
+            .map((church) -> "id" + church.getId() + " name: " + church.getName() + " createdAt: " + church.getCreatedAt())
+            .forEach(System.out::println);
 //        assertThat(churches).isNotEmpty();
 //        assertThat(churches.get(0).getName()).isEqualTo("가 교회");
 

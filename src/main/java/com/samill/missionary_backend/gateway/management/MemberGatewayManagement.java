@@ -1,27 +1,45 @@
 package com.samill.missionary_backend.gateway.management;
 
+import static com.samill.missionary_backend.gateway.endPoint.EndPoint.USER_LOGIN_URI;
+import static com.samill.missionary_backend.gateway.endPoint.EndPoint.USER_URI;
+
 import com.samill.missionary_backend.common.dto.UserContext;
 import com.samill.missionary_backend.member.MemberManagement;
-import com.samill.missionary_backend.member.dto.UserDto;
+import com.samill.missionary_backend.member.dto.GetUserDto;
+import com.samill.missionary_backend.member.dto.PostTokenDto;
+import com.samill.missionary_backend.member.dto.PostTokenRequest;
+import com.samill.missionary_backend.member.dto.PutUserRequest;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("api/member")
+@Validated
 public class MemberGatewayManagement {
 
     private final MemberManagement memberManagement;
 
-    @PostMapping("/user")
+    @PostMapping(USER_URI)
     // controller parameter 에 Usercontext 를 받으면 token 정보를 받아올수 있습니다.
-    public UserDto getUser(UserContext userContext) throws Exception {
-        log.info(userContext.getUserId());
-        return memberManagement.getUser();
+    public GetUserDto getUser(UserContext userContext) throws Exception {
+        return memberManagement.getUserById(userContext.getUserId());
+    }
+
+    @PutMapping(USER_URI)
+    public void signUp(@Valid @RequestBody PutUserRequest request) throws Exception {
+        memberManagement.createUser(request);
+    }
+
+    @PostMapping(USER_LOGIN_URI)
+    public PostTokenDto login(@Valid @RequestBody PostTokenRequest request) throws Exception {
+        return memberManagement.login(request);
     }
 
 }

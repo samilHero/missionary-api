@@ -1,16 +1,19 @@
 package com.samill.missionary_backend.member.dto;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-@Getter
 @Builder
-@AllArgsConstructor
+@Getter
 @NoArgsConstructor
-public class TokenDto {
+@AllArgsConstructor
+public class PostTokenRequest {
 
-    private String token;
+    @NotNull
+    private String loginId;
+    @NotNull
+    private String password;
 }
