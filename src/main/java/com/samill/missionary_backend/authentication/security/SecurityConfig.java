@@ -34,6 +34,7 @@ public class SecurityConfig {
                     .requestMatchers("/api/user/login").permitAll()
                     .requestMatchers("/api/admin/login").permitAll()
                     .requestMatchers("/api/staff/login").permitAll()
+                    .requestMatchers("/api/participation/list").permitAll()
                     .anyRequest().authenticated()
             )
             .exceptionHandling(exceptionHandling ->

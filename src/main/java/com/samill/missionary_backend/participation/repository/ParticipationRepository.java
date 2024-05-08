@@ -7,6 +7,8 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface ParticipationRepository extends JpaRepository<Participation, String> {
+public interface ParticipationRepository extends JpaRepository<Participation, String>, ParticipationCustomRepository {
     List<Participation> findByMissionaryId(String missionaryId);
+    Participation findByIdAndUserId(String userId, String missionaryId);
+    Participation findByUserId(String userId);
 }

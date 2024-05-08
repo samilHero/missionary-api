@@ -1,15 +1,15 @@
 package com.samill.missionary_backend.participation.service;
 
+import com.samill.missionary_backend.common.dto.UserContext;
 import com.samill.missionary_backend.common.exception.CommonException;
-import com.samill.missionary_backend.participation.dto.CreateParticipationDto;
-import com.samill.missionary_backend.participation.dto.UpdateParticipationDto;
-import com.samill.missionary_backend.participation.entity.Participation;
+import com.samill.missionary_backend.participation.dto.*;
 
 import java.util.List;
 
 public interface ParticipationService {
-    void participate(CreateParticipationDto createParticipationDto, int maxCount) throws CommonException;
-    void cancelParticipation(UpdateParticipationDto updateParticipationDto);
-    List<Participation> getParticipations(String missionaryId);
-    void updateParticipation(UpdateParticipationDto updateParticipationDto);
+    void createParticipation(CreateParticipationCommand createParticipationDto, int maxCount) throws CommonException;
+    void deleteParticipation(DeleteParticipationCommand deleteParticipationCommand) throws CommonException;
+    void updateParticipation(UpdateParticipationCommand updateParticipationCommand) throws CommonException;
+    List<GetParticipationQueryResult> getParticipations(GetParticipationsQuery getParticipationsQuery);
+    GetParticipationQueryResult getParticipation(String participationId) throws CommonException;
 }

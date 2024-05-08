@@ -1,6 +1,6 @@
 package com.samill.missionary_backend.participation.service;
 
-import com.samill.missionary_backend.participation.dto.CreateParticipationDto;
+import com.samill.missionary_backend.participation.dto.CreateParticipationCommand;
 import com.samill.missionary_backend.participation.dto.MessageDto;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -21,7 +21,7 @@ class ParticipationMessageServiceTest {
         //given
         String missionaryId = UUID.randomUUID().toString();
 
-        CreateParticipationDto createParticipationDto = CreateParticipationDto.builder()
+        CreateParticipationCommand createParticipationDto = CreateParticipationCommand.builder()
                 .isPaid(true)
                 .missionaryId(missionaryId)
                 .applyFee(10000)

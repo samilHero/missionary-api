@@ -11,11 +11,14 @@ import java.time.OffsetDateTime;
 @Getter
 @Setter
 @AllArgsConstructor
-public class UpdateParticipationDto {
+public class GetParticipationQueryResult {
     private String id;
     private String missionaryId;
+    private String userId;
+    private String name;
+    private String memberId;
     private int applyFee;
     private boolean isPaid;
     private String identificationNumber;
-    private OffsetDateTime deletedAt;
+    private OffsetDateTime createdAt;
 }

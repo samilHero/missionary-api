@@ -34,4 +34,7 @@ public class Participation extends BaseEntity {
     @Convert(converter = AesEncryptConverter.class)
     private String identificationNumber;
     private OffsetDateTime deletedAt;
+    public void updateIdentificationNumber(String identificationNumber) {
+        this.identificationNumber = identificationNumber;
+    }
 }

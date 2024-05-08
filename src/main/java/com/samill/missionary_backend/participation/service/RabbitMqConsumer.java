@@ -1,7 +1,7 @@
 package com.samill.missionary_backend.participation.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.samill.missionary_backend.participation.dto.CreateParticipationDto;
+import com.samill.missionary_backend.participation.dto.CreateParticipationCommand;
 import com.samill.missionary_backend.participation.dto.MessageDto;
 import com.samill.missionary_backend.participation.entity.Participation;
 import com.samill.missionary_backend.participation.mapper.ParticipationMapper;
@@ -16,7 +16,6 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class RabbitMqConsumer {
     private final ParticipationRepository participationRepository;
-    private final ParticipationMapper participationMapper;
 
     /**
      * Queue에서 메시지를 구독
@@ -31,9 +30,8 @@ public class RabbitMqConsumer {
 
     private void saveParticipation(Object object) {
         ObjectMapper objectMapper = new ObjectMapper();
-        CreateParticipationDto createParticipationDto = objectMapper.convertValue(object, CreateParticipationDto.class);
-        Participation participation = participationMapper.INSTANCE.createParticipationDtoToEntity(createParticipationDto);
-//        participation.addParticipant(Participant);
+        CreateParticipationCommand createParticipationDto = objectMapper.convertValue(object, CreateParticipationCommand.class);
+        Participation participation = ParticipationMapper.INSTANCE.createParticipationCommandToEntity(createParticipationDto);
         participationRepository.save(participation);
     }
 }
