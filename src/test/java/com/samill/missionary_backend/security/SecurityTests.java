@@ -29,7 +29,7 @@ public class SecurityTests extends AbstractControllerTest {
     public void authenticatedAccessTest() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.post(USER_LOGIN_URI)
                 .contentType(MediaType.APPLICATION_JSON)
-                .header("Authorization", getAuthorizationOfHeader()))
+                .header("Authorization", getAuthorizationUserOfHeader()))
             .andExpect(MockMvcResultMatchers.status().isOk());
     }
 

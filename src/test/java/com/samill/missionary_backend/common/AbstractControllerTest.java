@@ -1,10 +1,12 @@
 package com.samill.missionary_backend.common;
 
+import static com.samill.missionary_backend.gateway.endPoint.AdminEndPoint.ADMIN_LOGIN_URI;
 import static com.samill.missionary_backend.gateway.endPoint.UserGatewayManagementEndPoint.USER_LOGIN_URI;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.samill.missionary_backend.gateway.dto.ApiResponse;
+import com.samill.missionary_backend.gateway.dto.LoginAdminRequest;
 import com.samill.missionary_backend.gateway.dto.LoginUserRequest;
 import java.util.LinkedHashMap;
 import org.apache.commons.lang3.StringUtils;
@@ -30,7 +32,7 @@ public abstract class AbstractControllerTest {
     @Autowired
     protected ObjectMapper jacksonObjectMapper;
 
-    protected String getAuthorizationOfHeader() throws Exception {
+    protected String getAuthorizationUserOfHeader() throws Exception {
         var request = LoginUserRequest.builder()
             .loginId("hanbyul.jung")
             .password("samil123!@#")
@@ -45,7 +47,26 @@ public abstract class AbstractControllerTest {
         var responseBody = resultActions.getResponse().getContentAsString();
         var apiResponse = jacksonObjectMapper.readValue(responseBody, ApiResponse.class);
 
-        return StringUtils.join("Bearer ", ((LinkedHashMap) apiResponse.getData()).get("token"));
+        return StringUtils.join("Bearer ", ((LinkedHashMap<?, ?>) apiResponse.getData()).get("token"));
+    }
+
+    protected String getAuthrizationAdminOfHeader() throws Exception {
+        var request = LoginAdminRequest.builder()
+            .loginId("admin_test")
+            .password("samil123!@#")
+            .build();
+
+        var resultActions = mockMvc.perform(MockMvcRequestBuilders.post(ADMIN_LOGIN_URI)
+                .content(jacksonObjectMapper.writeValueAsString(request))
+                .contentType(MediaType.APPLICATION_JSON))
+            .andDo(print())
+            .andExpect(MockMvcResultMatchers.status().isOk())
+            .andReturn();
+
+        var responseBody = resultActions.getResponse().getContentAsString();
+        var apiResponse = jacksonObjectMapper.readValue(responseBody, ApiResponse.class);
+
+        return StringUtils.join("Bearer ", ((LinkedHashMap<?, ?>) apiResponse.getData()).get("token"));
     }
 
     protected String getBearerJwtToken(String superToken) {
@@ -54,6 +75,6 @@ public abstract class AbstractControllerTest {
             .append(" ")
             .append(superToken)
             .toString();
-    }
 
+    }
 }
