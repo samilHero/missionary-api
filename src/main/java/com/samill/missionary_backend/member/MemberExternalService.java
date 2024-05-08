@@ -1,24 +1,41 @@
 package com.samill.missionary_backend.member;
 
-import com.samill.missionary_backend.member.dto.UserDto;
+import com.samill.missionary_backend.member.dto.CreateAdminCommand;
+import com.samill.missionary_backend.member.dto.CreateUserCommand;
+import com.samill.missionary_backend.member.dto.GetAdminDto;
+import com.samill.missionary_backend.member.dto.GetUserDto;
+import com.samill.missionary_backend.member.dto.LoginAdminQuery;
+import com.samill.missionary_backend.member.dto.LoginAdminQueryResult;
+import com.samill.missionary_backend.member.dto.LoginUserQuery;
+import com.samill.missionary_backend.member.dto.LoginUserQueryResult;
+import com.samill.missionary_backend.member.exception.MemberException;
 
 public interface MemberExternalService {
 
     // crud 기본
-    void createUser();
+    void createUser(CreateUserCommand request) throws MemberException;
 
-    void createAdmin();
+    LoginUserQueryResult loginUser(LoginUserQuery request) throws MemberException;
+
+    LoginAdminQueryResult loginAdmin(LoginAdminQuery request) throws Exception;
+
+    void createAdmin(CreateAdminCommand createAdminCommand) throws MemberException;
 
     // 회원정보 가져오기
     void getMember();
 
-    UserDto getUser() throws Exception;
+    GetUserDto getUserById(String userId) throws Exception;
+
+    GetUserDto getUserByLoginId(String loginId) throws Exception;
+
+    GetAdminDto getAdminByLoginId(String loginId) throws Exception;
+
+    GetUserDto getUserByMemberId(String memberId) throws Exception;
 
     void getUsers();
 
-    boolean isExistUser();
+    boolean isExistedUserByLoginId(String loginId);
 
-    boolean isExistAdmin();
+    boolean isExistedAdminByLoginId(String loginId);
 
-    boolean checkDuplicatedUser();
 }

@@ -13,6 +13,5 @@ public interface MisisonaryRepository extends JpaRepository<Missionary, String> 
     List<Missionary> findAllInParticipationPeriod(
         @Param("date") OffsetDateTime date
     );
-
-
+    
 }

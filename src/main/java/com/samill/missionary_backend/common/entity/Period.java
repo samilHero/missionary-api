@@ -20,7 +20,7 @@ public class Period {
     private OffsetDateTime startDate;
     private OffsetDateTime endDate;
 
-    Boolean inPeriod(OffsetDateTime target) {
+    public Boolean inPeriod(OffsetDateTime target) {
         final Boolean isEqualOrAfterThenStartDate = target.isEqual(startDate) || target.isAfter(startDate);
         final Boolean isBeforeThenAfterDate = target.isBefore(endDate);
         return isEqualOrAfterThenStartDate && isBeforeThenAfterDate;

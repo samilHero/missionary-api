@@ -1,5 +1,5 @@
 server:
-  port: ${SERVER_PORT}
+  port: 8080
 
 jwt:
   #ssecret property 로 관리 필요
@@ -19,19 +19,22 @@ spring:
       jdbc-schema-initialization:
         enabled: true
     #  datasource:
-    #    url: jdbc:h2:mem:test # h2 support in-memory-db
-    #    username: sa
-    #    password:
-    #    driver-class-name: org.h2.Driver
   datasource:
+    driver-class-name: org.postgresql.Driver
+    type: com.zaxxer.hikari.HikariDataSource
+    hikari:
+      driver-class-name: org.postgresql.Driver
+      pool-name: HikariCP4Master
     url: ${RDS_URL}
     username: ${RDS_USERNAME}
     password: ${RDS_PASSWORD}
 
   #JPA
   jpa:
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
-      ddl-auto: update
+      ddl-auto: none
     properties:
       hibernate:
         format_sql: true

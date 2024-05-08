@@ -1,46 +1,39 @@
 package com.samill.missionary_backend.gateway;
 
 import static com.epages.restdocs.apispec.MockMvcRestDocumentationWrapper.document;
+import static com.samill.missionary_backend.gateway.endPoint.UserGatewayManagementEndPoint.GET_USER_URI;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.samill.missionary_backend.gateway.dto.ApiResponse;
-import java.util.LinkedHashMap;
-import org.apache.commons.lang3.StringUtils;
+import com.samill.missionary_backend.common.AbstractControllerTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-@AutoConfigureRestDocs
+//@AutoConfigureRestDocs
 @WithMockUser(username = "hanbyul.jung")
-public class ApiResponseTests {
+public class ApiResponseTests extends AbstractControllerTest {
 
-    protected final String snippetPath = "{class-name}/{method-name}";
     @Autowired
     private MockMvc mockMvc;
-    @Autowired
-    private ObjectMapper jacksonObjectMapper;
 
     @Test
-    @DisplayName("get user")
+    @DisplayName("get user test")
     public void getApiResponseTest() throws Exception {
-        mockMvc.perform(RestDocumentationRequestBuilders.post("/api/member/user")
+        mockMvc.perform(RestDocumentationRequestBuilders.get(GET_USER_URI)
                 .contentType(MediaType.APPLICATION_JSON)
-                .header("Authorization", getAuthorizationOfHeader()))
+                .header(HttpHeaders.AUTHORIZATION, getAuthorizationUserOfHeader()))
             .andDo(
                 document(snippetPath,
                     "멤버 정보를 조회하는 API",
@@ -50,23 +43,16 @@ public class ApiResponseTests {
                     responseFields(
                         fieldWithPath("statusCode").type(JsonFieldType.NUMBER).description("결과코드"),
                         fieldWithPath("message").type(JsonFieldType.STRING).description("결과 메시지"),
-                        fieldWithPath("data.userId").type(JsonFieldType.STRING).description("멤버 아이디"),
-                        fieldWithPath("data.username").type(JsonFieldType.STRING).description("이름")
-                    )
+                        fieldWithPath("data.id").type(JsonFieldType.STRING).description("user 아이디"),
+                        fieldWithPath("data.name").type(JsonFieldType.STRING).description("이름")
+                    )/*.andWithPrefix("data.", // data 밑에 있는 필드들에 대해
+                        // getMemberDto 필드를 문서화에서 제외한다.
+                        subsectionWithPath("getMemberDto").ignored(),
+                        subsectionWithPath("password").ignored()
+                    )*/
                 ))
             .andExpect(MockMvcResultMatchers.status().isOk());
     }
 
-    private String getAuthorizationOfHeader() throws Exception {
-        var resultActions = mockMvc.perform(MockMvcRequestBuilders.get("/api/auth/token")
-                .contentType(MediaType.APPLICATION_JSON))
-            .andDo(print())
-            .andExpect(MockMvcResultMatchers.status().isOk())
-            .andReturn();
 
-        var responseBody = resultActions.getResponse().getContentAsString();
-        var apiResponse = jacksonObjectMapper.readValue(responseBody, ApiResponse.class);
-
-        return StringUtils.join("Bearer ", ((LinkedHashMap) apiResponse.getData()).get("token"));
-    }
 }
