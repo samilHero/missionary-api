@@ -1,94 +1,62 @@
 package com.samill.missionary_backend.missionary;
 
-import com.samill.missionary_backend.missionary.board.dto.UpdateMissionaryBoardDto;
-import com.samill.missionary_backend.missionary.board.dto.WriteMissionaryBoardDto;
-import com.samill.missionary_backend.missionary.dto.MissionaryBoardDto;
-import com.samill.missionary_backend.missionary.dto.MissionaryDto;
-import com.samill.missionary_backend.missionary.missionary.dto.CreateMissionaryDto;
-import lombok.NonNull;
-import org.springframework.stereotype.Service;
-
+import com.samill.missionary_backend.church.church.dto.CreateMissionaryCommandResult;
+import com.samill.missionary_backend.common.exception.CommonException;
+import com.samill.missionary_backend.member.MemberExternalService;
+import com.samill.missionary_backend.missionary.dto.CreateMissionaryCommand;
+import com.samill.missionary_backend.missionary.dto.GetMissionaryQuery;
+import com.samill.missionary_backend.missionary.dto.GetMissionaryQueryResult;
+import com.samill.missionary_backend.missionary.dto.UpdateMissionaryCommand;
+import com.samill.missionary_backend.missionary.missionary.service.MissionaryService;
+import com.samill.missionary_backend.missionary.staff.service.MissionaryStaffService;
 import java.util.List;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@RequiredArgsConstructor
 class MissionaryManagement implements MissionaryExternalService {
-    @Override
-    public void createMissionary(@NonNull String adminId, @NonNull CreateMissionaryDto createMissionaryDto) {
 
+    private final MissionaryService missionaryService;
+    private final MissionaryStaffService missionaryStaffService;
+    private final MemberExternalService memberExternalService;
+
+    @Override
+    @Transactional
+    public CreateMissionaryCommandResult createMissionary(@NonNull CreateMissionaryCommand createMissionaryCommand) throws CommonException {
+        return missionaryService.createMissionary(createMissionaryCommand);
     }
 
     @Override
-    public void updateMissionary(@NonNull String adminId, @NonNull String missionaryId) {
-
+    @Transactional
+    public void updateMissionary(@NonNull String missionaryId, @NonNull UpdateMissionaryCommand updateMissionaryCommand) throws CommonException {
+        missionaryService.updateMissionary(missionaryId, updateMissionaryCommand);
     }
 
     @Override
-    public void deleteMissionary(@NonNull String adminId, @NonNull String missionaryId) {
-
+    public void deleteMissionary(@NonNull String missionaryId) {
+        missionaryService.deleteMissionary(missionaryId);
     }
 
     @Override
-    public MissionaryDto getMissionary(@NonNull String memberId, @NonNull String missionaryId) {
-        return null;
+    public GetMissionaryQueryResult getMissionary(@NonNull GetMissionaryQuery getMissionaryQuery) throws CommonException {
+        return missionaryService.getMissionary(getMissionaryQuery);
     }
 
     @Override
-    public List<MissionaryDto> getMissionaries(@NonNull String memberId, String cursor) {
-        return null;
+    public void getMissionaries(String cursor) {
+        missionaryService.getMissionaries(cursor);
     }
 
     @Override
-    public void setMissionaryStaffs(@NonNull String adminId, @NonNull String missionaryId, @NonNull List<String> staffIds) {
+    public void setMissionaryStaffs(
+        @NonNull String missionaryId,
+        @NonNull List<String> staffIds
+    ) {
 
     }
-
-    @Override
-    public void writeMissionaryBoard(@NonNull String memberId, @NonNull WriteMissionaryBoardDto writeMissionaryBoardDto) {
-
-    }
-
-    @Override
-    public MissionaryBoardDto getMissionaryBoard(@NonNull String missionaryBoardId) {
-        return null;
-    }
-
-    @Override
-    public void getMissionaryBoards(@NonNull String missionaryId, String cursor) {
-
-    }
-
-    @Override
-    public void updateMissionaryBoard(@NonNull String memberId, @NonNull String missionaryBoardId, @NonNull UpdateMissionaryBoardDto updateMissionaryBoardDto) {
-
-    }
-
-    @Override
-    public void deleteMissionaryBoard(@NonNull String memberId, @NonNull String missionaryBoardId) {
-
-    }
-
-    @Override
-    public void createSchedule() {
-
-    }
-
-    @Override
-    public void getSchedule() {
-
-    }
-
-    @Override
-    public void updateSchedule() {
-
-    }
-
-    @Override
-    public void deleteSchedule() {
-
-    }
-//
-//    private MemberExternalService memberExternalService;
-//    private ChurchExternalService churchExternalService;
 
 
 }

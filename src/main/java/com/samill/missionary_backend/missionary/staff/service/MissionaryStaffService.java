@@ -1,6 +1,7 @@
 package com.samill.missionary_backend.missionary.staff.service;
 
 
+import com.samill.missionary_backend.common.enums.ResponseCode;
 import com.samill.missionary_backend.common.exception.CommonException;
 import com.samill.missionary_backend.missionary.staff.MissionaryStaffRepository;
 import com.samill.missionary_backend.missionary.staff.entity.MissionaryStaff;
@@ -13,13 +14,14 @@ public class MissionaryStaffService {
 
     private final MissionaryStaffRepository missionaryStaffRepository;
 
-    public MissionaryStaff getMissionaryStaff(String id) throws CommonException {
-
-        return this.missionaryStaffRepository.findById(id).orElseThrow(CommonException::new);
+    public MissionaryStaff getMissionaryStaffById(String id) throws CommonException {
+        return missionaryStaffRepository.findById(id)
+            .orElseThrow(() -> new CommonException(ResponseCode.NOT_FOUND_MISSIONARY_STAFF));
     }
 
-    public MissionaryStaff getMissionaryStaff(String missionary, String userId) throws CommonException {
-        return this.missionaryStaffRepository.findByMissionary_IdAndUserId(missionary, userId).orElseThrow(CommonException::new);
+    public MissionaryStaff getMissionaryStaffByMissionaryIdUserId(String missionaryId, String userId) throws CommonException {
+        return missionaryStaffRepository.findByMissionary_IdAndUserId(missionaryId, userId)
+            .orElseThrow(() -> new CommonException(ResponseCode.NOT_FOUND_MISSIONARY_STAFF));
     }
 
 }

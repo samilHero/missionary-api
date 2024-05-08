@@ -25,7 +25,6 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 @WithMockUser(username = "hanbyul.jung")
 public class ApiResponseTests extends AbstractControllerTest {
 
-    protected final String snippetPath = "{class-name}/{method-name}";
     @Autowired
     private MockMvc mockMvc;
 
@@ -34,7 +33,7 @@ public class ApiResponseTests extends AbstractControllerTest {
     public void getApiResponseTest() throws Exception {
         mockMvc.perform(RestDocumentationRequestBuilders.get(GET_USER_URI)
                 .contentType(MediaType.APPLICATION_JSON)
-                .header(HttpHeaders.AUTHORIZATION, getAuthorizationOfHeader()))
+                .header(HttpHeaders.AUTHORIZATION, getAuthorizationUserOfHeader()))
             .andDo(
                 document(snippetPath,
                     "멤버 정보를 조회하는 API",
