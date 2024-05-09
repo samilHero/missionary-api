@@ -1,14 +1,14 @@
-package com.samill.missionary_backend.church.church.dto;
+package com.samill.missionary_backend.church.dto;
 
 import com.samill.missionary_backend.common.entity.Address;
 import com.samill.missionary_backend.common.entity.Pastor;
 
 public record UpdateChurchCommand(
-        String name,
-        String pastorName,
-        String pastorPhone,
-        String addressBasic,
-        String addressDetail
+    String name,
+    String pastorName,
+    String pastorPhone,
+    String addressBasic,
+    String addressDetail
 
 ) {
 

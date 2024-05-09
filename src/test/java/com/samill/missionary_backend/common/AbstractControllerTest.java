@@ -1,6 +1,6 @@
 package com.samill.missionary_backend.common;
 
-import static com.samill.missionary_backend.gateway.endPoint.AdminEndPoint.ADMIN_LOGIN_URI;
+import static com.samill.missionary_backend.gateway.endPoint.AdminGatewayManagementEndPoint.ADMIN_LOGIN_URI;
 import static com.samill.missionary_backend.gateway.endPoint.UserGatewayManagementEndPoint.USER_LOGIN_URI;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
@@ -50,7 +50,7 @@ public abstract class AbstractControllerTest {
         return StringUtils.join("Bearer ", ((LinkedHashMap<?, ?>) apiResponse.getData()).get("token"));
     }
 
-    protected String getAuthrizationAdminOfHeader() throws Exception {
+    protected String getAuthorizationAdminOfHeader() throws Exception {
         var request = LoginAdminRequest.builder()
             .loginId("admin_test")
             .password("samil123!@#")
@@ -70,11 +70,7 @@ public abstract class AbstractControllerTest {
     }
 
     protected String getBearerJwtToken(String superToken) {
-        var stringBuilder = new StringBuilder();
-        return stringBuilder.append("Bearer")
-            .append(" ")
-            .append(superToken)
-            .toString();
+        return "Bearer" + " " + superToken;
 
     }
 }

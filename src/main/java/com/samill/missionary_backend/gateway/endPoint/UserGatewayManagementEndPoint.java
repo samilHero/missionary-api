@@ -6,5 +6,6 @@ public class UserGatewayManagementEndPoint {
     public static final String USER_LOGIN_URI = BASE_URL + "/login";
     public static final String GET_USER_URI = BASE_URL + "/user";
     public static final String CREATE_USER_URI = BASE_URL + "/user";
-    
+    public static final String GET_MISSIONARIES = BASE_URL + "/missionaries";
+    public static final String GET_MISSIONARY = BASE_URL + "/missionaries/{missionaryId}";
 }
