@@ -3,17 +3,18 @@ package com.samill.missionary_backend.church.church.service;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import com.samill.missionary_backend.church.church.dto.CreateChurchCommand;
-import com.samill.missionary_backend.church.church.dto.GetChurchQueryResult;
-import com.samill.missionary_backend.church.church.dto.GetChurchesQueryResult;
-import com.samill.missionary_backend.church.church.dto.UpdateChurchCommand;
 import com.samill.missionary_backend.church.church.exception.NotFoundChurchException;
+import com.samill.missionary_backend.church.dto.CreateChurchCommand;
+import com.samill.missionary_backend.church.dto.GetChurchQueryResult;
+import com.samill.missionary_backend.church.dto.GetChurchesQueryResult;
+import com.samill.missionary_backend.church.dto.UpdateChurchCommand;
 import com.samill.missionary_backend.common.enums.ResponseCode;
 import com.samill.missionary_backend.common.exception.CommonException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -28,9 +29,6 @@ import org.springframework.transaction.annotation.Transactional;
 @ExtendWith(MockitoExtension.class)
 class ChurchServiceTests {
 
-    //    @Mock
-
-    //    @InjectMocks
     @Autowired
     private ChurchService churchService;
 
@@ -56,6 +54,10 @@ class ChurchServiceTests {
 
     }
 
+    @AfterEach
+    void tearDown() {
+        churchIds.forEach(churchService::deleteChurch);
+    }
 
     @Test
     void getChurches() {
