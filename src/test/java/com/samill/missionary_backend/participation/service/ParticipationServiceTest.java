@@ -1,9 +1,11 @@
 package com.samill.missionary_backend.participation.service;
 
 import com.samill.missionary_backend.MissionaryBackendApplication;
-import com.samill.missionary_backend.common.dto.UserContext;
 import com.samill.missionary_backend.common.exception.CommonException;
-import com.samill.missionary_backend.participation.dto.*;
+import com.samill.missionary_backend.participation.dto.CreateParticipationCommand;
+import com.samill.missionary_backend.participation.dto.DeleteParticipationCommand;
+import com.samill.missionary_backend.participation.dto.GetParticipationQueryResult;
+import com.samill.missionary_backend.participation.dto.GetParticipationsQuery;
 import com.samill.missionary_backend.participation.entity.Participation;
 import com.samill.missionary_backend.participation.mapper.ParticipationMapper;
 import com.samill.missionary_backend.participation.repository.ParticipationRepository;

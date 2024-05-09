@@ -1,6 +1,7 @@
-package com.samill.missionary_backend.gateway;
+package com.samill.missionary_backend.gateway.mapper;
 
 import com.samill.missionary_backend.gateway.dto.Participation.GetParticipationResult;
+import com.samill.missionary_backend.gateway.mapper.ParticipationGatewayMapper;
 import com.samill.missionary_backend.participation.ParticipationExternalService;
 import com.samill.missionary_backend.participation.dto.GetParticipationsQuery;
 import com.samill.missionary_backend.participation.dto.GetParticipationQueryResult;

@@ -1,12 +1,15 @@
 package com.samill.missionary_backend.gateway.management;
 
 import static com.epages.restdocs.apispec.MockMvcRestDocumentationWrapper.document;
-import static com.samill.missionary_backend.gateway.endPoint.AdminEndPoint.ADMIN_LOGIN_URI;
-import static com.samill.missionary_backend.gateway.endPoint.AdminEndPoint.CREATE_ADMIN_URI;
+import static com.samill.missionary_backend.gateway.endPoint.AdminEndPoint.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
+import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
+import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.queryParameters;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -23,8 +26,15 @@ import com.samill.missionary_backend.gateway.dto.CreateChurchRequest;
 import com.samill.missionary_backend.gateway.dto.LoginUserRequest;
 import com.samill.missionary_backend.gateway.dto.UpdateChurchRequest;
 import com.samill.missionary_backend.gateway.endPoint.AdminEndPoint;
+
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.UUID;
+
+import com.samill.missionary_backend.participation.ParticipationExternalService;
+import com.samill.missionary_backend.participation.dto.GetParticipationQuery;
+import com.samill.missionary_backend.participation.dto.GetParticipationQueryResult;
+import com.samill.missionary_backend.participation.dto.GetParticipationsQuery;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -33,7 +43,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.restdocs.mockmvc.MockMvcRestDocumentation;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
+import org.springframework.restdocs.payload.FieldDescriptor;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.annotation.Rollback;
@@ -48,6 +60,8 @@ class AdminGatewayManagementTests extends AbstractControllerTest {
     @MockBean
     private ChurchExternalService churchExternalService;
 
+    @MockBean
+    private ParticipationExternalService participationExternalService;
 
     @Test
     @DisplayName("create admin test")
@@ -310,5 +324,108 @@ class AdminGatewayManagementTests extends AbstractControllerTest {
                 )
             )
             .andExpect(status().isOk());
+    }
+
+    @Test
+    void getParticipations() throws Exception {
+//        final String missionaryId = "71d8cee6-e2bc-472a-ab1f-c61c70dc0e51";
+        final String missionaryId = UUID.randomUUID().toString();
+        GetParticipationsQuery getParticipationQuery = GetParticipationsQuery.builder()
+                .missionaryId(missionaryId)
+                .pageSize(10)
+                .build();
+
+        when(participationExternalService.getParticipations(any()))
+                .thenReturn(
+                        List.of(
+                            new GetParticipationQueryResult(
+                                    "Participation Id",
+                                    missionaryId,
+                                    "hong1",
+                                    "홍길동",
+                                    "UUID1",
+                                    30000,
+                                    true,
+                                    "940626-1111222",
+                                    OffsetDateTime.now()
+                            )
+                        )
+                );
+
+        mockMvc.perform(
+                RestDocumentationRequestBuilders.get(AdminEndPoint.GET_PARTICIPATIONS + "?missionaryId={missionaryId}&pageSize=10&name=&userId=&cursorId=", missionaryId)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header("Authorization", getAuthrizationAdminOfHeader())
+                )
+                .andExpect(status().isOk())
+                .andDo(MockMvcRestDocumentation.document("participation/list",
+                        requestHeaders(
+                                headerWithName("Authorization").description("Authorization token")
+                        ),
+                        queryParameters(
+                                parameterWithName("name").description("신청자 이름"),
+                                parameterWithName("userId").description("신청자 ID"),
+                                parameterWithName("cursorId").description("마지막으로 조회한 신청내역 신청일시"),
+                                parameterWithName("missionaryId").description("선교 ID"),
+                                parameterWithName("pageSize").description("조회할 페이지 단위")
+                        ),
+                        responseFields(
+                                fieldWithPath("statusCode").type(JsonFieldType.NUMBER).description("결과 코드"),
+                                fieldWithPath("message").type(JsonFieldType.STRING).description("결과 메시지"),
+                                fieldWithPath("data[].id").type(JsonFieldType.STRING).description("신청내역 ID"),
+                                fieldWithPath("data[].missionaryId").type(JsonFieldType.STRING).description("선교 ID"),
+                                fieldWithPath("data[].userId").type(JsonFieldType.STRING).description("신청자 ID"),
+                                fieldWithPath("data[].name").type(JsonFieldType.STRING).description("신청자 이름"),
+                                fieldWithPath("data[].memberId").type(JsonFieldType.STRING).description("신청자 멤버 ID"),
+                                fieldWithPath("data[].applyFee").type(JsonFieldType.NUMBER).description("선교입금액"),
+                                fieldWithPath("data[].paid").type(JsonFieldType.BOOLEAN).description("입금여부"),
+                                fieldWithPath("data[].identificationNumber").type(JsonFieldType.STRING).description("주민등록번호"),
+                                fieldWithPath("data[].createdAt").type(JsonFieldType.STRING).description("신청일시")
+                        )
+                ));
+    }
+
+    @Test
+    void getParticipation() throws Exception {
+        final String participationId = UUID.randomUUID().toString();
+        when(participationExternalService.getParticipation(participationId))
+                .thenReturn(
+                        new GetParticipationQueryResult(
+                                participationId,
+                                "71d8cee6-e2bc-472a-ab1f-c61c70dc0e51",
+                                "hong",
+                                "홍길동",
+                                "UUID-1",
+                                30000,
+                                true,
+                                "940555-2222333",
+                                OffsetDateTime.now()
+                        )
+                );
+
+        mockMvc.perform(
+                        RestDocumentationRequestBuilders.get(AdminEndPoint.GET_PARTICIPATION, participationId)
+                                .header("Authorization", getAuthrizationAdminOfHeader())
+                                .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andExpect(status().isOk())
+                .andDo(MockMvcRestDocumentation.document("participation/list",
+                        requestHeaders(
+                                headerWithName("Authorization").description("Authorization token")
+                        ),
+                        responseFields(
+                                fieldWithPath("statusCode").type(JsonFieldType.NUMBER).description("결과 코드"),
+                                fieldWithPath("message").type(JsonFieldType.STRING).description("결과 메시지"),
+                                fieldWithPath("data.id").type(JsonFieldType.STRING).description("신청내역 ID"),
+                                fieldWithPath("data.missionaryId").type(JsonFieldType.STRING).description("선교 ID"),
+                                fieldWithPath("data.userId").type(JsonFieldType.STRING).description("신청자 ID"),
+                                fieldWithPath("data.name").type(JsonFieldType.STRING).description("신청자 이름"),
+                                fieldWithPath("data.memberId").type(JsonFieldType.STRING).description("신청자 멤버 ID"),
+                                fieldWithPath("data.applyFee").type(JsonFieldType.NUMBER).description("선교입금액"),
+                                fieldWithPath("data.paid").type(JsonFieldType.BOOLEAN).description("입금여부"),
+                                fieldWithPath("data.identificationNumber").type(JsonFieldType.STRING).description("주민등록번호"),
+                                fieldWithPath("data.createdAt").description("신청일시")
+                        )
+                ));
     }
 }

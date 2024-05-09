@@ -1,9 +1,10 @@
 package com.samill.missionary_backend.participation;
 
-import com.samill.missionary_backend.common.dto.UserContext;
+import com.samill.missionary_backend.common.dto.MemberContext;
 import com.samill.missionary_backend.common.exception.CommonException;
 import com.samill.missionary_backend.missionary.MissionaryExternalService;
-import com.samill.missionary_backend.missionary.dto.MissionaryDto;
+import com.samill.missionary_backend.missionary.dto.GetMissionaryQuery;
+import com.samill.missionary_backend.missionary.dto.GetMissionaryQueryResult;
 import com.samill.missionary_backend.notification.NotificationExternalService;
 import com.samill.missionary_backend.participation.dto.*;
 import com.samill.missionary_backend.participation.service.ParticipationService;
@@ -22,9 +23,9 @@ class ParticipationManagement implements ParticipationExternalService {
 
     @Override
     public void createParticipation(@NonNull CreateParticipationCommand createParticipationCommand) throws CommonException {
-        MissionaryDto missionaryDto = missionaryExternalService.getMissionary("111", createParticipationCommand.getMissionaryId());
-//        Long maxUserCount = missionaryDto.getMaxUserCount();
-        int maxUserCount = 10;
+        GetMissionaryQuery getMissionaryQuery = new GetMissionaryQuery(createParticipationCommand.getMissionaryId());
+        GetMissionaryQueryResult getMissionaryQueryResult = missionaryExternalService.getMissionary(getMissionaryQuery);
+        int maxUserCount = getMissionaryQueryResult.maximumParticipantCount();
         participationService.createParticipation(createParticipationCommand, maxUserCount);
     }
 
@@ -39,7 +40,7 @@ class ParticipationManagement implements ParticipationExternalService {
     }
 
     @Override
-    public GetParticipationQueryResult getParticipation(String participationId, @NonNull UserContext userContext) throws CommonException {
+    public GetParticipationQueryResult getParticipation(String participationId) throws CommonException {
         //user 체크 필요
         return participationService.getParticipation(participationId);
     }

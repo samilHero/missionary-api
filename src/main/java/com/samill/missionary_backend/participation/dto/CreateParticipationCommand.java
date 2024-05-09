@@ -1,6 +1,5 @@
 package com.samill.missionary_backend.participation.dto;
 
-import com.samill.missionary_backend.common.dto.UserContext;
 import lombok.*;
 
 import java.time.OffsetDateTime;

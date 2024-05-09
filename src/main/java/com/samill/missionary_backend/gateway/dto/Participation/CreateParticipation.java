@@ -1,6 +1,6 @@
 package com.samill.missionary_backend.gateway.dto.Participation;
 
-import com.samill.missionary_backend.common.dto.UserContext;
+import com.samill.missionary_backend.common.dto.MemberContext;
 import lombok.*;
 
 import java.time.OffsetDateTime;
@@ -20,9 +20,9 @@ public class CreateParticipation {
     private String identificationNumber;
     private OffsetDateTime deletedAt;
 
-    public void setUserInfo(UserContext userContext) {
-        this.memberId = userContext.getMemberId();
-        this.name = userContext.getName();
-        this.userId = userContext.getUserId();
+    public void setUserInfo(MemberContext memberContext) {
+        this.memberId = memberContext.getMemberId();
+        this.name = memberContext.getName();
+        this.userId = memberContext.getUserId();
     }
 }

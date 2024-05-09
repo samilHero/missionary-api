@@ -1,6 +1,5 @@
 package com.samill.missionary_backend.participation.service;
 
-import com.samill.missionary_backend.common.dto.UserContext;
 import com.samill.missionary_backend.common.enums.ResponseCode;
 import com.samill.missionary_backend.common.exception.CommonException;
 import com.samill.missionary_backend.participation.dto.*;
@@ -26,11 +25,11 @@ public class ParticipationServiceImpl implements ParticipationService {
 
     @Override
     @Transactional
-    public void createParticipation(CreateParticipationCommand createParticipationDto, int maxUserCount) throws CommonException{
-        validateCreateParticipation(createParticipationDto, maxUserCount);
+    public void createParticipation(CreateParticipationCommand createParticipationCommand, int maxUserCount) throws CommonException{
+        validateCreateParticipation(createParticipationCommand, maxUserCount);
 
         // 메시지 리스너에서 신청내역 저장
-        rabbitMqProducer.sendMessage(new MessageDto(createParticipationDto));
+        rabbitMqProducer.sendMessage(new MessageDto(createParticipationCommand));
     }
 
     @Override

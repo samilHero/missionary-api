@@ -1,4 +1,4 @@
-package com.samill.missionary_backend.gateway;
+package com.samill.missionary_backend.gateway.mapper;
 
 import com.samill.missionary_backend.gateway.dto.Participation.*;
 import com.samill.missionary_backend.participation.dto.*;

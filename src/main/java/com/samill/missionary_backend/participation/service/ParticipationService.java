@@ -1,6 +1,5 @@
 package com.samill.missionary_backend.participation.service;
 
-import com.samill.missionary_backend.common.dto.UserContext;
 import com.samill.missionary_backend.common.exception.CommonException;
 import com.samill.missionary_backend.participation.dto.*;
 
