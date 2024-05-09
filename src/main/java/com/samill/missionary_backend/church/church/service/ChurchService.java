@@ -1,13 +1,13 @@
 package com.samill.missionary_backend.church.church.service;
 
-import com.samill.missionary_backend.church.church.dto.CreateChurchCommand;
-import com.samill.missionary_backend.church.church.dto.GetChurchQueryResult;
-import com.samill.missionary_backend.church.church.dto.GetChurchesQueryResult;
-import com.samill.missionary_backend.church.church.dto.UpdateChurchCommand;
 import com.samill.missionary_backend.church.church.entity.Church;
 import com.samill.missionary_backend.church.church.exception.NotFoundChurchException;
 import com.samill.missionary_backend.church.church.mapper.ChurchMapper;
 import com.samill.missionary_backend.church.church.repository.ChurchRepository;
+import com.samill.missionary_backend.church.dto.CreateChurchCommand;
+import com.samill.missionary_backend.church.dto.GetChurchQueryResult;
+import com.samill.missionary_backend.church.dto.GetChurchesQueryResult;
+import com.samill.missionary_backend.church.dto.UpdateChurchCommand;
 import com.samill.missionary_backend.common.exception.CommonException;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -21,16 +21,16 @@ public class ChurchService {
 
     public GetChurchesQueryResult getChurches() {
         return ChurchMapper.INSTANCE.churchesToGetChurchesResult(
-                this.churchRepository.findAll(),
-                false
+            this.churchRepository.findAll(),
+            false
         );
     }
 
     public GetChurchQueryResult getChurch(String id) throws CommonException {
 
         return ChurchMapper.INSTANCE.churchToGetChurchResult(
-                churchRepository.findById(id)
-                        .orElseThrow(NotFoundChurchException::new)
+            churchRepository.findById(id)
+                .orElseThrow(NotFoundChurchException::new)
         );
     }
 
@@ -46,7 +46,7 @@ public class ChurchService {
 
     public void updateChurch(@NonNull String id, @NonNull UpdateChurchCommand updateChurchCommand) throws CommonException {
         final Church church = churchRepository.findById(id)
-                .orElseThrow(NotFoundChurchException::new);
+            .orElseThrow(NotFoundChurchException::new);
 
         church.changeName(updateChurchCommand.name());
         church.changeAddress(updateChurchCommand.address());
