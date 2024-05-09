@@ -10,7 +10,7 @@ import com.samill.missionary_backend.gateway.dto.GetChurchesResult;
 import com.samill.missionary_backend.gateway.dto.LoginAdminRequest;
 import com.samill.missionary_backend.gateway.dto.LoginAdminResult;
 import com.samill.missionary_backend.gateway.dto.UpdateChurchRequest;
-import com.samill.missionary_backend.gateway.endPoint.AdminEndPoint;
+import com.samill.missionary_backend.gateway.endPoint.AdminGatewayManagementEndPoint;
 import com.samill.missionary_backend.gateway.mapper.AdminGatewayMapper;
 import com.samill.missionary_backend.gateway.mapper.ChurchGatewayMapper;
 import com.samill.missionary_backend.member.MemberManagement;
@@ -36,14 +36,14 @@ public class AdminGatewayManagement {
     private final ChurchExternalService churchExternalService;
     private final MissionaryExternalService missionaryExternalService;
 
-    @PostMapping(AdminEndPoint.CREATE_ADMIN_URI)
+    @PostMapping(AdminGatewayManagementEndPoint.CREATE_ADMIN_URI)
     public void signUp(@Valid @RequestBody CreateAdminRequest request) throws Exception {
         memberManagement.createAdmin(
             AdminGatewayMapper.INSTANCE.createAdminRequestToCreateAdminCommand(request)
         );
     }
 
-    @PostMapping(AdminEndPoint.ADMIN_LOGIN_URI)
+    @PostMapping(AdminGatewayManagementEndPoint.ADMIN_LOGIN_URI)
     public LoginAdminResult login(@Valid @RequestBody LoginAdminRequest request) throws Exception {
         return AdminGatewayMapper.INSTANCE.loginAdminQueryResultToLoginAdminResult(
             memberManagement.loginAdmin(
@@ -52,17 +52,17 @@ public class AdminGatewayManagement {
         );
     }
 
-    @GetMapping(AdminEndPoint.GET_CHURCH)
+    @GetMapping(AdminGatewayManagementEndPoint.GET_CHURCH)
     public GetChurchResult getChurch(@PathVariable String churchId) throws CommonException {
         return ChurchGatewayMapper.INSTANCE.getChruchQueryResultToGetChurchResult(churchExternalService.getChurch(churchId));
     }
 
-    @GetMapping(AdminEndPoint.GET_CHURCHES)
+    @GetMapping(AdminGatewayManagementEndPoint.GET_CHURCHES)
     public GetChurchesResult getChurches() throws CommonException {
         return ChurchGatewayMapper.INSTANCE.getChurchesQueryResultToGetChurchesResult(churchExternalService.getChurches());
     }
 
-    @PostMapping(AdminEndPoint.CREATE_CHURCH)
+    @PostMapping(AdminGatewayManagementEndPoint.CREATE_CHURCH)
     public CreateChurchResult createChurch(@Valid @RequestBody CreateChurchRequest createChurchRequest) throws CommonException {
         return ChurchGatewayMapper.INSTANCE.createChurchCommandResultToCreateChurchResult(
             churchExternalService.createChurch(
@@ -71,12 +71,12 @@ public class AdminGatewayManagement {
         );
     }
 
-    @DeleteMapping(AdminEndPoint.DELETE_CHURCH)
+    @DeleteMapping(AdminGatewayManagementEndPoint.DELETE_CHURCH)
     public void deleteChurch(@PathVariable String churchId) {
         churchExternalService.deleteChurch(churchId);
     }
 
-    @PutMapping(AdminEndPoint.UPDATE_CHURCH)
+    @PutMapping(AdminGatewayManagementEndPoint.UPDATE_CHURCH)
     public void updateChurch(@PathVariable String churchId, UpdateChurchRequest updateChurchRequest) throws CommonException {
         churchExternalService.updateChurch(churchId, ChurchGatewayMapper.INSTANCE.updateChurchRequestToUpdateChurchCommand(updateChurchRequest));
     }
