@@ -1,17 +1,24 @@
 package com.samill.missionary_backend.gateway.management;
 
 import static com.samill.missionary_backend.gateway.endPoint.UserGatewayManagementEndPoint.CREATE_USER_URI;
+import static com.samill.missionary_backend.gateway.endPoint.UserGatewayManagementEndPoint.GET_MISSIONARIES;
 import static com.samill.missionary_backend.gateway.endPoint.UserGatewayManagementEndPoint.GET_USER_URI;
 import static com.samill.missionary_backend.gateway.endPoint.UserGatewayManagementEndPoint.USER_LOGIN_URI;
 
 import com.samill.missionary_backend.common.dto.MemberContext;
 import com.samill.missionary_backend.gateway.dto.CreateUserRequest;
+import com.samill.missionary_backend.gateway.dto.GetUserMissionariesRequest;
+import com.samill.missionary_backend.gateway.dto.GetUserMissionariesResult;
+import com.samill.missionary_backend.gateway.dto.GetUserMissionariesResultMissionary;
 import com.samill.missionary_backend.gateway.dto.GetUserResult;
 import com.samill.missionary_backend.gateway.dto.LoginUserRequest;
 import com.samill.missionary_backend.gateway.dto.LoginUserResult;
 import com.samill.missionary_backend.gateway.mapper.UserGatewayMapper;
 import com.samill.missionary_backend.member.MemberExternalService;
 import jakarta.validation.Valid;
+import java.time.OffsetDateTime;
+import java.util.List;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
@@ -52,4 +59,22 @@ public class UserGatewayManagement {
         );
     }
 
+    @GetMapping(GET_MISSIONARIES)
+    public GetUserMissionariesResult getMissionaries(GetUserMissionariesRequest request) throws Exception {
+        return new GetUserMissionariesResult(
+            List.of(
+                new GetUserMissionariesResultMissionary(
+                    UUID.randomUUID().toString(),
+                    "선교1",
+                    OffsetDateTime.now(),
+                    OffsetDateTime.now(),
+                    "https://samil.com",
+                    10,
+                    20
+                )
+            ),
+            null,
+            false
+        );
+    }
 }
