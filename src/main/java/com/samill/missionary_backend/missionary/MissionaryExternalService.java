@@ -1,6 +1,6 @@
 package com.samill.missionary_backend.missionary;
 
-import com.samill.missionary_backend.church.church.dto.CreateMissionaryCommandResult;
+import com.samill.missionary_backend.church.dto.CreateMissionaryCommandResult;
 import com.samill.missionary_backend.common.exception.CommonException;
 import com.samill.missionary_backend.missionary.dto.CreateMissionaryCommand;
 import com.samill.missionary_backend.missionary.dto.GetMissionaryQuery;
