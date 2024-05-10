@@ -53,7 +53,6 @@ class ParticipationServiceImplTest {
 
         for(int i=0;i<userCount;i++) {
             CreateParticipationCommand createParticipationDto = CreateParticipationCommand.builder()
-                    .isPaid(true)
                     .missionaryId(missionaryId)
                     .applyFee(10000)
                     .identificationNumber("9802321111222")
@@ -91,7 +90,6 @@ class ParticipationServiceImplTest {
         String missionaryId = UUID.randomUUID().toString();
         // given
         CreateParticipationCommand createParticipationDto = CreateParticipationCommand.builder()
-                .isPaid(true)
                 .missionaryId(missionaryId)
                 .applyFee(10000)
                 .identificationNumber("9802321111222")
@@ -106,6 +104,7 @@ class ParticipationServiceImplTest {
 
         DeleteParticipationCommand deleteParticipationCommand = DeleteParticipationCommand.builder()
                 .id(participation.getId())
+                .missionaryId(missionaryId)
                 .userId("kdf1")
                 .build();
 
@@ -124,7 +123,6 @@ class ParticipationServiceImplTest {
         String missionaryId = UUID.randomUUID().toString();
         for(int i=0; i<10;i++) {
             CreateParticipationCommand createParticipationDto = CreateParticipationCommand.builder()
-                    .isPaid(true)
                     .missionaryId(missionaryId)
                     .applyFee(10000)
                     .identificationNumber("9802321111222")

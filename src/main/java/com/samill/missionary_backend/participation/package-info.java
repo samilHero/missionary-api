@@ -3,12 +3,13 @@
         allowedDependencies = {
                 "member",
                 "missionary",
+                "missionary::dto",
                 "notification",
                 "common::entity",
                 "common::enums",
                 "common::exception",
                 "common::dto",
-                "common::util"
+                "common::util",
         }
 )
 package com.samill.missionary_backend.participation;

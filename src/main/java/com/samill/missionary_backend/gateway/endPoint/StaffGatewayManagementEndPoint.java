@@ -9,4 +9,7 @@ public class StaffGatewayManagementEndPoint {
 
     public static final String GET_CHURCHES = BASE_URL + "/churches";
 
+    public static final String GET_PARTICIPATIONS = BASE_URL + "/participations";
+
+    public static final String GET_PARTICIPATION = BASE_URL + "/participation/{participationId}";
 }

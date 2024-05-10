@@ -10,13 +10,10 @@ import java.time.OffsetDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CreateParticipationCommand {
-    private String id;
     private String missionaryId;
     private String memberId;
     private String name;
     private String userId;
-    private int applyFee;
-    private boolean isPaid;
     private String identificationNumber;
-    private OffsetDateTime deletedAt;
+    private int applyFee;
 }

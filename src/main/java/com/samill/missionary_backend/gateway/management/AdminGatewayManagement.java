@@ -91,7 +91,7 @@ public class AdminGatewayManagement {
         churchExternalService.updateChurch(churchId, ChurchGatewayMapper.INSTANCE.updateChurchRequestToUpdateChurchCommand(updateChurchRequest));
     }
 
-    @GetMapping(AdminEndPoint.GET_PARTICIPATIONS)
+    @GetMapping(AdminGatewayManagementEndPoint.GET_PARTICIPATIONS)
     public List<GetParticipationResult> getParticipations(GetParticipations getParticipation) {
         GetParticipationsQuery getParticipationsQuery
                 = ParticipationGatewayMapper.INSTANCE.getParticipationsToGetParticipationsQuery(getParticipation);
@@ -99,7 +99,7 @@ public class AdminGatewayManagement {
         return ParticipationGatewayMapper.INSTANCE.getParticipationQueryResultsToGetParticipationResults(list);
     }
 
-    @GetMapping(AdminEndPoint.GET_PARTICIPATION)
+    @GetMapping(AdminGatewayManagementEndPoint.GET_PARTICIPATION)
     public GetParticipationResult getParticipation(@PathVariable String participationId) throws CommonException {
         GetParticipationQueryResult result = participationExternalService.getParticipation(participationId);
         return ParticipationGatewayMapper.INSTANCE.getParticipationQueryResultToGetParticipationResult(result);

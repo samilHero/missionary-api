@@ -12,7 +12,9 @@
         "church",
         "church::dto",
         "missionary",
-        "missionary::dto"
+        "missionary::dto",
+        "participation",
+        "participation::dto"
     }
 )
 package com.samill.missionary_backend.gateway;

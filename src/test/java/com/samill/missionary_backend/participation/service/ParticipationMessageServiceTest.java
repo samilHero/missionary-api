@@ -22,7 +22,6 @@ class ParticipationMessageServiceTest {
         String missionaryId = UUID.randomUUID().toString();
 
         CreateParticipationCommand createParticipationDto = CreateParticipationCommand.builder()
-                .isPaid(true)
                 .missionaryId(missionaryId)
                 .applyFee(10000)
                 .identificationNumber("9802321111222")

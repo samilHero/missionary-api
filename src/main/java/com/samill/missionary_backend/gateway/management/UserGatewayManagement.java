@@ -6,6 +6,7 @@ import static com.samill.missionary_backend.gateway.endPoint.UserGatewayManageme
 import static com.samill.missionary_backend.gateway.endPoint.UserGatewayManagementEndPoint.USER_LOGIN_URI;
 
 import com.samill.missionary_backend.common.dto.MemberContext;
+import com.samill.missionary_backend.common.exception.CommonException;
 import com.samill.missionary_backend.gateway.dto.CreateUserRequest;
 import com.samill.missionary_backend.gateway.dto.GetUserMissionariesRequest;
 import com.samill.missionary_backend.gateway.dto.GetUserMissionariesResult;
@@ -86,7 +87,7 @@ public class UserGatewayManagement {
         );
     }
     @PostMapping(CREATE_PARTICIPATION)
-    public void createParticipation(CreateParticipation createParticipation, MemberContext memberContext) throws CommonException {
+    public void createParticipation(CreateParticipation createParticipation, MemberContext memberContext) throws CommonException, CommonException {
         createParticipation.setUserInfo(memberContext);
         CreateParticipationCommand command = ParticipationGatewayMapper.INSTANCE.createParticipationToCreateParticipationCommand(createParticipation);
         participationExternalService.createParticipation(command);
@@ -103,4 +104,6 @@ public class UserGatewayManagement {
         DeleteParticipationCommand command = ParticipationGatewayMapper.INSTANCE.deleteParticipationToDeleteParticipationCommand(deleteParticipation);
         participationExternalService.deleteParticipation(command);
     }
+
+
 }

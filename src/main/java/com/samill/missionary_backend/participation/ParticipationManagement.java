@@ -26,6 +26,7 @@ class ParticipationManagement implements ParticipationExternalService {
         GetMissionaryQuery getMissionaryQuery = new GetMissionaryQuery(createParticipationCommand.getMissionaryId());
         GetMissionaryQueryResult getMissionaryQueryResult = missionaryExternalService.getMissionary(getMissionaryQuery);
         int maxUserCount = getMissionaryQueryResult.maximumParticipantCount();
+        createParticipationCommand.setApplyFee(getMissionaryQueryResult.price());
         participationService.createParticipation(createParticipationCommand, maxUserCount);
     }
 

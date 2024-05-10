@@ -27,6 +27,8 @@ import com.samill.missionary_backend.gateway.dto.CreateChurchRequest;
 import com.samill.missionary_backend.gateway.dto.LoginUserRequest;
 import com.samill.missionary_backend.gateway.dto.UpdateChurchRequest;
 import com.samill.missionary_backend.gateway.endPoint.AdminGatewayManagementEndPoint;
+
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -326,13 +328,8 @@ class AdminGatewayManagementTests extends AbstractControllerTest {
     }
 
     @Test
-    void getParticipations() throws Exception {
-//        final String missionaryId = "71d8cee6-e2bc-472a-ab1f-c61c70dc0e51";
+    void getParticipationsTest() throws Exception {
         final String missionaryId = UUID.randomUUID().toString();
-        GetParticipationsQuery getParticipationQuery = GetParticipationsQuery.builder()
-                .missionaryId(missionaryId)
-                .pageSize(10)
-                .build();
 
         when(participationExternalService.getParticipations(any()))
                 .thenReturn(
@@ -352,12 +349,12 @@ class AdminGatewayManagementTests extends AbstractControllerTest {
                 );
 
         mockMvc.perform(
-                RestDocumentationRequestBuilders.get(AdminEndPoint.GET_PARTICIPATIONS + "?missionaryId={missionaryId}&pageSize=10&name=&userId=&cursorId=", missionaryId)
+                RestDocumentationRequestBuilders.get(AdminGatewayManagementEndPoint.GET_PARTICIPATIONS + "?missionaryId={missionaryId}&pageSize=10&name=&userId=&cursorId=", missionaryId)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .header("Authorization", getAuthrizationAdminOfHeader())
+                        .header("Authorization", getAuthorizationAdminOfHeader())
                 )
                 .andExpect(status().isOk())
-                .andDo(MockMvcRestDocumentation.document("participation/list",
+                .andDo(MockMvcRestDocumentation.document(snippetPath,
                         requestHeaders(
                                 headerWithName("Authorization").description("Authorization token")
                         ),
@@ -385,7 +382,7 @@ class AdminGatewayManagementTests extends AbstractControllerTest {
     }
 
     @Test
-    void getParticipation() throws Exception {
+    void getParticipationTest() throws Exception {
         final String participationId = UUID.randomUUID().toString();
         when(participationExternalService.getParticipation(participationId))
                 .thenReturn(
@@ -403,12 +400,12 @@ class AdminGatewayManagementTests extends AbstractControllerTest {
                 );
 
         mockMvc.perform(
-                        RestDocumentationRequestBuilders.get(AdminEndPoint.GET_PARTICIPATION, participationId)
-                                .header("Authorization", getAuthrizationAdminOfHeader())
+                        RestDocumentationRequestBuilders.get(AdminGatewayManagementEndPoint.GET_PARTICIPATION, participationId)
+                                .header("Authorization", getAuthorizationAdminOfHeader())
                                 .contentType(MediaType.APPLICATION_JSON)
                 )
                 .andExpect(status().isOk())
-                .andDo(MockMvcRestDocumentation.document("participation/list",
+                .andDo(MockMvcRestDocumentation.document(snippetPath,
                         requestHeaders(
                                 headerWithName("Authorization").description("Authorization token")
                         ),

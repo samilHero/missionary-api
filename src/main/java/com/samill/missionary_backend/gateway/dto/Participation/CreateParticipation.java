@@ -15,10 +15,8 @@ public class CreateParticipation {
     private String memberId;
     private String name;
     private String userId;
-    private int applyFee;
-    private boolean isPaid;
     private String identificationNumber;
-    private OffsetDateTime deletedAt;
+    private String applyFee;
 
     public void setUserInfo(MemberContext memberContext) {
         this.memberId = memberContext.getMemberId();
