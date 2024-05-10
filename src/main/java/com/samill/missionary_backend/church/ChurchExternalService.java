@@ -1,6 +1,10 @@
 package com.samill.missionary_backend.church;
 
-import com.samill.missionary_backend.church.church.dto.*;
+import com.samill.missionary_backend.church.dto.CreateChurchCommand;
+import com.samill.missionary_backend.church.dto.CreateChurchCommandResult;
+import com.samill.missionary_backend.church.dto.GetChurchQueryResult;
+import com.samill.missionary_backend.church.dto.GetChurchesQueryResult;
+import com.samill.missionary_backend.church.dto.UpdateChurchCommand;
 import com.samill.missionary_backend.common.exception.CommonException;
 
 public interface ChurchExternalService {

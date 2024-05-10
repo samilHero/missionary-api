@@ -1,6 +1,6 @@
 package com.samill.missionary_backend.missionary.missionary.service;
 
-import com.samill.missionary_backend.church.church.dto.CreateMissionaryCommandResult;
+import com.samill.missionary_backend.church.dto.CreateMissionaryCommandResult;
 import com.samill.missionary_backend.common.entity.Pastor;
 import com.samill.missionary_backend.common.entity.Period;
 import com.samill.missionary_backend.common.exception.CommonException;
@@ -102,7 +102,7 @@ public class MissionaryService {
     public boolean checkParticipate(@NonNull String missionaryId, @NonNull Integer participantCount) throws CommonException {
         final Missionary missionary = missionaryRepository.findById(missionaryId)
             .orElseThrow(NotFoundMissionaryException::new);
-        
+
         return missionary.canParticipate(participantCount);
     }
 

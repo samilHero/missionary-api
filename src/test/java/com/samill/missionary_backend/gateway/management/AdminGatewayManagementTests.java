@@ -1,7 +1,8 @@
 package com.samill.missionary_backend.gateway.management;
 
 import static com.epages.restdocs.apispec.MockMvcRestDocumentationWrapper.document;
-import static com.samill.missionary_backend.gateway.endPoint.AdminEndPoint.*;
+import static com.samill.missionary_backend.gateway.endPoint.AdminGatewayManagementEndPoint.ADMIN_LOGIN_URI;
+import static com.samill.missionary_backend.gateway.endPoint.AdminGatewayManagementEndPoint.CREATE_ADMIN_URI;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
@@ -16,18 +17,16 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.epages.restdocs.apispec.ResourceSnippetParametersBuilder;
 import com.samill.missionary_backend.church.ChurchExternalService;
-import com.samill.missionary_backend.church.church.dto.CreateChurchCommandResult;
-import com.samill.missionary_backend.church.church.dto.GetChurchQueryResult;
-import com.samill.missionary_backend.church.church.dto.GetChurchesQueryResult;
-import com.samill.missionary_backend.church.church.dto.GetChurchesQueryResultChurch;
+import com.samill.missionary_backend.church.dto.CreateChurchCommandResult;
+import com.samill.missionary_backend.church.dto.GetChurchQueryResult;
+import com.samill.missionary_backend.church.dto.GetChurchesQueryResult;
+import com.samill.missionary_backend.church.dto.GetChurchesQueryResultChurch;
 import com.samill.missionary_backend.common.AbstractControllerTest;
 import com.samill.missionary_backend.gateway.dto.CreateAdminRequest;
 import com.samill.missionary_backend.gateway.dto.CreateChurchRequest;
 import com.samill.missionary_backend.gateway.dto.LoginUserRequest;
 import com.samill.missionary_backend.gateway.dto.UpdateChurchRequest;
-import com.samill.missionary_backend.gateway.endPoint.AdminEndPoint;
-
-import java.time.OffsetDateTime;
+import com.samill.missionary_backend.gateway.endPoint.AdminGatewayManagementEndPoint;
 import java.util.List;
 import java.util.UUID;
 
@@ -123,11 +122,11 @@ class AdminGatewayManagementTests extends AbstractControllerTest {
 
         mockMvc.perform(
                 RestDocumentationRequestBuilders.get(
-                        AdminEndPoint.GET_CHURCH,
+                        AdminGatewayManagementEndPoint.GET_CHURCH,
                         churchId
                     )
                     .contentType(MediaType.APPLICATION_JSON)
-                    .header("Authorization", getAuthrizationAdminOfHeader())
+                    .header("Authorization", getAuthorizationAdminOfHeader())
             )
             .andDo(print())
             .andDo(
@@ -172,9 +171,9 @@ class AdminGatewayManagementTests extends AbstractControllerTest {
             );
 
         mockMvc.perform(
-                RestDocumentationRequestBuilders.get(AdminEndPoint.GET_CHURCHES)
+                RestDocumentationRequestBuilders.get(AdminGatewayManagementEndPoint.GET_CHURCHES)
                     .contentType(MediaType.APPLICATION_JSON)
-                    .header("Authorization", getAuthrizationAdminOfHeader())
+                    .header("Authorization", getAuthorizationAdminOfHeader())
             )
             .andDo(print())
             .andDo(
@@ -204,7 +203,7 @@ class AdminGatewayManagementTests extends AbstractControllerTest {
             );
 
         mockMvc.perform(
-                RestDocumentationRequestBuilders.post(AdminEndPoint.CREATE_CHURCH)
+                RestDocumentationRequestBuilders.post(AdminGatewayManagementEndPoint.CREATE_CHURCH)
                     .content(
                         jacksonObjectMapper.writeValueAsString(
                             new CreateChurchRequest(
@@ -216,7 +215,7 @@ class AdminGatewayManagementTests extends AbstractControllerTest {
                             )
                         ))
                     .contentType(MediaType.APPLICATION_JSON)
-                    .header("Authorization", getAuthrizationAdminOfHeader())
+                    .header("Authorization", getAuthorizationAdminOfHeader())
             )
             .andDo(print())
             .andDo(
@@ -249,7 +248,7 @@ class AdminGatewayManagementTests extends AbstractControllerTest {
 
         mockMvc.perform(
                 RestDocumentationRequestBuilders.put(
-                        AdminEndPoint.UPDATE_CHURCH,
+                        AdminGatewayManagementEndPoint.UPDATE_CHURCH,
                         churchId
                     )
                     .content(
@@ -263,7 +262,7 @@ class AdminGatewayManagementTests extends AbstractControllerTest {
                             )
                         ))
                     .contentType(MediaType.APPLICATION_JSON)
-                    .header("Authorization", getAuthrizationAdminOfHeader())
+                    .header("Authorization", getAuthorizationAdminOfHeader())
             )
             .andDo(print())
             .andDo(
@@ -300,11 +299,11 @@ class AdminGatewayManagementTests extends AbstractControllerTest {
 
         mockMvc.perform(
                 RestDocumentationRequestBuilders.delete(
-                        AdminEndPoint.DELETE_CHURCH,
+                        AdminGatewayManagementEndPoint.DELETE_CHURCH,
                         churchId
                     )
                     .contentType(MediaType.APPLICATION_JSON)
-                    .header("Authorization", getAuthrizationAdminOfHeader())
+                    .header("Authorization", getAuthorizationAdminOfHeader())
             )
             .andDo(print())
             .andDo(

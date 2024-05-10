@@ -1,6 +1,6 @@
 package com.samill.missionary_backend.gateway.endPoint;
 
-public class AdminEndPoint {
+public class AdminGatewayManagementEndPoint {
 
     public static final String BASE_URL = "/api/admin";
 
@@ -18,7 +18,7 @@ public class AdminEndPoint {
 
     public static final String CREATE_ADMIN_URI = BASE_URL + "/admin";
 
-	public static final String GET_MISSIONARY = BASE_URL + "/missionaries/{missionaryId}";
+    public static final String GET_MISSIONARY = BASE_URL + "/missionaries/{missionaryId}";
 
     public static final String GET_MISSIONARIES = BASE_URL + "/missionaries";
 

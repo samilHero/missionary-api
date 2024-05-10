@@ -1,6 +1,6 @@
 package com.samill.missionary_backend.gateway.endPoint;
 
-public class StaffEndPoint {
+public class StaffGatewayManagementEndPoint {
 
 
     public static final String BASE_URL = "/api/staff";
