@@ -32,7 +32,7 @@ public class MemberGatewayManagementTests extends AbstractControllerTest {
             .loginId("hanbyul.jung")
             .password("samil123!@#")
             .email("samil@test.com")
-            .is_baptized(Boolean.TRUE)
+            .isBaptized(Boolean.TRUE)
             .baptizedAt(OffsetDateTime.now())
             .build();
 

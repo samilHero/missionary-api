@@ -8,6 +8,7 @@ import com.samill.missionary_backend.member.admin.service.AdminService;
 import com.samill.missionary_backend.member.dto.CreateAdminCommand;
 import com.samill.missionary_backend.member.dto.CreateUserCommand;
 import com.samill.missionary_backend.member.dto.GetAdminDto;
+import com.samill.missionary_backend.member.dto.GetMemberServiceTypeDto;
 import com.samill.missionary_backend.member.dto.GetUserDto;
 import com.samill.missionary_backend.member.dto.LoginAdminQuery;
 import com.samill.missionary_backend.member.dto.LoginAdminQueryResult;
@@ -65,6 +66,7 @@ public class MemberManagement implements MemberExternalService {
     }
 
     @Override
+    @Transactional
     public LoginAdminQueryResult loginAdmin(LoginAdminQuery request) throws Exception {
         var isExistedAdmin = isExistedAdminByLoginId(request.getLoginId());
         if (!isExistedAdmin) {
@@ -81,6 +83,7 @@ public class MemberManagement implements MemberExternalService {
 
 
     @Override
+    @Transactional
     public void createAdmin(CreateAdminCommand request) throws MemberException {
         var isExistedAdmin = isExistedAdminByLoginId(request.getLoginId());
 
@@ -105,19 +108,24 @@ public class MemberManagement implements MemberExternalService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public GetUserDto getUserByLoginId(String loginId) {
         return userService.getUserByLoginId(loginId);
     }
 
-    @Override
-    public GetAdminDto getAdminByLoginId(String loginId) throws Exception {
+    @Transactional(readOnly = true)
+    public GetAdminDto getAdminByLoginId(String loginId) {
         return adminService.getAdminByLoginId(loginId);
     }
 
-    @Override
     @Transactional(readOnly = true)
     public GetUserDto getUserByMemberId(String memberId) throws Exception {
         return userService.getUserByMemberId(memberId);
+    }
+
+    @Transactional(readOnly = true)
+    public GetAdminDto getAdminByMemberId(String memberId) throws Exception {
+        return adminService.getAdminByMemberId(memberId);
     }
 
     @Override
@@ -125,14 +133,11 @@ public class MemberManagement implements MemberExternalService {
 
     }
 
-    @Override
-    public boolean isExistedUserByLoginId(String loginId) {
-        return userService.isExistedUserByLoginId(loginId);
-    }
 
     @Override
-    public boolean isExistedAdminByLoginId(String loginId) {
-        return adminService.isExistedAdminByLoginId(loginId);
+    @Transactional(readOnly = true)
+    public GetMemberServiceTypeDto getMemberServiceType(String memberId) throws MemberException {
+        return memberService.getMemberServiceType(memberId);
     }
 
 
@@ -150,6 +155,14 @@ public class MemberManagement implements MemberExternalService {
         var claims = memberService.createClaims(request, OffsetDateTime.now());
         var token = tokenProvider.createToken(authentication, claims);
         return LoginAdminQueryResult.builder().token(token).build();
+    }
+
+    private Boolean isExistedUserByLoginId(String loginId) {
+        return userService.isExistedUserByLoginId(loginId);
+    }
+
+    private Boolean isExistedAdminByLoginId(String loginId) {
+        return adminService.isExistedAdminByLoginId(loginId);
     }
 
 

@@ -27,23 +27,19 @@ public class UserService {
             .name(request.getName())
             .phoneNumber(request.getPhoneNumber())
             .birthDate(request.getBirthDate())
-            .identityNumber(request.getIdentityNumber())
             .gender(request.getGender())
             .loginId(request.getLoginId())
             .password(password)
             .email(request.getEmail())
-            .is_baptized(request.getIs_baptized())
+            .isBaptized(request.getIsBaptized())
             .baptizedAt(request.getBaptizedAt())
             .build());
     }
 
 
     public GetUserDto getUserById(String id) throws Exception {
-        var user = userRepository.findById(id);
-        if (user.isPresent()) {
-            return UserMapper.INSTANCE.userToGetUserDto(user.get());
-        }
-        throw new CommonException(ResponseCode.NOT_FOUND_ERROR);
+        var user = userRepository.findById(id).orElseThrow(() -> new CommonException(ResponseCode.NOT_FOUND_ERROR));
+        return UserMapper.INSTANCE.userToGetUserDto(user);
     }
 
     public GetUserDto getUserByLoginId(String loginId) {

@@ -50,11 +50,8 @@ public class AdminService {
     }
 
     public GetAdminDto getAdminByMemberId(String memberId) throws Exception {
-        var admin = adminRepository.findByMemberMemberId(memberId);
-        if (admin.isPresent()) {
-            return AdminMapper.INSTANCE.adminToGetAdminDto(admin.get());
-        }
-        throw new CommonException(ResponseCode.NOT_FOUND_ERROR);
+        var admin = adminRepository.findByMemberMemberId(memberId).orElseThrow(() -> new CommonException(ResponseCode.NOT_FOUND_ERROR));
+        return AdminMapper.INSTANCE.adminToGetAdminDto(admin);
     }
 
     public Boolean isExistedAdminByLoginId(String loginId) {

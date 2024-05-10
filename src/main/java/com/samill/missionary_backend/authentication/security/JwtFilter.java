@@ -24,6 +24,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 public class JwtFilter extends OncePerRequestFilter {
 
     public static final String AUTHORIZATION_HEADER = "Authorization";
+    public static final String API_ROOT = "/api";
     private static final Logger logger = LoggerFactory.getLogger(JwtFilter.class);
     private final TokenProvider tokenProvider;
 
@@ -32,6 +33,7 @@ public class JwtFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
         throws ServletException, IOException {
+
         HttpServletRequest httpServletRequest = request;
         String jwt = resolveToken();
         String requestURI = httpServletRequest.getRequestURI();

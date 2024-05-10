@@ -17,7 +17,7 @@ import com.samill.missionary_backend.gateway.dto.UpdateChurchRequest;
 import com.samill.missionary_backend.gateway.endPoint.AdminGatewayManagementEndPoint;
 import com.samill.missionary_backend.gateway.mapper.AdminGatewayMapper;
 import com.samill.missionary_backend.gateway.mapper.ChurchGatewayMapper;
-import com.samill.missionary_backend.member.MemberManagement;
+import com.samill.missionary_backend.member.MemberExternalService;
 import com.samill.missionary_backend.missionary.MissionaryExternalService;
 import com.samill.missionary_backend.participation.ParticipationExternalService;
 import com.samill.missionary_backend.participation.dto.GetParticipationQueryResult;
@@ -41,14 +41,14 @@ import java.util.List;
 public class AdminGatewayManagement {
 
 
-    private final MemberManagement memberManagement;
+    private final MemberExternalService memberExternalService;
     private final ChurchExternalService churchExternalService;
     private final MissionaryExternalService missionaryExternalService;
     private final ParticipationExternalService participationExternalService;
 
     @PostMapping(AdminGatewayManagementEndPoint.CREATE_ADMIN_URI)
     public void signUp(@Valid @RequestBody CreateAdminRequest request) throws Exception {
-        memberManagement.createAdmin(
+        memberExternalService.createAdmin(
             AdminGatewayMapper.INSTANCE.createAdminRequestToCreateAdminCommand(request)
         );
     }
@@ -56,7 +56,7 @@ public class AdminGatewayManagement {
     @PostMapping(AdminGatewayManagementEndPoint.ADMIN_LOGIN_URI)
     public LoginAdminResult login(@Valid @RequestBody LoginAdminRequest request) throws Exception {
         return AdminGatewayMapper.INSTANCE.loginAdminQueryResultToLoginAdminResult(
-            memberManagement.loginAdmin(
+            memberExternalService.loginAdmin(
                 AdminGatewayMapper.INSTANCE.loginAdminRequestToLoginAdminQuery(request)
             )
         );

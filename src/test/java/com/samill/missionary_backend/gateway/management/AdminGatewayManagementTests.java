@@ -8,6 +8,7 @@ import static org.mockito.Mockito.when;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.queryParameters;
@@ -49,7 +50,6 @@ import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.restdocs.payload.FieldDescriptor;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -67,7 +67,6 @@ class AdminGatewayManagementTests extends AbstractControllerTest {
     @Test
     @DisplayName("create admin test")
     @Transactional
-    @Rollback(value = false)
     public void createAdminTest() {
         var request = CreateAdminRequest.builder()
             .name("admin_test")
@@ -99,11 +98,25 @@ class AdminGatewayManagementTests extends AbstractControllerTest {
             .build();
 
         Assertions.assertDoesNotThrow(() -> {
-            mockMvc.perform(post(ADMIN_LOGIN_URI)
+            mockMvc.perform(RestDocumentationRequestBuilders.post(ADMIN_LOGIN_URI)
                     .contentType(MediaType.APPLICATION_JSON)
                     .accept(MediaType.APPLICATION_JSON)
                     .content(jacksonObjectMapper.writeValueAsString(request)))
                 .andDo(print())
+                .andDo(
+                    document(snippetPath,
+                        "어드민 로그인 API",
+                        requestFields(
+                            fieldWithPath("loginId").description("로그인 id"),
+                            fieldWithPath("password").description("비밀 번호")
+                        ),
+                        responseFields(
+                            fieldWithPath("statusCode").type(JsonFieldType.NUMBER).description("결과코드"),
+                            fieldWithPath("message").type(JsonFieldType.STRING).description("결과 메시지"),
+                            fieldWithPath("data.token").type(JsonFieldType.STRING).description("access token")
+                        )
+                    )
+                )
                 .andExpect(MockMvcResultMatchers.status().isOk());
         });
     }

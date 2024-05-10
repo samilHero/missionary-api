@@ -2,7 +2,6 @@ package com.samill.missionary_backend.authentication.security;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.config.annotation.SecurityConfigurer;
-import org.springframework.security.config.annotation.SecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.DefaultSecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -20,8 +19,8 @@ public class JwtSecurityConfig implements SecurityConfigurer<DefaultSecurityFilt
     public void configure(HttpSecurity builder) throws Exception {
         // security 로직에 JwtFilter 등록
         builder.addFilterBefore(
-                new JwtFilter(tokenProvider),
-                UsernamePasswordAuthenticationFilter.class
+            new JwtFilter(tokenProvider),
+            UsernamePasswordAuthenticationFilter.class
         );
     }
 }
