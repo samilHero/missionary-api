@@ -1,6 +1,7 @@
 package com.samill.missionary_backend.member.mapper;
 
 import com.samill.missionary_backend.member.dto.CreateMemberDto;
+import com.samill.missionary_backend.member.dto.GetMemberServiceTypeDto;
 import com.samill.missionary_backend.member.member.entity.Member;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -23,5 +24,11 @@ public interface MemberMapper {
         @Mapping(target = "serviceType", source = "serviceType")
     })
     Member createMemberDtoToMember(CreateMemberDto getMemberDto);
+
+
+    @Mappings({
+        @Mapping(target = "serviceType", source = "serviceType")
+    })
+    GetMemberServiceTypeDto memberToGetMemberServiceTypeDto(Member member);
 
 }

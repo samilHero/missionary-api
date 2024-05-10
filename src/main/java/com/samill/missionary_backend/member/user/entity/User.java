@@ -2,14 +2,22 @@ package com.samill.missionary_backend.member.user.entity;
 
 import com.samill.missionary_backend.common.entity.BaseEntity;
 import com.samill.missionary_backend.member.member.entity.Member;
-import jakarta.persistence.*;
-import lombok.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
+import java.time.OffsetDateTime;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
-import org.hibernate.annotations.Where;
-
-import java.time.OffsetDateTime;
 
 @Builder
 @Entity
@@ -36,7 +44,7 @@ public class User extends BaseEntity {
     private String email;
     //세례 여부
     @Builder.Default
-    private Boolean is_baptized = Boolean.FALSE;
+    private Boolean isBaptized = Boolean.FALSE;
 
     //세례 일시
     private OffsetDateTime baptizedAt;

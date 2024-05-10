@@ -3,6 +3,7 @@ package com.samill.missionary_backend.member;
 import com.samill.missionary_backend.member.dto.CreateAdminCommand;
 import com.samill.missionary_backend.member.dto.CreateUserCommand;
 import com.samill.missionary_backend.member.dto.GetAdminDto;
+import com.samill.missionary_backend.member.dto.GetMemberServiceTypeDto;
 import com.samill.missionary_backend.member.dto.GetUserDto;
 import com.samill.missionary_backend.member.dto.LoginAdminQuery;
 import com.samill.missionary_backend.member.dto.LoginAdminQueryResult;
@@ -34,8 +35,6 @@ public interface MemberExternalService {
 
     void getUsers();
 
-    boolean isExistedUserByLoginId(String loginId);
-
-    boolean isExistedAdminByLoginId(String loginId);
+    GetMemberServiceTypeDto getMemberServiceType(String memberId) throws MemberException;
 
 }

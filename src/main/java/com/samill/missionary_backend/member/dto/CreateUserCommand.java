@@ -19,7 +19,6 @@ public class CreateUserCommand {
     private String password;
     @NotNull
     private String name;
-    private String identityNumber;
     @NotNull
     private String phoneNumber;
     @NotNull
@@ -32,7 +31,7 @@ public class CreateUserCommand {
     private Boolean isAgreeTerms = Boolean.FALSE;
     @Builder.Default
     //세례 여부
-    private Boolean is_baptized = Boolean.FALSE;
+    private Boolean isBaptized = Boolean.FALSE;
     //세례 일시
     private OffsetDateTime baptizedAt;
 }
