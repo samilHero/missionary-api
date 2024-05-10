@@ -23,10 +23,12 @@ public class MemberContextHandlerResolver implements HandlerMethodArgumentResolv
     }
 
     @Override
-    public Object resolveArgument(MethodParameter parameter,
+    public Object resolveArgument(
+        MethodParameter parameter,
         ModelAndViewContainer mavContainer,
         NativeWebRequest webRequest,
-        WebDataBinderFactory binderFactory) throws Exception {
+        WebDataBinderFactory binderFactory
+    ) throws Exception {
         var auth = SecurityContextHolder.getContext().getAuthentication();
         var getUserDto = memberManagement.getUserByMemberId(auth.getName());
         //TODO: hanbyul-member 정보 조회해서 맞는 값으로 변경

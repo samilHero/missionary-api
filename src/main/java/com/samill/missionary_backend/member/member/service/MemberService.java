@@ -1,8 +1,11 @@
 package com.samill.missionary_backend.member.member.service;
 
+import com.samill.missionary_backend.common.enums.ResponseCode;
 import com.samill.missionary_backend.member.dto.CreateMemberDto;
 import com.samill.missionary_backend.member.dto.GetAdminDto;
+import com.samill.missionary_backend.member.dto.GetMemberServiceTypeDto;
 import com.samill.missionary_backend.member.dto.GetUserDto;
+import com.samill.missionary_backend.member.exception.MemberException;
 import com.samill.missionary_backend.member.mapper.MemberMapper;
 import com.samill.missionary_backend.member.member.entity.Member;
 import com.samill.missionary_backend.member.member.enums.ServiceType;
@@ -50,5 +53,10 @@ public class MemberService {
         tokenClaims.put("userId", adminDto.id());
         tokenClaims.put("name", adminDto.name());
         return tokenClaims;
+    }
+
+    public GetMemberServiceTypeDto getMemberServiceType(String memberId) throws MemberException {
+        var member = memberRepository.findMemberByMemberId(memberId).orElseThrow(() -> new MemberException(ResponseCode.NOT_FOUND_ERROR));
+        return MemberMapper.INSTANCE.memberToGetMemberServiceTypeDto(member);
     }
 }

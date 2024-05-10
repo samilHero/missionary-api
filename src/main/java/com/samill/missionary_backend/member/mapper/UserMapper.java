@@ -14,6 +14,12 @@ public interface UserMapper {
 
     @Mappings({
         @Mapping(target = "id", source = "user.id"),
+        @Mapping(target = "loginId", source = "user.loginId"),
+        @Mapping(target = "birthDate", source = "user.birthDate"),
+        @Mapping(target = "gender", source = "user.gender"),
+        @Mapping(target = "email", source = "user.email"),
+        @Mapping(target = "isBaptized", source = "user.isBaptized"),
+        @Mapping(target = "baptizedAt", source = "user.baptizedAt"),
         @Mapping(target = "name", source = "user.name"),
         @Mapping(target = "password", source = "user.password"),
         @Mapping(target = "getMemberDto", source = "user.member")
