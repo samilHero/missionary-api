@@ -50,7 +50,7 @@ class ParticipationServiceImplTest {
         int userCount = 50;
         int missionaryMaxCount = 10;
 
-        ExecutorService executorService = Executors.newFixedThreadPool(32);
+        ExecutorService executorService = Executors.newFixedThreadPool(5);
         CountDownLatch latch = new CountDownLatch(userCount);
 
         for(int i=0;i<userCount;i++) {

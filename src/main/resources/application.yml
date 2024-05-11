@@ -25,6 +25,8 @@ spring:
     hikari:
       driver-class-name: org.postgresql.Driver
       pool-name: HikariCP4Master
+      maximum-pool-size: 9
+      connection-timeout: 3000
     url: ${RDS_URL}
     username: ${RDS_USERNAME}
     password: ${RDS_PASSWORD}
