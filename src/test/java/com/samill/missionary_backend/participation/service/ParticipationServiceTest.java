@@ -75,7 +75,7 @@ class ParticipationServiceImplTest {
         latch.await();
 
         // 리스너 응답을 늦게 받는 경우를 대비해 테스트를 지연시킨다.
-        Thread.sleep(12000);
+        Thread.sleep(15000);
 
         List<Participation> participationList = participationRepository.findByMissionaryId(missionaryId);
 

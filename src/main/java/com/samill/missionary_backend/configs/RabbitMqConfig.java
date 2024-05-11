@@ -16,18 +16,6 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class RabbitMqConfig {
 
-    @Value("${spring.rabbitmq.host}")
-    private String rabbitmqHost;
-
-    @Value("${spring.rabbitmq.port}")
-    private int rabbitmqPort;
-
-    @Value("${spring.rabbitmq.username}")
-    private String rabbitmqUsername;
-
-    @Value("${spring.rabbitmq.password}")
-    private String rabbitmqPassword;
-
     @Value("${rabbitmq.queue.name}")
     private String queueName;
 
@@ -44,7 +32,7 @@ public class RabbitMqConfig {
      */
     @Bean
     public Queue queue() {
-        return new Queue(queueName);
+        return new Queue(queueName, false);
     }
 
     /**
@@ -67,21 +55,6 @@ public class RabbitMqConfig {
     @Bean
     public Binding binding(Queue queue, DirectExchange exchange) {
         return BindingBuilder.bind(queue).to(exchange).with(routingKey);
-    }
-
-    /**
-     * RabbitMQ 연결을 위한 ConnectionFactory 빈을 생성하여 반환
-     *
-     * @return ConnectionFactory 객체
-     */
-    @Bean
-    public ConnectionFactory connectionFactory() {
-        CachingConnectionFactory connectionFactory = new CachingConnectionFactory();
-        connectionFactory.setHost(rabbitmqHost);
-        connectionFactory.setPort(rabbitmqPort);
-        connectionFactory.setUsername(rabbitmqUsername);
-        connectionFactory.setPassword(rabbitmqPassword);
-        return connectionFactory;
     }
 
     /**
