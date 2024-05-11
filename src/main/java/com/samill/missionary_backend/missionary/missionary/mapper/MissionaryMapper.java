@@ -5,13 +5,10 @@ import com.samill.missionary_backend.missionary.dto.CreateMissionaryCommandPoste
 import com.samill.missionary_backend.missionary.dto.GetMissionaryQueryResult;
 import com.samill.missionary_backend.missionary.missionary.entity.Missionary;
 import com.samill.missionary_backend.missionary.missionary.entity.MissionaryPoster;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.Mappings;
-import org.mapstruct.Named;
+import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
 
-@Mapper
+@Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface MissionaryMapper {
 
     MissionaryMapper INSTANCE = Mappers.getMapper(MissionaryMapper.class);
