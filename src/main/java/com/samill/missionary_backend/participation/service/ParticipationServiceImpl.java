@@ -63,7 +63,7 @@ public class ParticipationServiceImpl implements ParticipationService {
 
     private void validateCreateParticipation(CreateParticipationCommand createParticipationDto, int maxUserCount) throws CommonException {
         //participationPeriod validation 필요
-        Participation participation = participationRepository.findByUserId(createParticipationDto.getUserId());
+        Participation participation = participationRepository.findByUserIdAndMissionaryId(createParticipationDto.getUserId(), createParticipationDto.getMissionaryId());
 
         if (Objects.nonNull(participation)) {
             throw new CommonException(ResponseCode.PARTICIPATION_ALREADY_PARTICIPATED);

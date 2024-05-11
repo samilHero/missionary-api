@@ -10,5 +10,5 @@ import java.util.List;
 public interface ParticipationRepository extends JpaRepository<Participation, String>, ParticipationCustomRepository {
     List<Participation> findByMissionaryId(String missionaryId);
     Participation findByIdAndUserId(String userId, String missionaryId);
-    Participation findByUserId(String userId);
+    Participation findByUserIdAndMissionaryId(String userId, String missionaryId);
 }

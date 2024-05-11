@@ -5,9 +5,10 @@ import com.samill.missionary_backend.participation.dto.GetParticipationQueryResu
 import com.samill.missionary_backend.participation.dto.UpdateParticipationCommand;
 import com.samill.missionary_backend.participation.entity.Participation;
 import org.mapstruct.Mapper;
+import org.mapstruct.ReportingPolicy;
 import org.mapstruct.factory.Mappers;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface ParticipationMapper {
     ParticipationMapper INSTANCE = Mappers.getMapper( ParticipationMapper.class );
     Participation createParticipationCommandToEntity(CreateParticipationCommand participationDto);

@@ -44,8 +44,10 @@ class ParticipationServiceImplTest {
     @DisplayName("선교를 신청할 때 정원이 차면 신청불가")
     void 선착순_선교_테스트() throws InterruptedException{
         String missionaryId = UUID.randomUUID().toString();
+        String userId = UUID.randomUUID().toString();
+
         //given
-        int userCount = 100;
+        int userCount = 50;
         int missionaryMaxCount = 10;
 
         ExecutorService executorService = Executors.newFixedThreadPool(32);
@@ -57,7 +59,7 @@ class ParticipationServiceImplTest {
                     .applyFee(10000)
                     .identificationNumber("9802321111222")
                     .memberId("UUIDD1")
-                    .userId("kdf1")
+                    .userId(userId)
                     .name("홍길동")
                     .build();
 
