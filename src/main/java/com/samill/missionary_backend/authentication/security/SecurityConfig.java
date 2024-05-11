@@ -31,6 +31,8 @@ public class SecurityConfig {
         http.csrf(AbstractHttpConfigurer::disable);
         http.authorizeHttpRequests(
                 authorize -> authorize
+                    .requestMatchers(HttpMethod.GET, "/docs/**").permitAll()
+                    .requestMatchers(HttpMethod.GET, "/v3/api-docs/**").permitAll()
                     .requestMatchers(HttpMethod.GET, "/health-check").permitAll()
                     .requestMatchers(HttpMethod.POST, "/api/user/login").permitAll()
                     .requestMatchers(HttpMethod.POST, "/api/admin/login").permitAll()
