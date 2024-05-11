@@ -42,6 +42,7 @@ class ParticipationServiceImplTest {
 
     @Test
     @DisplayName("선교를 신청할 때 정원이 차면 신청불가")
+    @Transactional
     void 선착순_선교_테스트() throws CommonException {
         String missionaryId = UUID.randomUUID().toString();
         String userId;
