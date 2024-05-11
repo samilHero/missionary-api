@@ -141,6 +141,7 @@ class UserGatewayManagementTests extends AbstractControllerTest {
 
     @Test
     @DisplayName("get user test")
+    @Transactional
     public void getApiResponseTest() throws Exception {
         mockMvc.perform(RestDocumentationRequestBuilders.get(GET_USER_URI)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -167,6 +168,7 @@ class UserGatewayManagementTests extends AbstractControllerTest {
 
 
     @Test
+    @Transactional
     void getMissionariesTest() throws Exception {
 
         mockMvc.perform(
@@ -215,6 +217,7 @@ class UserGatewayManagementTests extends AbstractControllerTest {
     }
 
     @Test
+    @Transactional
     void createParticipationTest() throws Exception {
         mockMvc.perform(
                 RestDocumentationRequestBuilders.post(UserGatewayManagementEndPoint.CREATE_PARTICIPATION)
@@ -249,6 +252,7 @@ class UserGatewayManagementTests extends AbstractControllerTest {
     }
 
     @Test
+    @Transactional
     void updateParticipationTest() throws Exception {
         mockMvc.perform(
                         RestDocumentationRequestBuilders.put(UserGatewayManagementEndPoint.UPDATE_PARTICIPATION)
@@ -279,6 +283,7 @@ class UserGatewayManagementTests extends AbstractControllerTest {
     }
 
     @Test
+    @Transactional
     void deleteParticipationTest() throws Exception {
         mockMvc.perform(
                         RestDocumentationRequestBuilders.put(UserGatewayManagementEndPoint.DELETE_PARTICIPATION)
