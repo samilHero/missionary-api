@@ -103,11 +103,10 @@ dependencyManagement {
     }
 }
 
+
 tasks.named('test') {
-    outputs.dir snippetsDir
     useJUnitPlatform()
 }
-
 
 asciidoctor {
     inputs.dir snippetsDir
@@ -132,25 +131,19 @@ openapi3 {
     format = 'json'
 }
 
-tasks.withType(GenerateSwaggerUI).configureEach {
+tasks.register('copySwaggerDocs', Copy) {
     dependsOn 'openapi3'
-
-//    기존 파일 삭제했다가, build 에 출력한 json 정적파일 복사 (안해도 됨 → local 확인용)
     delete file('src/main/resources/static/docs/openapi3.json')
-    copy {
-        from "build/api-spec"
-        into "src/main/resources/static/docs"
-    }
+    from 'build/api-spec'
+    into 'src/main/resources/static/docs'
 }
 
-
 bootJar {
-    dependsOn asciidoctor
+    dependsOn 'copySwaggerDocs'
     from("${asciidoctor.outputDir}") {
         into 'static/docs'
     }
 }
-
 
 jar {
     enabled = false
