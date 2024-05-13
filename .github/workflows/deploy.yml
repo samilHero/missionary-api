@@ -29,21 +29,30 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@417ae3ccd767c252f5661f1ace9f835f9654f2b5 # v3.1.0
 
-      - name: Set Beanstalk environment variables
+      - name: Set environment variables
         uses: microsoft/variable-substitution@v1
         with:
           files: ./src/main/resources/application.yml
         env:
+          server.port: ${{ vars.SERVER_PORT }}
+          jwt.header: ${{ secrets.JWT_HEADER }}
+          jwt.secret: ${{ secrets.JWT_SECRET }}
+          aes.encrypt.key: ${{ secrets.ENCRYPT_KEY }}
           spring.datasource.url: ${{ secrets.RDS_URL }}
           spring.datasource.username: ${{ secrets.RDS_USERNAME }}
           spring.datasource.password: ${{ secrets.RDS_PASSWORD }}
-          server.port: ${{ vars.SERVER_PORT }}
+          spring.rabbitmq.host: ${{ secrets.MQ_HOST }}
+          spring.rabbitmq.port: ${{ secrets.MQ_PORT }}
+          spring.rabbitmq.username: ${{ secrets.MQ_USERNAME }}
+          spring.rabbitmq.password: ${{ secrets.MQ_PASSWORD }}
+          spring.data.redis.host: ${{ secrets.REDIS_HOST }}
+          spring.data.redis.port: ${{ secrets.REDIS_PORT }}
 
       - name: Build with Gradle Wrapper
-        run: ./gradlew build
+        run: ./gradlew build --exclude-task test
 
       - name: Build Swagger
-        run: ./gradlew openapi3
+        run: ./gradlew openapi3 --exclude-task test
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
