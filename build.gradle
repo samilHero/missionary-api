@@ -134,8 +134,9 @@ openapi3 {
 tasks.register('copySwaggerDocs', Copy) {
     dependsOn 'openapi3'
     delete file('src/main/resources/static/docs/openapi3.json')
-    from 'build/api-spec'
+    from "${openapi3.outputDirectory}"
     into 'src/main/resources/static/docs'
+    into 'static/docs'
 }
 
 bootJar {
