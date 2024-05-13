@@ -3,13 +3,13 @@ server:
 
 jwt:
   #ssecret property 로 관리 필요
-  header: Authorization
-  secret: Y2hvcHBhLWRvbnQtYml0ZS1tZS1zcHJpbmctYm9vdC1qd3QtdGVzdC1zZWNyZXQta2V5LWNob3BwYS1kb250LWJpdGUtbWUtc3ByaW5nLWJvb3Qtand0LXRlc3Qtc2VjcmV0LWtleQo=
+  header: ${JWT_HEADER}
+  secret: ${JWT_SECRET}
   token-validity-in-seconds: 86400
 
-#spring:
-
-
+aes:
+  encrypt:
+    key: ${ENCRYPT_KEY}
 
 spring:
   modulith:
@@ -21,12 +21,10 @@ spring:
     driver-class-name: org.postgresql.Driver
     type: com.zaxxer.hikari.HikariDataSource
     hikari:
-      driver-class-name: org.postgresql.Driver
-      pool-name: HikariCP4Master
-      connection-timeout: 15000
-      maximum-pool-size: 50
-      max-lifetime: 240000
-      leak-detection-threshold: 10000
+      maximum-pool-size: 20
+      connection-timeout: 10000 #10s
+      idle-timeout: 50000 #50s
+      max-lifetime: 50000 #50s
     url: ${RDS_URL}
     username: ${RDS_USERNAME}
     password: ${RDS_PASSWORD}
@@ -43,3 +41,42 @@ spring:
         show_sql: true
         highlight_sql: true
     defer-datasource-initialization: true
+
+  # RabbitMQ 연결 정보
+  rabbitmq:
+    host: ${MQ_HOST}
+    port: ${MQ_PORT}
+    username: ${MQ_USERNAME}
+    password: ${MQ_PASSWORD}
+    ssl:
+      enabled: true
+
+  # redis
+  data:
+    redis:
+      host: ${REDIS_HOST}
+      port: ${REDIS_PORT}
+
+# RabbitMQ queue, exchange, routing-key 정보
+rabbitmq:
+  queue:
+    name: missionary
+  exchange:
+    name: missionary.exchange
+  routing:
+    key: missionary.key
+
+
+springdoc:
+  default-consumes-media-type: application/json;charset=UTF-8
+  default-produces-media-type: application/json;charset=UTF-8
+  swagger-ui:
+    url: /docs/openapi3.json
+    path: /docs/swagger
+
+logging:
+  level:
+    org.hibernate.SQL: info
+    root: info
+    com.zaxxer.hikari.pool.HikariPool: debug
+
