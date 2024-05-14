@@ -13,8 +13,8 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
+    environment: dev
     permissions:
       contents: read
 
