@@ -17,9 +17,6 @@ def SERVER_PORT = env['SERVER_PORT'] ?: "8080"
 def SERVER_HOST = env['SERVER_HOST'] ?: "http://localhost:${SERVER_PORT}"
 def IS_DEV = (env['BUILD_ENV'] ?: "dev") == "dev"
 
-println "SERVER_HOST: ${SERVER_HOST}"
-println "IS_DEV: ${IS_DEV}"
-
 java {
     sourceCompatibility = '21'
 }
@@ -110,7 +107,6 @@ tasks.named('test') {
 }
 
 openapi3 {
-    println SERVER_HOST
     server = SERVER_HOST
     title = 'Post Service API'
     description = 'Post Service API description'
