@@ -15,9 +15,14 @@ jobs:
   deploy:
 
     runs-on: ubuntu-latest
+
     environment: dev
     permissions:
       contents: read
+
+    env:
+      SERVER_HOST: ${{ secrets.SERVER_HOST }}
+      IS_DEV: true
 
     steps:
       - uses: actions/checkout@v4

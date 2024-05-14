@@ -9,16 +9,16 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
 import org.mapstruct.Named;
+import org.mapstruct.ReportingPolicy;
 import org.mapstruct.factory.Mappers;
 
-@Mapper
+@Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface MissionaryMapper {
 
     MissionaryMapper INSTANCE = Mappers.getMapper(MissionaryMapper.class);
 
 
     @Mappings({
-        @Mapping(target = "id", ignore = true),
         @Mapping(target = "participationPeriod.startDate", source = "participationStartDate"),
         @Mapping(target = "participationPeriod.endDate", source = "participationEndDate"),
         @Mapping(target = "workPeriod.startDate", source = "workStartDate"),
@@ -26,20 +26,11 @@ public interface MissionaryMapper {
         @Mapping(target = "pastor.name", source = "pastorName"),
         @Mapping(target = "pastor.phone", source = "pastorPhone"),
         @Mapping(target = "posters", source = "posters", qualifiedByName = "createMissionaryCommandPosterToMissionaryPoster"),
-        @Mapping(target = "currentParticipantCount", ignore = true),
-        @Mapping(target = "staffs", ignore = true),
-        @Mapping(target = "boards", ignore = true),
-        @Mapping(target = "deletedAt", ignore = true)
     })
     Missionary createMissionaryCommandToMissionary(CreateMissionaryCommand updateMissionaryCommand);
 
 
     @Named("createMissionaryCommandPosterToMissionaryPoster")
-    @Mappings({
-        @Mapping(target = "id", ignore = true),
-        @Mapping(target = "missionary", ignore = true),
-        @Mapping(target = "deletedAt", ignore = true),
-    })
     MissionaryPoster createMissionaryCommandPosterToMissionaryPoster(CreateMissionaryCommandPoster createMissionaryCommandPoster);
 
 
