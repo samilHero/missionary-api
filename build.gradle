@@ -12,8 +12,13 @@ version = '0.0.1-SNAPSHOT'
 def env = System.getenv()
 
 // 환경 변수 "DB_USERNAME"의 값을 가져옵니다.
-def SERVER_PORT = env['SERVER_PORT']
 
+def SERVER_PORT = env['SERVER_PORT'] ?: "8080"
+def SERVER_HOST = env['SERVER_HOST'] ?: "http://localhost:${SERVER_PORT}"
+def IS_DEV = (env['BUILD_ENV'] ?: "dev") == "dev"
+
+println "SERVER_HOST: ${SERVER_HOST}"
+println "IS_DEV: ${IS_DEV}"
 
 java {
     sourceCompatibility = '21'
@@ -105,20 +110,27 @@ tasks.named('test') {
 }
 
 openapi3 {
-    servers = [
-            { url = "http://localhost:${SERVER_PORT}" },
-    ]
+    println SERVER_HOST
+    server = SERVER_HOST
     title = 'Post Service API'
     description = 'Post Service API description'
     version = '1.0.0'
     format = 'json'
 }
 
-bootJar {
+tasks.register('copySwaggerDocs', Copy) {
     dependsOn 'openapi3'
+    delete 'src/main/resources/static/docs/openapi3.json'
+    from "${openapi3.outputDirectory}"
+    into './src/main/resources/static/docs'
+}
 
-    from("${openapi3.outputDirectory}") {
-        into "BOOT-INF/classes/static/docs"
+bootJar {
+    if (IS_DEV) {
+        dependsOn 'copySwaggerDocs'
+        from("${openapi3.outputDirectory}") {
+            into "BOOT-INF/classes/static/docs"
+        }
     }
 }
 
