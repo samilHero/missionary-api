@@ -7,28 +7,45 @@ import static com.samill.missionary_backend.gateway.endPoint.UserGatewayManageme
 import static com.samill.missionary_backend.gateway.endPoint.UserGatewayManagementEndPoint.GET_MISSIONARIES;
 import static com.samill.missionary_backend.gateway.endPoint.UserGatewayManagementEndPoint.GET_USER_URI;
 import static com.samill.missionary_backend.gateway.endPoint.UserGatewayManagementEndPoint.USER_LOGIN_URI;
+import static org.mockito.Mockito.when;
+import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
+import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessRequest;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.epages.restdocs.apispec.ResourceSnippetParameters;
+import com.epages.restdocs.apispec.ResourceSnippetParametersBuilder;
 import com.epages.restdocs.apispec.Schema;
 import com.samill.missionary_backend.common.AbstractControllerTest;
+import com.samill.missionary_backend.gateway.dto.CreateChurchRequest;
 import com.samill.missionary_backend.gateway.dto.CreateUserRequest;
 import com.samill.missionary_backend.gateway.dto.LoginUserRequest;
 import java.time.OffsetDateTime;
 import java.util.UUID;
+
+import com.samill.missionary_backend.gateway.endPoint.AdminGatewayManagementEndPoint;
+import com.samill.missionary_backend.gateway.endPoint.UserGatewayManagementEndPoint;
+import com.samill.missionary_backend.participation.ParticipationExternalService;
+import com.samill.missionary_backend.participation.dto.CreateParticipationCommand;
+import com.samill.missionary_backend.participation.dto.DeleteParticipationCommand;
+import com.samill.missionary_backend.participation.dto.GetParticipationQueryResult;
+import com.samill.missionary_backend.participation.dto.UpdateParticipationCommand;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.restdocs.mockmvc.MockMvcRestDocumentation;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
@@ -37,7 +54,8 @@ import org.springframework.transaction.annotation.Transactional;
 @SpringBootTest
 @AutoConfigureMockMvc
 class UserGatewayManagementTests extends AbstractControllerTest {
-
+    @MockBean
+    private ParticipationExternalService participationExternalService;
 
     @Test
     @DisplayName("user sign up test")
@@ -123,6 +141,7 @@ class UserGatewayManagementTests extends AbstractControllerTest {
 
     @Test
     @DisplayName("get user test")
+    @Transactional
     public void getApiResponseTest() throws Exception {
         mockMvc.perform(RestDocumentationRequestBuilders.get(GET_USER_URI)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -149,6 +168,7 @@ class UserGatewayManagementTests extends AbstractControllerTest {
 
 
     @Test
+    @Transactional
     void getMissionariesTest() throws Exception {
 
         mockMvc.perform(
@@ -194,5 +214,103 @@ class UserGatewayManagementTests extends AbstractControllerTest {
             )
             .andExpect(MockMvcResultMatchers.status().isOk());
 
+    }
+
+    @Test
+    @Transactional
+    void createParticipationTest() throws Exception {
+        mockMvc.perform(
+                RestDocumentationRequestBuilders.post(UserGatewayManagementEndPoint.CREATE_PARTICIPATION)
+                        .content(
+                            jacksonObjectMapper.writeValueAsString(
+                                new CreateParticipationCommand(
+                                        "71d8cee6-e2bc-472a-ab1f-c61c70dc0e51",
+                                        "MEM1",
+                                        "장예찬",
+                                        "jang1",
+                                        "932393-2929292",
+                                        30000
+                                )
+                        ))
+                        .header("Authorization", getAuthorizationAdminOfHeader())
+                        .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andExpect(status().isOk())
+                .andDo(
+                        document(snippetPath,
+                        new ResourceSnippetParametersBuilder()
+                                .description("선교 참가 신청 API")
+                                .requestFields(
+                                        fieldWithPath("missionaryId").description("선교 ID"),
+                                        fieldWithPath("identificationNumber").description("주민등록번호")
+                                )
+                                .responseFields(
+                                        fieldWithPath("statusCode").type(JsonFieldType.NUMBER).description("결과 코드"),
+                                        fieldWithPath("message").type(JsonFieldType.STRING).description("결과 메시지")
+                                )
+                ));
+    }
+
+    @Test
+    @Transactional
+    void updateParticipationTest() throws Exception {
+        mockMvc.perform(
+                        RestDocumentationRequestBuilders.put(UserGatewayManagementEndPoint.UPDATE_PARTICIPATION)
+                                .content(
+                                        jacksonObjectMapper.writeValueAsString(
+                                                new UpdateParticipationCommand(
+                                                        "dfdfde6-e2bc-472a-ab1f-1111111",
+                                                        "940555-2222333"
+                                                )
+                                        ))
+                                .header("Authorization", getAuthorizationAdminOfHeader())
+                                .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andExpect(status().isOk())
+                .andDo(
+                        document(snippetPath,
+                                new ResourceSnippetParametersBuilder()
+                                        .description("선교 참가 신청내역 수정 API")
+                                        .requestFields(
+                                                fieldWithPath("id").description("참가신청 ID"),
+                                                fieldWithPath("identificationNumber").description("주민등록번호")
+                                        )
+                                        .responseFields(
+                                                fieldWithPath("statusCode").type(JsonFieldType.NUMBER).description("결과 코드"),
+                                                fieldWithPath("message").type(JsonFieldType.STRING).description("결과 메시지")
+                                        )
+                        ));
+    }
+
+    @Test
+    @Transactional
+    void deleteParticipationTest() throws Exception {
+        mockMvc.perform(
+                        RestDocumentationRequestBuilders.put(UserGatewayManagementEndPoint.DELETE_PARTICIPATION)
+                                .content(
+                                        jacksonObjectMapper.writeValueAsString(
+                                                new DeleteParticipationCommand(
+                                                        "dfdfde6-e2bc-472a-ab1f-1111111",
+                                                        "dfdfde6-11212-121212",
+                                                        "jang1"
+                                                )
+                                        ))
+                                .header("Authorization", getAuthorizationAdminOfHeader())
+                                .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andExpect(status().isOk())
+                .andDo(
+                        document(snippetPath,
+                                new ResourceSnippetParametersBuilder()
+                                        .description("선교 참가 신청취소 API")
+                                        .requestFields(
+                                                fieldWithPath("id").description("참가신청 ID"),
+                                                fieldWithPath("missionaryId").description("선교 ID")
+                                        )
+                                        .responseFields(
+                                                fieldWithPath("statusCode").type(JsonFieldType.NUMBER).description("결과 코드"),
+                                                fieldWithPath("message").type(JsonFieldType.STRING).description("결과 메시지")
+                                        )
+                        ));
     }
 }

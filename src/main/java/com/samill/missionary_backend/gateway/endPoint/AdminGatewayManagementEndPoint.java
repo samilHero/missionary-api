@@ -28,5 +28,7 @@ public class AdminGatewayManagementEndPoint {
 
     public static final String DELETE_MISSIONARY = BASE_URL + "/missionaries/{missionaryId}";
 
+    public static final String GET_PARTICIPATIONS = BASE_URL + "/participations";
 
+    public static final String GET_PARTICIPATION = BASE_URL + "/participation/{participationId}";
 }

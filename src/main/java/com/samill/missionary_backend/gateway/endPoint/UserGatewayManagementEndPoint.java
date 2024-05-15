@@ -8,4 +8,10 @@ public class UserGatewayManagementEndPoint {
     public static final String CREATE_USER_URI = BASE_URL + "/user";
     public static final String GET_MISSIONARIES = BASE_URL + "/missionaries";
     public static final String GET_MISSIONARY = BASE_URL + "/missionaries/{missionaryId}";
+
+    public static final String CREATE_PARTICIPATION = BASE_URL + "/participation";
+
+    public static final String UPDATE_PARTICIPATION = BASE_URL + "/participation";
+
+    public static final String DELETE_PARTICIPATION = BASE_URL + "/participation";
 }
