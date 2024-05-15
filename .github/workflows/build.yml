@@ -13,10 +13,15 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
+
+    environment: dev
     permissions:
       contents: read
+
+    env:
+      SERVER_HOST: ${{ secrets.SERVER_HOST }}
+      IS_DEV: true
 
     steps:
       - uses: actions/checkout@v4
@@ -27,18 +32,41 @@ jobs:
           java-version: '21'
           distribution: 'corretto'
 
-      - name: Set Beanstalk environment variables
-        uses:  microsoft/variable-substitution@v1
+      - name: Set environment variables
+        uses: microsoft/variable-substitution@v1
         with:
           files: ./src/main/resources/application.yml
         env:
+          server.port: ${{ vars.SERVER_PORT }}
+          jwt.header: ${{ secrets.JWT_HEADER }}
+          jwt.secret: ${{ secrets.JWT_SECRET }}
+          aes.encrypt.key: ${{ secrets.ENCRYPT_KEY }}
           spring.datasource.url: ${{ secrets.RDS_URL }}
           spring.datasource.username: ${{ secrets.RDS_USERNAME }}
           spring.datasource.password: ${{ secrets.RDS_PASSWORD }}
-          server.port: ${{ vars.SERVER_PORT }}
+          spring.rabbitmq.host: ${{ secrets.MQ_HOST }}
+          spring.rabbitmq.port: ${{ secrets.MQ_PORT }}
+          spring.rabbitmq.username: ${{ secrets.MQ_USERNAME }}
+          spring.rabbitmq.password: ${{ secrets.MQ_PASSWORD }}
+          spring.data.redis.host: ${{ secrets.REDIS_HOST }}
+          spring.data.redis.port: ${{ secrets.REDIS_PORT }}
 
-      # Configure Gradle for optimal use in GiHub Actions, including caching of downloaded dependencies.
-      # See: https://github.com/gradle/actions/blob/main/setup-gradle/README.md
+      - name: Create Vpn Config File From Secrets
+        run: |
+          echo "${{ secrets.VPN_CONFIG }}" > .github/workflows/client.ovpn
+
+      - name: Install OpenVPN
+        run: |
+          sudo apt update
+          sudo apt install -y openvpn openvpn-systemd-resolved
+
+      - name: Connect to VPN
+        uses: "kota65535/github-openvpn-connect-action@v2"
+        with:
+          config_file: .github/workflows/client.ovpn
+          client_key: ${{ secrets.OVPN_CLIENT_KEY }}
+
+
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@417ae3ccd767c252f5661f1ace9f835f9654f2b5 # v3.1.0
 
