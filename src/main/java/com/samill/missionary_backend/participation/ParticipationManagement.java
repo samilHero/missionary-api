@@ -1,6 +1,7 @@
 package com.samill.missionary_backend.participation;
 
 import com.samill.missionary_backend.common.dto.MemberContext;
+import com.samill.missionary_backend.common.enums.ResponseCode;
 import com.samill.missionary_backend.common.exception.CommonException;
 import com.samill.missionary_backend.missionary.MissionaryExternalService;
 import com.samill.missionary_backend.missionary.dto.GetMissionaryQuery;
@@ -25,16 +26,18 @@ class ParticipationManagement implements ParticipationExternalService {
 
     @Override
     public void createParticipation(@NonNull CreateParticipationCommand createParticipationCommand) throws CommonException {
+        validateParticipationPeriod(createParticipationCommand.getMissionaryId());
         GetMissionaryQuery getMissionaryQuery = new GetMissionaryQuery(createParticipationCommand.getMissionaryId());
         GetMissionaryQueryResult getMissionaryQueryResult = missionaryExternalService.getMissionary(getMissionaryQuery);
         int maxUserCount = getMissionaryQueryResult.maximumParticipantCount();
         createParticipationCommand.setApplyFee(getMissionaryQueryResult.price());
         participationService.createParticipation(createParticipationCommand, maxUserCount);
+
     }
 
     @Override
-    public void deleteParticipation(@NonNull DeleteParticipationCommand deleteParticipationCommand) throws CommonException {
-        participationService.deleteParticipation(deleteParticipationCommand);
+    public void deleteParticipation(String participationId, @NonNull DeleteParticipationCommand deleteParticipationCommand) throws CommonException {
+        participationService.deleteParticipation(participationId, deleteParticipationCommand);
     }
 
     @Override
@@ -49,7 +52,13 @@ class ParticipationManagement implements ParticipationExternalService {
     }
 
     @Override
-    public void updateParticipation(@NonNull UpdateParticipationCommand updateParticipationCommand) throws CommonException {
-        participationService.updateParticipation(updateParticipationCommand);
+    public void updateParticipation(String participationId, @NonNull UpdateParticipationCommand updateParticipationCommand) throws CommonException {
+        participationService.updateParticipation(participationId, updateParticipationCommand);
+    }
+
+    private void validateParticipationPeriod(String missionaryId) throws CommonException {
+        if (!missionaryExternalService.isInParticipationPeriod(missionaryId)) {
+            throw new CommonException(ResponseCode.INVALID_PARTICIPATION_PERIOD);
+        }
     }
 }

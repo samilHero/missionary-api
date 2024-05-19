@@ -94,16 +94,15 @@ class ParticipationServiceTest {
 
 
         DeleteParticipationCommand deleteParticipationCommand = DeleteParticipationCommand.builder()
-                .id(participation.getId())
                 .missionaryId(missionaryId)
                 .userId("kdf1")
                 .build();
 
         //when
-        participationService.deleteParticipation(deleteParticipationCommand);
+        participationService.deleteParticipation(participation.getId(), deleteParticipationCommand);
 
         //then
-        Optional<Participation> result = participationRepository.findById(deleteParticipationCommand.getId());
+        Optional<Participation> result = participationRepository.findById(participation.getId());
         assertTrue(result.isEmpty());
     }
 

@@ -375,34 +375,36 @@ class AdminGatewayManagementTests extends AbstractControllerTest {
                         .queryParam("pageNumber", "0")
                 )
                 .andExpect(status().isOk())
-                .andDo(MockMvcRestDocumentation.document(snippetPath,
-                        requestHeaders(
-                                headerWithName("Authorization").description("Authorization token")
-                        ),
-                        queryParameters(
-                                parameterWithName("name").description("신청자 이름"),
-                                parameterWithName("userId").description("신청자 ID"),
-                                parameterWithName("missionaryId").description("선교 ID"),
-                                parameterWithName("pageSize").description("조회할 페이지 단위"),
-                                parameterWithName("pageNumber").description("현재 페이지")
-                        ),
-                        relaxedResponseFields(
-                                fieldWithPath("statusCode").type(JsonFieldType.NUMBER).description("결과 코드"),
-                                fieldWithPath("message").type(JsonFieldType.STRING).description("결과 메시지"),
-                                fieldWithPath("data.content[].id").type(JsonFieldType.STRING).description("신청내역 ID"),
-                                fieldWithPath("data.content[].missionaryId").type(JsonFieldType.STRING).description("선교 ID"),
-                                fieldWithPath("data.content[].userId").type(JsonFieldType.STRING).description("신청자 ID"),
-                                fieldWithPath("data.content[].name").type(JsonFieldType.STRING).description("신청자 이름"),
-                                fieldWithPath("data.content[].memberId").type(JsonFieldType.STRING).description("신청자 멤버 ID"),
-                                fieldWithPath("data.content[].applyFee").type(JsonFieldType.NUMBER).description("선교입금액"),
-                                fieldWithPath("data.content[].isPaid").type(JsonFieldType.BOOLEAN).description("입금여부"),
-                                fieldWithPath("data.content[].identificationNumber").type(JsonFieldType.STRING).description("주민등록번호"),
-                                fieldWithPath("data.content[].isOwnCar").type(JsonFieldType.BOOLEAN).description("자차여부"),
-                                fieldWithPath("data.content[].createdAt").type(JsonFieldType.STRING).description("신청일시"),
-                                fieldWithPath("data.totalPages").type(JsonFieldType.NUMBER).description("총 페이지 수"),
-                                fieldWithPath("data.size").type(JsonFieldType.NUMBER).description("총 갯수")
+                .andDo(
+                        document(snippetPath,
+                                new ResourceSnippetParametersBuilder()
+                                        .tag("ADMIN_PARTICIPATION")
+                                        .description("신청자 목록 조회 API")
+                                        .pathParameters(
+                                                parameterWithName("name").description("신청자 이름"),
+                                                parameterWithName("userId").description("신청자 ID"),
+                                                parameterWithName("missionaryId").description("선교 ID"),
+                                                parameterWithName("pageSize").description("조회할 페이지 단위"),
+                                                parameterWithName("pageNumber").description("현재 페이지")
+                                        )
+                                        .responseFields(
+                                                fieldWithPath("statusCode").type(JsonFieldType.NUMBER).description("결과 코드"),
+                                                fieldWithPath("message").type(JsonFieldType.STRING).description("결과 메시지"),
+                                                fieldWithPath("data.content[].id").type(JsonFieldType.STRING).description("신청내역 ID"),
+                                                fieldWithPath("data.content[].missionaryId").type(JsonFieldType.STRING).description("선교 ID"),
+                                                fieldWithPath("data.content[].userId").type(JsonFieldType.STRING).description("신청자 ID"),
+                                                fieldWithPath("data.content[].name").type(JsonFieldType.STRING).description("신청자 이름"),
+                                                fieldWithPath("data.content[].memberId").type(JsonFieldType.STRING).description("신청자 멤버 ID"),
+                                                fieldWithPath("data.content[].applyFee").type(JsonFieldType.NUMBER).description("선교입금액"),
+                                                fieldWithPath("data.content[].isPaid").type(JsonFieldType.BOOLEAN).description("입금여부"),
+                                                fieldWithPath("data.content[].identificationNumber").type(JsonFieldType.STRING).description("주민등록번호"),
+                                                fieldWithPath("data.content[].isOwnCar").type(JsonFieldType.BOOLEAN).description("자차여부"),
+                                                fieldWithPath("data.content[].createdAt").type(JsonFieldType.STRING).description("신청일시"),
+                                                fieldWithPath("data.totalPages").type(JsonFieldType.NUMBER).description("총 페이지 수"),
+                                                fieldWithPath("data.size").type(JsonFieldType.NUMBER).description("총 갯수")
+                                        )
                         )
-                ));
+                );
     }
 
     @Test
@@ -431,24 +433,29 @@ class AdminGatewayManagementTests extends AbstractControllerTest {
                                 .contentType(MediaType.APPLICATION_JSON)
                 )
                 .andExpect(status().isOk())
-                .andDo(MockMvcRestDocumentation.document(snippetPath,
-                        requestHeaders(
-                                headerWithName("Authorization").description("Authorization token")
-                        ),
-                        responseFields(
-                                fieldWithPath("statusCode").type(JsonFieldType.NUMBER).description("결과 코드"),
-                                fieldWithPath("message").type(JsonFieldType.STRING).description("결과 메시지"),
-                                fieldWithPath("data.id").type(JsonFieldType.STRING).description("신청내역 ID"),
-                                fieldWithPath("data.missionaryId").type(JsonFieldType.STRING).description("선교 ID"),
-                                fieldWithPath("data.userId").type(JsonFieldType.STRING).description("신청자 ID"),
-                                fieldWithPath("data.name").type(JsonFieldType.STRING).description("신청자 이름"),
-                                fieldWithPath("data.memberId").type(JsonFieldType.STRING).description("신청자 멤버 ID"),
-                                fieldWithPath("data.applyFee").type(JsonFieldType.NUMBER).description("선교입금액"),
-                                fieldWithPath("data.isPaid").type(JsonFieldType.BOOLEAN).description("입금여부"),
-                                fieldWithPath("data.identificationNumber").type(JsonFieldType.STRING).description("주민등록번호"),
-                                fieldWithPath("data.isOwnCar").type(JsonFieldType.BOOLEAN).description("자차여부"),
-                                fieldWithPath("data.createdAt").description("신청일시")
+                .andDo(
+                        document(snippetPath,
+                                new ResourceSnippetParametersBuilder()
+                                        .tag("ADMIN_PARTICIPATION")
+                                        .description("신청자 상세 조회 API")
+                                        .pathParameters(
+                                                parameterWithName("participationId").description("신청내역 ID")
+                                        )
+                                        .responseFields(
+                                                fieldWithPath("statusCode").type(JsonFieldType.NUMBER).description("결과 코드"),
+                                                fieldWithPath("message").type(JsonFieldType.STRING).description("결과 메시지"),
+                                                fieldWithPath("data.id").type(JsonFieldType.STRING).description("신청내역 ID"),
+                                                fieldWithPath("data.missionaryId").type(JsonFieldType.STRING).description("선교 ID"),
+                                                fieldWithPath("data.userId").type(JsonFieldType.STRING).description("신청자 ID"),
+                                                fieldWithPath("data.name").type(JsonFieldType.STRING).description("신청자 이름"),
+                                                fieldWithPath("data.memberId").type(JsonFieldType.STRING).description("신청자 멤버 ID"),
+                                                fieldWithPath("data.applyFee").type(JsonFieldType.NUMBER).description("선교입금액"),
+                                                fieldWithPath("data.isPaid").type(JsonFieldType.BOOLEAN).description("입금여부"),
+                                                fieldWithPath("data.identificationNumber").type(JsonFieldType.STRING).description("주민등록번호"),
+                                                fieldWithPath("data.isOwnCar").type(JsonFieldType.BOOLEAN).description("자차여부"),
+                                                fieldWithPath("data.createdAt").description("신청일시")
+                                        )
                         )
-                ));
+                );
     }
 }

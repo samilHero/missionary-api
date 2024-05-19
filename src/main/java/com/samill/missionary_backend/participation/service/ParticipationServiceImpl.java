@@ -16,7 +16,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.OffsetDateTime;
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -37,9 +40,9 @@ public class ParticipationServiceImpl implements ParticipationService {
     }
 
     @Override
-    public void deleteParticipation(DeleteParticipationCommand deleteParticipationCommand) throws CommonException {
-        validateDeleteParticipation(deleteParticipationCommand);
-        Participation participation = participationRepository.findById(deleteParticipationCommand.getId())
+    public void deleteParticipation(String participationId, DeleteParticipationCommand deleteParticipationCommand) throws CommonException {
+        validateDeleteParticipation(participationId, deleteParticipationCommand);
+        Participation participation = participationRepository.findById(participationId)
                 .orElseThrow(() -> new CommonException(ResponseCode.PARTICIPATION_NOT_FOUND));
         participationRepository.delete(participation);
         participantCountRepository.decrement(deleteParticipationCommand.getMissionaryId());
@@ -51,8 +54,8 @@ public class ParticipationServiceImpl implements ParticipationService {
         return participationRepository.findAllByQuery(getParticipationsQuery, pageable);
     }
     @Override
-    public void updateParticipation(UpdateParticipationCommand updateParticipationCommand) throws CommonException {
-        Participation participation = participationRepository.findById(updateParticipationCommand.getId())
+    public void updateParticipation(String participationId, UpdateParticipationCommand updateParticipationCommand) throws CommonException {
+        Participation participation = participationRepository.findById(participationId)
                 .orElseThrow(() -> new CommonException(ResponseCode.PARTICIPATION_NOT_FOUND));
         participation.updateIdentificationNumber(updateParticipationCommand.getIdentificationNumber());
         participationRepository.save(participation);
@@ -63,6 +66,17 @@ public class ParticipationServiceImpl implements ParticipationService {
         Participation participation = participationRepository.findById(participationId)
                 .orElseThrow(() -> new CommonException(ResponseCode.PARTICIPATION_NOT_FOUND));
         return ParticipationMapper.INSTANCE.entityToGetParticipationQueryResult(participation);
+    }
+
+    @Override
+    public void updateParticipationPrivacyInfo(List<String> list) {
+        // 선교 종료일 >= beforeDate 인 경우 주민번호 삭제
+        List<Participation> participationList = list.stream()
+                .map(missionaryId -> participationRepository.findByMissionaryId(missionaryId))
+                .flatMap(List::stream)
+                .peek(data -> data.updateIdentificationNumber(""))
+                .collect(Collectors.toList());
+        participationRepository.saveAll(participationList);
     }
 
     private void validateCreateParticipation(CreateParticipationCommand createParticipationDto, int maxUserCount) throws CommonException {
@@ -81,9 +95,8 @@ public class ParticipationServiceImpl implements ParticipationService {
         }
     }
 
-    private void validateDeleteParticipation(DeleteParticipationCommand deleteParticipationCommand) throws CommonException {
-        //participationPeriod validation 필요
-        Participation participation = participationRepository.findByIdAndUserId(deleteParticipationCommand.getId(), deleteParticipationCommand.getUserId());
+    private void validateDeleteParticipation(String participationId, DeleteParticipationCommand deleteParticipationCommand) throws CommonException {
+        Participation participation = participationRepository.findByIdAndUserIdAndMissionaryId(participationId, deleteParticipationCommand.getUserId(), deleteParticipationCommand.getMissionaryId());
         if (Objects.isNull(participation)) {
             throw new CommonException(ResponseCode.PARTICIPATION_NOT_ENROLLED);
         }

@@ -94,15 +94,15 @@ public class UserGatewayManagement {
     }
 
     @PutMapping(UPDATE_PARTICIPATION)
-    public void updateParticipation(UpdateParticipation updateParticipation) throws CommonException {
+    public void updateParticipation(@PathVariable String participationId, UpdateParticipation updateParticipation) throws CommonException {
         UpdateParticipationCommand command = ParticipationGatewayMapper.INSTANCE.updateParticipationToUpdateParticipationCommand(updateParticipation);
-        participationExternalService.updateParticipation(command);
+        participationExternalService.updateParticipation(participationId, command);
     }
 
     @DeleteMapping(DELETE_PARTICIPATION)
-    public void deleteParticipation(DeleteParticipation deleteParticipation) throws CommonException {
+    public void deleteParticipation(@PathVariable String participationId, DeleteParticipation deleteParticipation) throws CommonException {
         DeleteParticipationCommand command = ParticipationGatewayMapper.INSTANCE.deleteParticipationToDeleteParticipationCommand(deleteParticipation);
-        participationExternalService.deleteParticipation(command);
+        participationExternalService.deleteParticipation(participationId, command);
     }
 
 

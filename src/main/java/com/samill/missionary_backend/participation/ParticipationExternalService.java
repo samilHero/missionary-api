@@ -9,8 +9,8 @@ import org.springframework.stereotype.Service;
 @Service
 public interface ParticipationExternalService {
     void createParticipation(CreateParticipationCommand createParticipationDto) throws CommonException;
-    void deleteParticipation(DeleteParticipationCommand deleteParticipationCommand) throws CommonException;
+    void deleteParticipation(String participationId, DeleteParticipationCommand deleteParticipationCommand) throws CommonException;
     Page<GetParticipationQueryResult> getParticipations(GetParticipationsQuery getParticipationsQuery, Pageable pageable);
     GetParticipationQueryResult getParticipation(String participationId) throws CommonException;
-    void updateParticipation(UpdateParticipationCommand updateParticipationCommand) throws CommonException;
+    void updateParticipation(String participationId, UpdateParticipationCommand updateParticipationCommand) throws CommonException;
 }

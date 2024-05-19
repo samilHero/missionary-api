@@ -7,5 +7,5 @@ import org.springframework.data.domain.Pageable;
 
 public interface ParticipationCustomRepository {
 //    List<GetParticipationQueryResult> findAllByConditionOrderByCreatedAtAsc(GetParticipationsQuery getParticipationsQuery);
-Page<GetParticipationQueryResult> findAllByQuery(GetParticipationsQuery getParticipationsQuery, Pageable pageable);
+    Page<GetParticipationQueryResult> findAllByQuery(GetParticipationsQuery getParticipationsQuery, Pageable pageable);
 }

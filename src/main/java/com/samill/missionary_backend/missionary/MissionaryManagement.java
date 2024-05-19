@@ -3,10 +3,7 @@ package com.samill.missionary_backend.missionary;
 import com.samill.missionary_backend.church.dto.CreateMissionaryCommandResult;
 import com.samill.missionary_backend.common.exception.CommonException;
 import com.samill.missionary_backend.member.MemberExternalService;
-import com.samill.missionary_backend.missionary.dto.CreateMissionaryCommand;
-import com.samill.missionary_backend.missionary.dto.GetMissionaryQuery;
-import com.samill.missionary_backend.missionary.dto.GetMissionaryQueryResult;
-import com.samill.missionary_backend.missionary.dto.UpdateMissionaryCommand;
+import com.samill.missionary_backend.missionary.dto.*;
 import com.samill.missionary_backend.missionary.missionary.service.MissionaryService;
 import com.samill.missionary_backend.missionary.staff.service.MissionaryStaffService;
 import java.util.List;
@@ -56,6 +53,18 @@ class MissionaryManagement implements MissionaryExternalService {
         @NonNull List<String> staffIds
     ) {
 
+    }
+
+    @Override
+    public boolean isInParticipationPeriod(@NonNull String missionaryId) {
+        // 선교 신청 가능 기간인지?
+        return true;
+    }
+
+    @Override
+    public List<String> getDaysBeforeMissionaryIds(GetMissionaryIdsQuery getMissionaryIdsQuery) {
+        // 선교 종료일이 특정 date 보다 작거나 같은 선교 ID List 주세요
+        return null;
     }
 
 
