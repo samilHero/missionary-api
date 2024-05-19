@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @RequiredArgsConstructor
 @Repository
 public class ParticipantCountRepository {
@@ -24,5 +26,11 @@ public class ParticipantCountRepository {
         return redisTemplate
                 .opsForValue()
                 .decrement(missionaryId);
+    }
+
+    public Integer get(String missionaryId) {
+        return Optional.ofNullable(redisTemplate.opsForValue().get(missionaryId))
+                .map(Integer::parseInt)
+                .orElse(0);
     }
 }

@@ -4,15 +4,18 @@ import com.samill.missionary_backend.common.enums.ResponseCode;
 import com.samill.missionary_backend.common.exception.CommonException;
 import com.samill.missionary_backend.participation.dto.*;
 import com.samill.missionary_backend.participation.entity.Participation;
+import com.samill.missionary_backend.participation.event.UpdateParticipationEvent;
 import com.samill.missionary_backend.participation.mapper.ParticipationMapper;
 import com.samill.missionary_backend.participation.repository.ParticipantCountRepository;
 import com.samill.missionary_backend.participation.repository.ParticipationRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Objects;
 
 @Service
@@ -22,6 +25,7 @@ public class ParticipationServiceImpl implements ParticipationService {
     private final ParticipationRepository participationRepository;
     private final ParticipantCountRepository participantCountRepository;
     private final RabbitMqProducer rabbitMqProducer;
+    private final ApplicationEventPublisher events;
 
     @Override
     @Transactional
@@ -34,17 +38,17 @@ public class ParticipationServiceImpl implements ParticipationService {
 
     @Override
     public void deleteParticipation(DeleteParticipationCommand deleteParticipationCommand) throws CommonException {
-        String missionaryId = deleteParticipationCommand.getMissionaryId();
         validateDeleteParticipation(deleteParticipationCommand);
         Participation participation = participationRepository.findById(deleteParticipationCommand.getId())
                 .orElseThrow(() -> new CommonException(ResponseCode.PARTICIPATION_NOT_FOUND));
         participationRepository.delete(participation);
-        participantCountRepository.decrement(missionaryId);
+        participantCountRepository.decrement(deleteParticipationCommand.getMissionaryId());
+        publishEvent(participation);
     }
 
     @Override
-    public List<GetParticipationQueryResult> getParticipations(GetParticipationsQuery getParticipationsQuery) {
-        return participationRepository.findAllByConditionOrderByCreatedAtAsc(getParticipationsQuery);
+    public Page<GetParticipationQueryResult> getParticipations(GetParticipationsQuery getParticipationsQuery, Pageable pageable) {
+        return participationRepository.findAllByQuery(getParticipationsQuery, pageable);
     }
     @Override
     public void updateParticipation(UpdateParticipationCommand updateParticipationCommand) throws CommonException {
@@ -83,5 +87,11 @@ public class ParticipationServiceImpl implements ParticipationService {
         if (Objects.isNull(participation)) {
             throw new CommonException(ResponseCode.PARTICIPATION_NOT_ENROLLED);
         }
+    }
+
+    // 선교 신청 인원수 이벤트 발행
+    private void publishEvent(Participation participation) {
+        Integer count = participantCountRepository.get(participation.getMissionaryId());
+        events.publishEvent(new UpdateParticipationEvent(participation.getMissionaryId(), count));
     }
 }

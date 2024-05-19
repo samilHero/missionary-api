@@ -229,7 +229,8 @@ class UserGatewayManagementTests extends AbstractControllerTest {
                                         "장예찬",
                                         "jang1",
                                         "932393-2929292",
-                                        30000
+                                        30000,
+                                        false
                                 )
                         ))
                         .header("Authorization", getAuthorizationAdminOfHeader())

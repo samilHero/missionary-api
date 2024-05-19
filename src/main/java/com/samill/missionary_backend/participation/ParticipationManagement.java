@@ -10,6 +10,8 @@ import com.samill.missionary_backend.participation.dto.*;
 import com.samill.missionary_backend.participation.service.ParticipationService;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -36,8 +38,8 @@ class ParticipationManagement implements ParticipationExternalService {
     }
 
     @Override
-    public List<GetParticipationQueryResult> getParticipations(GetParticipationsQuery getParticipationsQuery) {
-        return participationService.getParticipations(getParticipationsQuery);
+    public Page<GetParticipationQueryResult> getParticipations(GetParticipationsQuery getParticipationsQuery, Pageable pageable) {
+        return participationService.getParticipations(getParticipationsQuery, pageable);
     }
 
     @Override

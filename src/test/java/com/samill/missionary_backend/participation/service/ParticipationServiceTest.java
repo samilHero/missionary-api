@@ -13,10 +13,11 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -25,7 +26,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
 @ContextConfiguration(classes = MissionaryBackendApplication.class)
-class ParticipationServiceImplTest {
+class ParticipationServiceTest {
     @Autowired
     private ParticipationService participationService;
     @Autowired
@@ -81,10 +82,11 @@ class ParticipationServiceImplTest {
         CreateParticipationCommand createParticipationDto = CreateParticipationCommand.builder()
                 .missionaryId(missionaryId)
                 .applyFee(10000)
-                .identificationNumber("9802321111222")
+                .identificationNumber("980232-1112220")
                 .memberId("UUIDD1")
                 .userId("kdf1")
                 .name("홍길동")
+                .isOwnCar(false)
                 .build();
 
         Participation participation =
@@ -114,10 +116,11 @@ class ParticipationServiceImplTest {
             CreateParticipationCommand createParticipationDto = CreateParticipationCommand.builder()
                     .missionaryId(missionaryId)
                     .applyFee(10000)
-                    .identificationNumber("9802321111222")
+                    .identificationNumber("980232-1112220")
                     .memberId("UUIDD1")
                     .userId("kdf1")
                     .name("홍길동")
+                    .isOwnCar(false)
                     .build();
 
             participationRepository.save(ParticipationMapper.INSTANCE.createParticipationCommandToEntity(createParticipationDto));
@@ -126,11 +129,12 @@ class ParticipationServiceImplTest {
         //when
         GetParticipationsQuery getParticipationsQuery = GetParticipationsQuery.builder()
                 .missionaryId(missionaryId)
-                .pageSize(5)
                 .build();
-        List<GetParticipationQueryResult> participationQueryResults = participationService.getParticipations(getParticipationsQuery);
+        PageRequest pageRequest = PageRequest.of(0, 3);
+
+        Page<GetParticipationQueryResult> participationQueryResults = participationService.getParticipations(getParticipationsQuery, pageRequest);
 
         //then
-        assertEquals(5, participationQueryResults.size());
+        assertEquals(3, participationQueryResults.getSize());
     }
 }

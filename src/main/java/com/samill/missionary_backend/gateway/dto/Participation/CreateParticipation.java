@@ -17,6 +17,7 @@ public class CreateParticipation {
     private String userId;
     private String identificationNumber;
     private String applyFee;
+    private Boolean isOwnCar;
 
     public void setUserInfo(MemberContext memberContext) {
         this.memberId = memberContext.getMemberId();
