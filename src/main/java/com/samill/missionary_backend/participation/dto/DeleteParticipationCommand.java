@@ -12,7 +12,6 @@ import java.time.OffsetDateTime;
 @Setter
 @AllArgsConstructor
 public class DeleteParticipationCommand {
-    private String id;
     private String missionaryId;
     private String userId;
 }

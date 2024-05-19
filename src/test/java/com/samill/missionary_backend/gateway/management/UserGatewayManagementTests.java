@@ -48,14 +48,13 @@ import org.springframework.http.MediaType;
 import org.springframework.restdocs.mockmvc.MockMvcRestDocumentation;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.restdocs.payload.JsonFieldType;
+import org.springframework.restdocs.request.RequestDocumentation;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest
 @AutoConfigureMockMvc
 class UserGatewayManagementTests extends AbstractControllerTest {
-    @MockBean
-    private ParticipationExternalService participationExternalService;
 
     @Test
     @DisplayName("user sign up test")
@@ -229,88 +228,108 @@ class UserGatewayManagementTests extends AbstractControllerTest {
                                         "장예찬",
                                         "jang1",
                                         "932393-2929292",
-                                        30000
+                                        30000,
+                                        false
                                 )
                         ))
-                        .header("Authorization", getAuthorizationAdminOfHeader())
+                        .header("Authorization", getAuthorizationUserOfHeader())
                         .contentType(MediaType.APPLICATION_JSON)
                 )
                 .andExpect(status().isOk())
                 .andDo(
                         document(snippetPath,
-                        new ResourceSnippetParametersBuilder()
-                                .description("선교 참가 신청 API")
-                                .requestFields(
-                                        fieldWithPath("missionaryId").description("선교 ID"),
-                                        fieldWithPath("identificationNumber").description("주민등록번호")
-                                )
-                                .responseFields(
-                                        fieldWithPath("statusCode").type(JsonFieldType.NUMBER).description("결과 코드"),
-                                        fieldWithPath("message").type(JsonFieldType.STRING).description("결과 메시지")
-                                )
-                ));
-    }
-
-    @Test
-    @Transactional
-    void updateParticipationTest() throws Exception {
-        mockMvc.perform(
-                        RestDocumentationRequestBuilders.put(UserGatewayManagementEndPoint.UPDATE_PARTICIPATION)
-                                .content(
-                                        jacksonObjectMapper.writeValueAsString(
-                                                new UpdateParticipationCommand(
-                                                        "dfdfde6-e2bc-472a-ab1f-1111111",
-                                                        "940555-2222333"
-                                                )
-                                        ))
-                                .header("Authorization", getAuthorizationAdminOfHeader())
-                                .contentType(MediaType.APPLICATION_JSON)
-                )
-                .andExpect(status().isOk())
-                .andDo(
-                        document(snippetPath,
                                 new ResourceSnippetParametersBuilder()
-                                        .description("선교 참가 신청내역 수정 API")
+                                        .tag("USER_PARTICIPATION")
+                                        .description("선교 참가 신청 API")
                                         .requestFields(
-                                                fieldWithPath("id").description("참가신청 ID"),
-                                                fieldWithPath("identificationNumber").description("주민등록번호")
+                                                fieldWithPath("missionaryId").description("선교 ID"),
+                                                fieldWithPath("identificationNumber").description("주민등록번호"),
+                                                fieldWithPath("isOwnCar").description("자차여부")
                                         )
                                         .responseFields(
                                                 fieldWithPath("statusCode").type(JsonFieldType.NUMBER).description("결과 코드"),
                                                 fieldWithPath("message").type(JsonFieldType.STRING).description("결과 메시지")
                                         )
-                        ));
+                        )
+                );
     }
 
     @Test
     @Transactional
-    void deleteParticipationTest() throws Exception {
+    void updateParticipationTest() throws Exception {
+        final String participationId = UUID.randomUUID().toString();
         mockMvc.perform(
-                        RestDocumentationRequestBuilders.put(UserGatewayManagementEndPoint.DELETE_PARTICIPATION)
-                                .content(
-                                        jacksonObjectMapper.writeValueAsString(
-                                                new DeleteParticipationCommand(
-                                                        "dfdfde6-e2bc-472a-ab1f-1111111",
-                                                        "dfdfde6-11212-121212",
-                                                        "jang1"
-                                                )
-                                        ))
-                                .header("Authorization", getAuthorizationAdminOfHeader())
-                                .contentType(MediaType.APPLICATION_JSON)
+                RestDocumentationRequestBuilders.put(
+                            UserGatewayManagementEndPoint.UPDATE_PARTICIPATION,
+                            participationId
+                        )
+                        .content(
+                            jacksonObjectMapper.writeValueAsString(
+                                    new UpdateParticipationCommand(
+                                            "940616-1122221",
+                                            false
+                                    )
+                        ))
+                        .header("Authorization", getAuthorizationUserOfHeader())
+                        .contentType(MediaType.APPLICATION_JSON)
                 )
                 .andExpect(status().isOk())
                 .andDo(
                         document(snippetPath,
                                 new ResourceSnippetParametersBuilder()
-                                        .description("선교 참가 신청취소 API")
+                                        .tag("USER_PARTICIPATION")
+                                        .description("선교 참가 수정 API")
+                                        .pathParameters(
+                                                RequestDocumentation.parameterWithName("participationId").description("참가신청 ID")
+                                        )
                                         .requestFields(
-                                                fieldWithPath("id").description("참가신청 ID"),
+                                                fieldWithPath("identificationNumber").description("주민등록번호"),
+                                                fieldWithPath("isOwnCar").description("자차여부")
+                                        )
+                                        .responseFields(
+                                                fieldWithPath("statusCode").type(JsonFieldType.NUMBER).description("결과 코드"),
+                                                fieldWithPath("message").type(JsonFieldType.STRING).description("결과 메시지")
+                                        )
+                        )
+                );
+    }
+
+    @Test
+    @Transactional
+    void deleteParticipationTest() throws Exception {
+        final String participationId = UUID.randomUUID().toString();
+        mockMvc.perform(
+               RestDocumentationRequestBuilders.put(
+                            UserGatewayManagementEndPoint.DELETE_PARTICIPATION,
+                            participationId
+                        )
+                        .content(
+                                jacksonObjectMapper.writeValueAsString(
+                                        new DeleteParticipationCommand(
+                                                "dfdfde6-11212-121212",
+                                                "jang1"
+                                        )
+                                ))
+                        .header("Authorization", getAuthorizationUserOfHeader())
+                        .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andExpect(status().isOk())
+                .andDo(
+                        document(snippetPath,
+                                new ResourceSnippetParametersBuilder()
+                                        .tag("USER_PARTICIPATION")
+                                        .description("선교 참가 신청취소 API")
+                                        .pathParameters(
+                                                RequestDocumentation.parameterWithName("participationId").description("참가신청 ID")
+                                        )
+                                        .requestFields(
                                                 fieldWithPath("missionaryId").description("선교 ID")
                                         )
                                         .responseFields(
                                                 fieldWithPath("statusCode").type(JsonFieldType.NUMBER).description("결과 코드"),
                                                 fieldWithPath("message").type(JsonFieldType.STRING).description("결과 메시지")
                                         )
-                        ));
+                        )
+                );
     }
 }

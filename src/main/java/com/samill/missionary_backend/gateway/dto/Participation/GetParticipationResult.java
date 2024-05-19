@@ -1,5 +1,7 @@
 package com.samill.missionary_backend.gateway.dto.Participation;
 
+import com.samill.missionary_backend.common.dto.MaskingType;
+import com.samill.missionary_backend.common.util.MaskRequired;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -17,8 +19,10 @@ public class GetParticipationResult {
     private String userId;
     private String name;
     private String memberId;
-    private int applyFee;
-    private boolean isPaid;
+    private Integer applyFee;
+    private Boolean isPaid;
+    @MaskRequired(type = MaskingType.IDENTIFICATION_NUMBER)
     private String identificationNumber;
+    private Boolean isOwnCar;
     private OffsetDateTime createdAt;
 }

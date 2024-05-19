@@ -29,11 +29,15 @@ public class Participation extends BaseEntity {
     private String memberId;
     private String name;
     private String userId;
-    private int applyFee;
-    private boolean isPaid;
+    private Integer applyFee;
+    @Builder.Default
+    private Boolean isPaid = Boolean.FALSE;
     @Convert(converter = AesEncryptConverter.class)
     private String identificationNumber;
     private OffsetDateTime deletedAt;
+    @Builder.Default
+    private Boolean isOwnCar = Boolean.FALSE;
+
     public void updateIdentificationNumber(String identificationNumber) {
         this.identificationNumber = identificationNumber;
     }

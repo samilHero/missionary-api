@@ -13,6 +13,4 @@ public class GetParticipations {
     private String name;
     private String missionaryId;
     private String userId;
-    private OffsetDateTime cursorId;
-    private int pageSize;
 }

@@ -25,6 +25,8 @@ import com.samill.missionary_backend.participation.dto.GetParticipationsQuery;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -92,11 +94,11 @@ public class AdminGatewayManagement {
     }
 
     @GetMapping(AdminGatewayManagementEndPoint.GET_PARTICIPATIONS)
-    public List<GetParticipationResult> getParticipations(GetParticipations getParticipation) {
+    public Page<GetParticipationResult> getParticipations(GetParticipations getParticipation, Pageable pageable) {
         GetParticipationsQuery getParticipationsQuery
                 = ParticipationGatewayMapper.INSTANCE.getParticipationsToGetParticipationsQuery(getParticipation);
-        List<GetParticipationQueryResult> list = participationExternalService.getParticipations(getParticipationsQuery);
-        return ParticipationGatewayMapper.INSTANCE.getParticipationQueryResultsToGetParticipationResults(list);
+        Page<GetParticipationQueryResult> list = participationExternalService.getParticipations(getParticipationsQuery, pageable);
+        return list.map(ParticipationGatewayMapper.INSTANCE::getParticipationQueryResultToGetParticipationResult);
     }
 
     @GetMapping(AdminGatewayManagementEndPoint.GET_PARTICIPATION)

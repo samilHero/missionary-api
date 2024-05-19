@@ -11,7 +11,7 @@ public class UserGatewayManagementEndPoint {
 
     public static final String CREATE_PARTICIPATION = BASE_URL + "/participation";
 
-    public static final String UPDATE_PARTICIPATION = BASE_URL + "/participation";
+    public static final String UPDATE_PARTICIPATION = BASE_URL + "/participation/{participationId}";
 
-    public static final String DELETE_PARTICIPATION = BASE_URL + "/participation";
+    public static final String DELETE_PARTICIPATION = BASE_URL + "/participation/{participationId}";
 }

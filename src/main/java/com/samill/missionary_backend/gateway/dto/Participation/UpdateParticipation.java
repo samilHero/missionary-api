@@ -10,6 +10,6 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 public class UpdateParticipation {
-    private String id;
     private String identificationNumber;
+    private Boolean isOwnCar;
 }

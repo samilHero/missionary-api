@@ -16,8 +16,6 @@ public interface ParticipationGatewayMapper {
     GetParticipationsQuery getParticipationsToGetParticipationsQuery(GetParticipations getParticipation);
     @Named("ResultList")
     GetParticipationResult getParticipationQueryResultToGetParticipationResult(GetParticipationQueryResult getParticipationQueryResult);
-    @IterableMapping(qualifiedByName = "ResultList")
-    List<GetParticipationResult> getParticipationQueryResultsToGetParticipationResults(List<GetParticipationQueryResult> getParticipationQueryResultList);
     CreateParticipationCommand createParticipationToCreateParticipationCommand(CreateParticipation createParticipation);
     UpdateParticipationCommand updateParticipationToUpdateParticipationCommand(UpdateParticipation updateParticipation);
     DeleteParticipationCommand deleteParticipationToDeleteParticipationCommand(DeleteParticipation deleteParticipation);

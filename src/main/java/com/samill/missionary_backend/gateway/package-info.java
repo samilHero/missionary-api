@@ -7,6 +7,7 @@
         "common::enums",
         "common::dto",
         "common::entity",
+        "common::util",
         "member::dto",
         "member",
         "church",

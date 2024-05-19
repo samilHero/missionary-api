@@ -12,6 +12,6 @@ import java.time.OffsetDateTime;
 @Setter
 @AllArgsConstructor
 public class UpdateParticipationCommand {
-    private String id;
     private String identificationNumber;
+    private Boolean isOwnCar;
 }

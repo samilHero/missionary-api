@@ -15,5 +15,6 @@ public class CreateParticipationCommand {
     private String name;
     private String userId;
     private String identificationNumber;
-    private int applyFee;
+    private Integer applyFee;
+    private Boolean isOwnCar;
 }

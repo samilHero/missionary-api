@@ -10,7 +10,6 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 public class DeleteParticipation {
-    private String id;
     private String missionaryId;
     private String userId;
 }
