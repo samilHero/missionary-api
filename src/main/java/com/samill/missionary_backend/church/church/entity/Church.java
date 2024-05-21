@@ -53,19 +53,6 @@ public class Church extends BaseEntity {
 
     private OffsetDateTime deletedAt;
 
-//    public void update(UpdateChurchRequest updateChurchRequest) {
-//        this.name = updateChurchRequest.name();
-//        this.pastor = Pastor.builder()
-//                .name(updateChurchRequest.pastorName())
-//                .phone(updateChurchRequest.pastorPhone())
-//                .build();
-//        this.address = Address.builder()
-//                .basic(updateChurchRequest.addressBasic())
-//                .detail(updateChurchRequest.addressDetail())
-//                .build();
-//        this.visitPurpose = updateChurchRequest.visitPurpose();
-//    }
-
     public void changeName(@NonNull String name) {
         this.name = name;
     }
