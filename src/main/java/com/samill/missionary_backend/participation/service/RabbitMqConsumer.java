@@ -1,10 +1,10 @@
 package com.samill.missionary_backend.participation.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.samill.missionary_backend.common.event.UpdateParticipationEvent;
 import com.samill.missionary_backend.participation.dto.CreateParticipationCommand;
 import com.samill.missionary_backend.participation.dto.MessageDto;
 import com.samill.missionary_backend.participation.entity.Participation;
-import com.samill.missionary_backend.participation.event.UpdateParticipationEvent;
 import com.samill.missionary_backend.participation.mapper.ParticipationMapper;
 import com.samill.missionary_backend.participation.repository.ParticipantCountRepository;
 import com.samill.missionary_backend.participation.repository.ParticipationRepository;
@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @RequiredArgsConstructor
 public class RabbitMqConsumer {
+
     private final ParticipationRepository participationRepository;
     private final ParticipantCountRepository participantCountRepository;
     private final ApplicationEventPublisher events;
