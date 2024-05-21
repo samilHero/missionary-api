@@ -8,6 +8,7 @@ import com.samill.missionary_backend.church.dto.CreateChurchCommand;
 import com.samill.missionary_backend.church.dto.GetChurchQueryResult;
 import com.samill.missionary_backend.church.dto.GetChurchesQueryResult;
 import com.samill.missionary_backend.church.dto.UpdateChurchCommand;
+import com.samill.missionary_backend.common.AbstractSpringBootTests;
 import com.samill.missionary_backend.common.enums.ResponseCode;
 import com.samill.missionary_backend.common.exception.CommonException;
 import java.util.ArrayList;
@@ -20,14 +21,12 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.transaction.annotation.Transactional;
 
-@SpringBootTest
 @WithMockUser(username = "dongwook.yeom")
 @ExtendWith(MockitoExtension.class)
-class ChurchServiceTests {
+class ChurchServiceTests extends AbstractSpringBootTests {
 
     @Autowired
     private ChurchService churchService;
