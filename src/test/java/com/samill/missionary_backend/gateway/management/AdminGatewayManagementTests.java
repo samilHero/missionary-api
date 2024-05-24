@@ -5,10 +5,11 @@ import static com.samill.missionary_backend.gateway.endPoint.AdminGatewayManagem
 import static com.samill.missionary_backend.gateway.endPoint.AdminGatewayManagementEndPoint.CREATE_ADMIN_URI;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
-import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
-import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
-import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
+import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
+import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
+import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.queryParameters;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -335,23 +336,24 @@ class AdminGatewayManagementTests extends AbstractControllerTest {
     void getParticipationsTest() throws Exception {
         final String missionaryId = UUID.randomUUID().toString();
         when(participationExternalService.getParticipations(any(), any()))
-            .thenReturn(
-                new PageImpl<>(
-                    List.of(
-                        new GetParticipationQueryResult(
-                            "Participation Id",
-                            missionaryId,
-                            "hong1",
-                            "홍길동",
-                            "UUID1",
-                            30000,
-                            true,
-                            "940626-2012345",
-                            false,
-                            OffsetDateTime.now()
-                        )
-                    ))
-            );
+                .thenReturn(
+                        new PageImpl<>(
+                        List.of(
+                            new GetParticipationQueryResult(
+                                    "Participation Id",
+                                    missionaryId,
+                                    "hong1",
+                                    "홍길동",
+                                    "UUID1",
+                                    "19940616",
+                                    30000,
+                                    true,
+                                    "940626-2012345",
+                                    false,
+                                    OffsetDateTime.now()
+                            )
+                        ))
+                );
 
         mockMvc.perform(
                 RestDocumentationRequestBuilders.get(AdminGatewayManagementEndPoint.GET_PARTICIPATIONS)
@@ -401,20 +403,21 @@ class AdminGatewayManagementTests extends AbstractControllerTest {
     void getParticipationTest() throws Exception {
         final String participationId = UUID.randomUUID().toString();
         when(participationExternalService.getParticipation(participationId))
-            .thenReturn(
-                new GetParticipationQueryResult(
-                    participationId,
-                    "71d8cee6-e2bc-472a-ab1f-c61c70dc0e51",
-                    "hong",
-                    "홍길동",
-                    "UUID-1",
-                    30000,
-                    true,
-                    "940555-2012345",
-                    false,
-                    OffsetDateTime.now()
-                )
-            );
+                .thenReturn(
+                        new GetParticipationQueryResult(
+                                participationId,
+                                "71d8cee6-e2bc-472a-ab1f-c61c70dc0e51",
+                                "hong",
+                                "홍길동",
+                                "UUID-1",
+                                "19940616",
+                                30000,
+                                true,
+                                "940555-2012345",
+                                false,
+                                OffsetDateTime.now()
+                        )
+                );
 
         mockMvc.perform(
                 RestDocumentationRequestBuilders.get(AdminGatewayManagementEndPoint.GET_PARTICIPATION, participationId)

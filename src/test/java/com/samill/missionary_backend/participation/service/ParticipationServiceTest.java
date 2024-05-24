@@ -90,6 +90,7 @@ class ParticipationServiceTest extends AbstractSpringBootTests {
         Participation participation =
             participationRepository.save(ParticipationMapper.INSTANCE.createParticipationCommandToEntity(createParticipationDto));
 
+
         DeleteParticipationCommand deleteParticipationCommand = DeleteParticipationCommand.builder()
             .missionaryId(missionaryId)
             .userId("kdf1")
@@ -110,14 +111,15 @@ class ParticipationServiceTest extends AbstractSpringBootTests {
         String missionaryId = UUID.randomUUID().toString();
         for (int i = 0; i < 10; i++) {
             CreateParticipationCommand createParticipationDto = CreateParticipationCommand.builder()
-                .missionaryId(missionaryId)
-                .applyFee(10000)
-                .identificationNumber("980232-1112220")
-                .memberId("UUIDD1")
-                .userId("kdf1")
-                .name("홍길동")
-                .isOwnCar(false)
-                .build();
+                    .missionaryId(missionaryId)
+                    .applyFee(10000)
+                    .identificationNumber("980232-1112220")
+                    .memberId("UUIDD1")
+                    .birthDate("19940616")
+                    .userId("kdf1")
+                    .name("홍길동")
+                    .isOwnCar(false)
+                    .build();
 
             participationRepository.save(ParticipationMapper.INSTANCE.createParticipationCommandToEntity(createParticipationDto));
         }

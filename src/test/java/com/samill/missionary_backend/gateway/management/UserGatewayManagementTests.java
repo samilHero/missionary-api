@@ -206,17 +206,18 @@ class UserGatewayManagementTests extends AbstractControllerTest {
     void createParticipationTest() throws Exception {
         mockMvc.perform(
                 RestDocumentationRequestBuilders.post(UserGatewayManagementEndPoint.CREATE_PARTICIPATION)
-                    .content(
-                        jacksonObjectMapper.writeValueAsString(
-                            new CreateParticipationCommand(
-                                "71d8cee6-e2bc-472a-ab1f-c61c70dc0e51",
-                                "MEM1",
-                                "장예찬",
-                                "jang1",
-                                "932393-2929292",
-                                30000,
-                                false
-                            )
+                        .content(
+                            jacksonObjectMapper.writeValueAsString(
+                                new CreateParticipationCommand(
+                                        "71d8cee6-e2bc-472a-ab1f-c61c70dc0e51",
+                                        "MEM1",
+                                        "장예찬",
+                                        "jang1",
+                                        "932393-2929292",
+                                        "19940616",
+                                        30000,
+                                        false
+                                )
                         ))
                     .header("Authorization", getAuthorizationUserOfHeader())
                     .contentType(MediaType.APPLICATION_JSON)
