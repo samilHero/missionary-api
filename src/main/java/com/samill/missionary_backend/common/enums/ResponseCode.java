@@ -21,7 +21,8 @@ public enum ResponseCode implements EnumModel {
     PARTICIPATION_MAXIMUM_EXCEEDED(1101, "선교신청 가능한 정원이 가득찼습니다."),
     PARTICIPATION_ALREADY_PARTICIPATED(1101, "선교에 이미 신청되었습니다."),
     PARTICIPATION_NOT_ENROLLED(1102, "선교에 신청되어 있지 않습니다."),
-    PARTICIPATION_NOT_FOUND(1104, "존재하지 않는 신청내역입니다.")
+    PARTICIPATION_NOT_FOUND(1104, "존재하지 않는 신청내역입니다."),
+    TEAM_NOT_FOUND(1201, "존재하지 않는 팀입니다.")
     ;
 
     private final Integer code;
