@@ -1,6 +1,9 @@
 package com.samill.missionary_backend.participation.service;
 
-import com.samill.missionary_backend.MissionaryBackendApplication;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import com.samill.missionary_backend.common.AbstractSpringBootTests;
 import com.samill.missionary_backend.common.exception.CommonException;
 import com.samill.missionary_backend.participation.dto.CreateParticipationCommand;
 import com.samill.missionary_backend.participation.dto.DeleteParticipationCommand;
@@ -9,24 +12,19 @@ import com.samill.missionary_backend.participation.dto.GetParticipationsQuery;
 import com.samill.missionary_backend.participation.entity.Participation;
 import com.samill.missionary_backend.participation.mapper.ParticipationMapper;
 import com.samill.missionary_backend.participation.repository.ParticipationRepository;
+import java.util.Optional;
+import java.util.UUID;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
-import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+//@ContextConfiguration(classes = MissionaryBackendApplication.class)
+class ParticipationServiceTest extends AbstractSpringBootTests {
 
-@SpringBootTest
-@ContextConfiguration(classes = MissionaryBackendApplication.class)
-class ParticipationServiceTest {
     @Autowired
     private ParticipationService participationService;
     @Autowired
@@ -80,23 +78,22 @@ class ParticipationServiceTest {
         String missionaryId = UUID.randomUUID().toString();
         // given
         CreateParticipationCommand createParticipationDto = CreateParticipationCommand.builder()
-                .missionaryId(missionaryId)
-                .applyFee(10000)
-                .identificationNumber("980232-1112220")
-                .memberId("UUIDD1")
-                .userId("kdf1")
-                .name("홍길동")
-                .isOwnCar(false)
-                .build();
+            .missionaryId(missionaryId)
+            .applyFee(10000)
+            .identificationNumber("980232-1112220")
+            .memberId("UUIDD1")
+            .userId("kdf1")
+            .name("홍길동")
+            .isOwnCar(false)
+            .build();
 
         Participation participation =
-                participationRepository.save(ParticipationMapper.INSTANCE.createParticipationCommandToEntity(createParticipationDto));
-
+            participationRepository.save(ParticipationMapper.INSTANCE.createParticipationCommandToEntity(createParticipationDto));
 
         DeleteParticipationCommand deleteParticipationCommand = DeleteParticipationCommand.builder()
-                .missionaryId(missionaryId)
-                .userId("kdf1")
-                .build();
+            .missionaryId(missionaryId)
+            .userId("kdf1")
+            .build();
 
         //when
         participationService.deleteParticipation(participation.getId(), deleteParticipationCommand);
@@ -111,7 +108,7 @@ class ParticipationServiceTest {
     void 목록조회() {
         // given
         String missionaryId = UUID.randomUUID().toString();
-        for(int i=0; i<10;i++) {
+        for (int i = 0; i < 10; i++) {
             CreateParticipationCommand createParticipationDto = CreateParticipationCommand.builder()
                     .missionaryId(missionaryId)
                     .applyFee(10000)
@@ -128,8 +125,8 @@ class ParticipationServiceTest {
 
         //when
         GetParticipationsQuery getParticipationsQuery = GetParticipationsQuery.builder()
-                .missionaryId(missionaryId)
-                .build();
+            .missionaryId(missionaryId)
+            .build();
         PageRequest pageRequest = PageRequest.of(0, 3);
 
         Page<GetParticipationQueryResult> participationQueryResults = participationService.getParticipations(getParticipationsQuery, pageRequest);

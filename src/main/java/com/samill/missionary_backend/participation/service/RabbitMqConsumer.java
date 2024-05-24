@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @RequiredArgsConstructor
 public class RabbitMqConsumer {
+
     private final ParticipationRepository participationRepository;
     private final ApplicationEventPublisher events;
 

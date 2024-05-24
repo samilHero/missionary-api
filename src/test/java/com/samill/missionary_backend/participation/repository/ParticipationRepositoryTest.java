@@ -1,20 +1,19 @@
 package com.samill.missionary_backend.participation.repository;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import com.samill.missionary_backend.common.AbstractSpringBootTests;
 import com.samill.missionary_backend.participation.dto.CreateParticipationCommand;
 import com.samill.missionary_backend.participation.entity.Participation;
 import com.samill.missionary_backend.participation.mapper.ParticipationMapper;
+import java.util.UUID;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+class ParticipationRepositoryTest extends AbstractSpringBootTests {
 
-
-@SpringBootTest
-class ParticipationRepositoryTest {
     @Autowired
     private ParticipationRepository participationRepository;
 
@@ -24,14 +23,13 @@ class ParticipationRepositoryTest {
         // given
         String missionaryId = UUID.randomUUID().toString();
         CreateParticipationCommand createParticipationDto = CreateParticipationCommand.builder()
-                .missionaryId(missionaryId)
-                .applyFee(10000)
-                .identificationNumber("9802321111222")
-                .userId("kkk1")
-                .name("홍길동")
-                .memberId("UUIDf1")
-                .build();
-
+            .missionaryId(missionaryId)
+            .applyFee(10000)
+            .identificationNumber("9802321111222")
+            .userId("kkk1")
+            .name("홍길동")
+            .memberId("UUIDf1")
+            .build();
 
         // when
         Participation participation = ParticipationMapper.INSTANCE.createParticipationCommandToEntity(createParticipationDto);
