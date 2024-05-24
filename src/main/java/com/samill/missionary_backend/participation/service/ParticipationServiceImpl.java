@@ -1,7 +1,7 @@
 package com.samill.missionary_backend.participation.service;
 
 import com.samill.missionary_backend.common.enums.ResponseCode;
-import com.samill.missionary_backend.common.event.UpdateParticipationEvent;
+import com.samill.missionary_backend.common.event.ParticipationCanceled;
 import com.samill.missionary_backend.common.exception.CommonException;
 import com.samill.missionary_backend.participation.dto.CreateParticipationCommand;
 import com.samill.missionary_backend.participation.dto.DeleteParticipationCommand;
@@ -10,7 +10,6 @@ import com.samill.missionary_backend.participation.dto.GetParticipationsQuery;
 import com.samill.missionary_backend.participation.dto.MessageDto;
 import com.samill.missionary_backend.participation.dto.UpdateParticipationCommand;
 import com.samill.missionary_backend.participation.entity.Participation;
-import com.samill.missionary_backend.participation.mapper.ParticipationMapper;
 import com.samill.missionary_backend.participation.repository.ParticipantCountRepository;
 import com.samill.missionary_backend.participation.repository.ParticipationRepository;
 import java.util.List;
@@ -63,14 +62,13 @@ public class ParticipationServiceImpl implements ParticipationService {
         Participation participation = participationRepository.findById(participationId)
             .orElseThrow(() -> new CommonException(ResponseCode.PARTICIPATION_NOT_FOUND));
         participation.updateIdentificationNumber(updateParticipationCommand.getIdentificationNumber());
-        participationRepository.save(participation);
     }
 
     @Override
-    public GetParticipationQueryResult getParticipation(String participationId) throws CommonException {
+    public Participation getParticipation(String participationId) throws CommonException {
         Participation participation = participationRepository.findById(participationId)
-            .orElseThrow(() -> new CommonException(ResponseCode.PARTICIPATION_NOT_FOUND));
-        return ParticipationMapper.INSTANCE.entityToGetParticipationQueryResult(participation);
+                .orElseThrow(() -> new CommonException(ResponseCode.PARTICIPATION_NOT_FOUND));
+        return participation;
     }
 
     @Override
@@ -85,9 +83,8 @@ public class ParticipationServiceImpl implements ParticipationService {
     }
 
     private void validateCreateParticipation(CreateParticipationCommand createParticipationDto, int maxUserCount) throws CommonException {
-        //participationPeriod validation 필요
-        Participation participation = participationRepository.findByUserIdAndMissionaryId(createParticipationDto.getUserId(),
-            createParticipationDto.getMissionaryId());
+        Participation participation = participationRepository.findByUserIdAndMissionaryId(createParticipationDto.getUserId(), createParticipationDto.getMissionaryId());
+
 
         if (Objects.nonNull(participation)) {
             throw new CommonException(ResponseCode.PARTICIPATION_ALREADY_PARTICIPATED);
@@ -109,9 +106,8 @@ public class ParticipationServiceImpl implements ParticipationService {
         }
     }
 
-    // 선교 신청 인원수 이벤트 발행
+    // 선교 신청 취소 이벤트 발행
     private void publishEvent(Participation participation) {
-        Integer count = participantCountRepository.get(participation.getMissionaryId());
-        events.publishEvent(new UpdateParticipationEvent(participation.getMissionaryId(), count));
+        events.publishEvent(new ParticipationCanceled(participation.getMissionaryId()));
     }
 }

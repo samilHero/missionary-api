@@ -29,6 +29,7 @@ public class Participation extends BaseEntity {
     private String memberId;
     private String name;
     private String userId;
+    private String birthDate;
     private Integer applyFee;
     @Builder.Default
     private Boolean isPaid = Boolean.FALSE;

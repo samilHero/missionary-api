@@ -1,8 +1,7 @@
 package com.samill.missionary_backend.participation.dto;
 
+import com.samill.missionary_backend.member.dto.GetUserDto;
 import lombok.*;
-
-import java.time.OffsetDateTime;
 
 @Builder
 @Getter
@@ -15,6 +14,12 @@ public class CreateParticipationCommand {
     private String name;
     private String userId;
     private String identificationNumber;
+    private String birthDate;
     private Integer applyFee;
     private Boolean isOwnCar;
+
+    public void updateUserInfo(GetUserDto getUserDto) {
+        this.name = getUserDto.name();
+        this.birthDate = getUserDto.birthDate();
+    }
 }

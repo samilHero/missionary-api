@@ -1,13 +1,14 @@
 package com.samill.missionary_backend.participation;
 
-import com.samill.missionary_backend.common.dto.MemberContext;
 import com.samill.missionary_backend.common.enums.ResponseCode;
 import com.samill.missionary_backend.common.exception.CommonException;
+import com.samill.missionary_backend.member.MemberExternalService;
+import com.samill.missionary_backend.member.dto.GetUserDto;
 import com.samill.missionary_backend.missionary.MissionaryExternalService;
 import com.samill.missionary_backend.missionary.dto.GetMissionaryQuery;
-import com.samill.missionary_backend.missionary.dto.GetMissionaryQueryResult;
-import com.samill.missionary_backend.notification.NotificationExternalService;
 import com.samill.missionary_backend.participation.dto.*;
+import com.samill.missionary_backend.participation.entity.Participation;
+import com.samill.missionary_backend.participation.mapper.ParticipationMapper;
 import com.samill.missionary_backend.participation.service.ParticipationService;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -15,24 +16,20 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
 @RequiredArgsConstructor
 class ParticipationManagement implements ParticipationExternalService {
     private final ParticipationService participationService;
     private final MissionaryExternalService missionaryExternalService;
-    private final NotificationExternalService notificationExternalService;
+    private final MemberExternalService memberExternalService;
 
     @Override
-    public void createParticipation(@NonNull CreateParticipationCommand createParticipationCommand) throws CommonException {
+    public void createParticipation(@NonNull CreateParticipationCommand createParticipationCommand) throws Exception {
         validateParticipationPeriod(createParticipationCommand.getMissionaryId());
-        GetMissionaryQuery getMissionaryQuery = new GetMissionaryQuery(createParticipationCommand.getMissionaryId());
-        GetMissionaryQueryResult getMissionaryQueryResult = missionaryExternalService.getMissionary(getMissionaryQuery);
-        int maxUserCount = getMissionaryQueryResult.maximumParticipantCount();
-        createParticipationCommand.setApplyFee(getMissionaryQueryResult.price());
+        int maxUserCount = getMissionaryMaxCount(createParticipationCommand.getMissionaryId());
+        GetUserDto user = memberExternalService.getUserById(createParticipationCommand.getUserId());
+        updateCommandWithFeeAndUserInfo(createParticipationCommand, user);
         participationService.createParticipation(createParticipationCommand, maxUserCount);
-
     }
 
     @Override
@@ -48,7 +45,8 @@ class ParticipationManagement implements ParticipationExternalService {
     @Override
     public GetParticipationQueryResult getParticipation(String participationId) throws CommonException {
         //user 체크 필요
-        return participationService.getParticipation(participationId);
+        Participation participation = participationService.getParticipation(participationId);
+        return ParticipationMapper.INSTANCE.entityToGetParticipationQueryResult(participation);
     }
 
     @Override
@@ -60,5 +58,18 @@ class ParticipationManagement implements ParticipationExternalService {
         if (!missionaryExternalService.isInParticipationPeriod(missionaryId)) {
             throw new CommonException(ResponseCode.INVALID_PARTICIPATION_PERIOD);
         }
+    }
+
+    private void updateCommandWithFeeAndUserInfo(CreateParticipationCommand createParticipationCommand, GetUserDto user) throws Exception {
+        createParticipationCommand.setApplyFee(getApplyFee(createParticipationCommand.getMissionaryId()));
+        createParticipationCommand.updateUserInfo(user);
+    }
+
+    private int getMissionaryMaxCount(String missionaryId) throws CommonException {
+        return missionaryExternalService.getMissionary(new GetMissionaryQuery(missionaryId)).maximumParticipantCount();
+    }
+
+    private int getApplyFee(String missionaryId) throws CommonException {
+        return missionaryExternalService.getMissionary(new GetMissionaryQuery(missionaryId)).price();
     }
 }
