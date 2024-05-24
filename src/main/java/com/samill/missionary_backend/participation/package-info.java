@@ -10,6 +10,8 @@
                 "common::exception",
                 "common::dto",
                 "common::util",
+                "common::event",
+                "member::dto"
         }
 )
 package com.samill.missionary_backend.participation;

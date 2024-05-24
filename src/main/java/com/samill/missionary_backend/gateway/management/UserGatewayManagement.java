@@ -87,7 +87,7 @@ public class UserGatewayManagement {
         );
     }
     @PostMapping(CREATE_PARTICIPATION)
-    public void createParticipation(CreateParticipation createParticipation, MemberContext memberContext) throws CommonException, CommonException {
+    public void createParticipation(CreateParticipation createParticipation, MemberContext memberContext) throws Exception {
         createParticipation.setUserInfo(memberContext);
         CreateParticipationCommand command = ParticipationGatewayMapper.INSTANCE.createParticipationToCreateParticipationCommand(createParticipation);
         participationExternalService.createParticipation(command);

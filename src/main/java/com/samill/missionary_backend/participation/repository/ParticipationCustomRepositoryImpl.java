@@ -26,6 +26,7 @@ public class ParticipationCustomRepositoryImpl implements ParticipationCustomRep
                         participation.userId,
                         participation.name,
                         participation.memberId,
+                        participation.birthDate,
                         participation.applyFee,
                         participation.isPaid,
                         participation.identificationNumber,

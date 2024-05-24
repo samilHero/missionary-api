@@ -22,6 +22,7 @@ public class GetParticipationQueryResult {
     private String userId;
     private String name;
     private String memberId;
+    private String birthDate;
     private Integer applyFee;
     private Boolean isPaid;
     private String identificationNumber;

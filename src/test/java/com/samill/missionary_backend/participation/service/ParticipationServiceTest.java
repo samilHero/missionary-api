@@ -117,6 +117,7 @@ class ParticipationServiceTest {
                     .applyFee(10000)
                     .identificationNumber("980232-1112220")
                     .memberId("UUIDD1")
+                    .birthDate("19940616")
                     .userId("kdf1")
                     .name("홍길동")
                     .isOwnCar(false)

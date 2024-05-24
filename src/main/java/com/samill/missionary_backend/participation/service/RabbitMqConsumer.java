@@ -1,12 +1,11 @@
 package com.samill.missionary_backend.participation.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.samill.missionary_backend.common.event.ParticipationRegistered;
 import com.samill.missionary_backend.participation.dto.CreateParticipationCommand;
 import com.samill.missionary_backend.participation.dto.MessageDto;
 import com.samill.missionary_backend.participation.entity.Participation;
-import com.samill.missionary_backend.participation.event.UpdateParticipationEvent;
 import com.samill.missionary_backend.participation.mapper.ParticipationMapper;
-import com.samill.missionary_backend.participation.repository.ParticipantCountRepository;
 import com.samill.missionary_backend.participation.repository.ParticipationRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,7 +18,6 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class RabbitMqConsumer {
     private final ParticipationRepository participationRepository;
-    private final ParticipantCountRepository participantCountRepository;
     private final ApplicationEventPublisher events;
 
     /**
@@ -31,9 +29,8 @@ public class RabbitMqConsumer {
     public void receiveMessage(MessageDto messageDto) {
         log.info("Received message: {}", messageDto.toString());
         Participation participation = saveParticipation(messageDto.getObject());
-        Integer count = participantCountRepository.get(participation.getMissionaryId());
         // 선교 신청 인원수 이벤트 발행
-        events.publishEvent(new UpdateParticipationEvent(participation.getMissionaryId(), count));
+        events.publishEvent(new ParticipationRegistered(participation.getMissionaryId()));
     }
 
     private Participation saveParticipation(Object object) {

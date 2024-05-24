@@ -228,6 +228,7 @@ class UserGatewayManagementTests extends AbstractControllerTest {
                                         "장예찬",
                                         "jang1",
                                         "932393-2929292",
+                                        "19940616",
                                         30000,
                                         false
                                 )
