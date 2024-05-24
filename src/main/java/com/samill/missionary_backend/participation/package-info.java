@@ -1,3 +1,4 @@
+
 @org.springframework.modulith.ApplicationModule(
         allowedDependencies = {
                 "member",

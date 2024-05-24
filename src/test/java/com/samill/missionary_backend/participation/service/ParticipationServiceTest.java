@@ -90,6 +90,7 @@ class ParticipationServiceTest extends AbstractSpringBootTests {
         Participation participation =
             participationRepository.save(ParticipationMapper.INSTANCE.createParticipationCommandToEntity(createParticipationDto));
 
+
         DeleteParticipationCommand deleteParticipationCommand = DeleteParticipationCommand.builder()
             .missionaryId(missionaryId)
             .userId("kdf1")
