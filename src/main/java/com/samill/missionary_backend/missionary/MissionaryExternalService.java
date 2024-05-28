@@ -2,9 +2,11 @@ package com.samill.missionary_backend.missionary;
 
 import com.samill.missionary_backend.church.dto.CreateMissionaryCommandResult;
 import com.samill.missionary_backend.common.exception.CommonException;
-import com.samill.missionary_backend.missionary.dto.*;
-
-import java.time.OffsetDateTime;
+import com.samill.missionary_backend.missionary.dto.CreateMissionaryCommand;
+import com.samill.missionary_backend.missionary.dto.GetMissionaryIdsQuery;
+import com.samill.missionary_backend.missionary.dto.GetMissionaryQuery;
+import com.samill.missionary_backend.missionary.dto.GetMissionaryQueryResult;
+import com.samill.missionary_backend.missionary.dto.UpdateMissionaryCommand;
 import java.util.List;
 import lombok.NonNull;
 
@@ -25,7 +27,7 @@ public interface MissionaryExternalService {
         @NonNull List<String> userIds
     );
 
-    boolean isInParticipationPeriod(@NonNull String missionaryId);
+    boolean isInParticipationPeriod(@NonNull String missionaryId) throws CommonException;
 
     List<String> getDaysBeforeMissionaryIds(GetMissionaryIdsQuery getMissionaryIdsQuery);
 

@@ -19,13 +19,8 @@ public interface MissionaryMapper {
 
 
     @Mappings({
-        @Mapping(target = "participationPeriod.startDate", source = "participationStartDate"),
-        @Mapping(target = "participationPeriod.endDate", source = "participationEndDate"),
-        @Mapping(target = "workPeriod.startDate", source = "workStartDate"),
-        @Mapping(target = "workPeriod.endDate", source = "workEndDate"),
         @Mapping(target = "pastor.name", source = "pastorName"),
         @Mapping(target = "pastor.phone", source = "pastorPhone"),
-        @Mapping(target = "posters", source = "posters", qualifiedByName = "createMissionaryCommandPosterToMissionaryPoster"),
     })
     Missionary createMissionaryCommandToMissionary(CreateMissionaryCommand updateMissionaryCommand);
 

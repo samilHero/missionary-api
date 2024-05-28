@@ -4,8 +4,6 @@ package com.samill.missionary_backend.missionary.missionary.entity;
 import com.samill.missionary_backend.common.entity.BaseEntity;
 import com.samill.missionary_backend.common.entity.Pastor;
 import com.samill.missionary_backend.common.entity.Period;
-import com.samill.missionary_backend.missionary.board.entity.MissionaryBoard;
-import com.samill.missionary_backend.missionary.staff.entity.MissionaryStaff;
 import jakarta.persistence.AttributeOverride;
 import jakarta.persistence.AttributeOverrides;
 import jakarta.persistence.CascadeType;
@@ -48,20 +46,7 @@ public class Missionary extends BaseEntity {
     private String name;
 
     @Embedded
-    @AttributeOverrides({
-        @AttributeOverride(name = "startDate", column = @Column(name = "participation_start_date")),
-        @AttributeOverride(name = "endDate", column = @Column(name = "participation_end_date")),
-    })
-    private Period participationPeriod;
-
-    @Embedded
-    @AttributeOverrides({
-        @AttributeOverride(name = "startDate", column = @Column(name = "work_start_date")),
-        @AttributeOverride(name = "endDate", column = @Column(name = "work_end_date")),
-    })
-    private Period workPeriod;
-
-    private Integer price;
+    private Period period;
 
     @Embedded
     @AttributeOverrides({
@@ -70,98 +55,17 @@ public class Missionary extends BaseEntity {
     })
     private Pastor pastor;
 
-    private String description;
-
-    private Integer maximumParticipantCount;
-
-    @Builder.Default
-    private Integer currentParticipantCount = 0;
-
     @Embedded
-    @AttributeOverrides({
-        @AttributeOverride(name = "bankName", column = @Column(name = "bank_account_bank_name")),
-        @AttributeOverride(name = "placeHolder", column = @Column(name = "bank_account_place_holder")),
-        @AttributeOverride(name = "number", column = @Column(name = "bank_account_number")),
-    })
-    private BankAccount bankAccount;
+    private MissionaryDetail detail;
 
     @Builder.Default
     @OneToMany(mappedBy = "missionary", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<MissionaryPoster> posters = new ArrayList<>();
 
-    @Builder.Default
-    @OneToMany(mappedBy = "missionary", orphanRemoval = true)
-    private List<MissionaryStaff> staffs = new ArrayList<>();
-
-    @Builder.Default
-    @OneToMany(mappedBy = "missionary", orphanRemoval = true)
-    private List<MissionaryBoard> boards = new ArrayList<>();
-
     private OffsetDateTime deletedAt;
 
-
-    void addPoster(MissionaryPoster poster) {
-        this.posters.add(poster);
-    }
-
-    public void changeParticipationPeriod(
-        Period participationPeriod
-    ) {
-        this.participationPeriod = participationPeriod;
-    }
-
-    public void changeWorkPeriod(
-        Period workPeriod
-    ) {
-        this.workPeriod = workPeriod;
-    }
-
-    public void changePrice(
-        Integer price
-    ) {
-        this.price = price;
-    }
-
-    public void changePastor(
-        Pastor pastor
-    ) {
-        this.pastor = pastor;
-    }
-
-    public void changeDescription(
-        String description
-    ) {
-        this.description = description;
-    }
-
-    public void changeMaximumParticipantCount(
-        Integer maximumParticipantCount
-    ) {
-        this.maximumParticipantCount = maximumParticipantCount;
-    }
-
-    public void changeCurrentParticipantCount(
-        Integer currentParticipant
-    ) {
-        this.currentParticipantCount = currentParticipant;
-    }
-
-    public void changePoster(MissionaryPoster poster) {
-        this.posters.forEach(MissionaryPoster::unlinkMissionary);
-        this.posters.clear();
-        this.posters.add(poster);
-    }
-
-    public boolean canParticipate(Integer participantCount) {
-        return participantCount < maximumParticipantCount && participationPeriod.inPeriod(OffsetDateTime.now());
-    }
-
-    public boolean isParticipatablePeriod(OffsetDateTime date) {
-        return participationPeriod.inPeriod(date);
-    }
-
-    public boolean aaaa(OffsetDateTime date) {
-        return participationPeriod.getStartDate().isAfter(date);
+    public boolean isParticipationPeriod(OffsetDateTime date) {
+        return detail.isParticipationPeriod(date);
     }
 
 
