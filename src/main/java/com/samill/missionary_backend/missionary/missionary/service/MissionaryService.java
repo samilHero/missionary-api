@@ -4,9 +4,8 @@ import com.samill.missionary_backend.church.dto.CreateMissionaryCommandResult;
 import com.samill.missionary_backend.common.exception.CommonException;
 import com.samill.missionary_backend.missionary.dto.CreateMissionaryCommand;
 import com.samill.missionary_backend.missionary.dto.GetMissionaryIdsQuery;
-import com.samill.missionary_backend.missionary.dto.GetMissionaryQuery;
-import com.samill.missionary_backend.missionary.dto.GetMissionaryQueryResult;
 import com.samill.missionary_backend.missionary.dto.UpdateMissionaryCommand;
+import com.samill.missionary_backend.missionary.exception.MissionaryException;
 import com.samill.missionary_backend.missionary.missionary.entity.Missionary;
 import com.samill.missionary_backend.missionary.missionary.exception.NotFoundMissionaryException;
 import com.samill.missionary_backend.missionary.missionary.mapper.MissionaryMapper;
@@ -79,11 +78,10 @@ public class MissionaryService {
         missionaryRepository.deleteById(missionaryId);
     }
 
-    public GetMissionaryQueryResult getMissionary(@NonNull GetMissionaryQuery getMissionaryQuery) throws CommonException {
-        return MissionaryMapper.INSTANCE.missionaryToGetMissionaryQueryResult(
-            missionaryRepository.findById(getMissionaryQuery.missionaryId())
-                .orElseThrow(NotFoundMissionaryException::new)
-        );
+    public Missionary getMissionary(@NonNull String missionaryId) throws MissionaryException {
+        return missionaryRepository.findById(missionaryId)
+            .orElseThrow(NotFoundMissionaryException::new);
+
     }
 
     public void getMissionaries(String cursor) {

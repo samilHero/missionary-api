@@ -1,9 +1,8 @@
-package com.samill.missionary_backend.missionary.staff;
+package com.samill.missionary_backend.missionary.staff.repository;
 
 import com.samill.missionary_backend.missionary.staff.entity.MissionaryStaff;
-import org.springframework.data.jpa.repository.JpaRepository;
-
 import java.util.Optional;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface MissionaryStaffRepository extends JpaRepository<MissionaryStaff, String> {
 

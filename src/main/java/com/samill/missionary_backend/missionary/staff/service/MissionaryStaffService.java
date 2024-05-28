@@ -2,9 +2,9 @@ package com.samill.missionary_backend.missionary.staff.service;
 
 
 import com.samill.missionary_backend.common.enums.ResponseCode;
-import com.samill.missionary_backend.common.exception.CommonException;
-import com.samill.missionary_backend.missionary.staff.MissionaryStaffRepository;
+import com.samill.missionary_backend.missionary.exception.MissionaryException;
 import com.samill.missionary_backend.missionary.staff.entity.MissionaryStaff;
+import com.samill.missionary_backend.missionary.staff.repository.MissionaryStaffRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -14,14 +14,19 @@ public class MissionaryStaffService {
 
     private final MissionaryStaffRepository missionaryStaffRepository;
 
-    public MissionaryStaff getMissionaryStaffById(String id) throws CommonException {
+    public MissionaryStaff getMissionaryStaff(String id) throws MissionaryException {
         return missionaryStaffRepository.findById(id)
-            .orElseThrow(() -> new CommonException(ResponseCode.NOT_FOUND_MISSIONARY_STAFF));
+            .orElseThrow(() -> new MissionaryException(ResponseCode.NOT_FOUND_MISSIONARY_STAFF));
     }
 
-    public MissionaryStaff getMissionaryStaffByMissionaryIdUserId(String missionaryId, String userId) throws CommonException {
+    public MissionaryStaff getMissionaryStaff(String missionaryId, String userId) throws MissionaryException {
         return missionaryStaffRepository.findByMissionary_IdAndUserId(missionaryId, userId)
-            .orElseThrow(() -> new CommonException(ResponseCode.NOT_FOUND_MISSIONARY_STAFF));
+            .orElseThrow(() -> new MissionaryException(ResponseCode.NOT_FOUND_MISSIONARY_STAFF));
     }
+
+    public Boolean isExistedMissionaryStaff(String missionaryId, String userId) {
+        return missionaryStaffRepository.findByMissionary_IdAndUserId(missionaryId, userId).isPresent();
+    }
+
 
 }
