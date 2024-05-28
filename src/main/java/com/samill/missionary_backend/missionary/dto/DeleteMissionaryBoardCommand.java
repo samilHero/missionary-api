@@ -4,7 +4,7 @@ import lombok.NonNull;
 
 public record DeleteMissionaryBoardCommand(
     @NonNull
-    String id
+    String missionaryBoardId
 ) {
 
 }

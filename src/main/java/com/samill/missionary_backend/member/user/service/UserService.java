@@ -5,6 +5,7 @@ import com.samill.missionary_backend.common.exception.CommonException;
 import com.samill.missionary_backend.common.util.PasswordUtil;
 import com.samill.missionary_backend.member.dto.CreateUserCommand;
 import com.samill.missionary_backend.member.dto.GetUserDto;
+import com.samill.missionary_backend.member.exception.MemberException;
 import com.samill.missionary_backend.member.mapper.UserMapper;
 import com.samill.missionary_backend.member.member.entity.Member;
 import com.samill.missionary_backend.member.user.entity.User;
@@ -47,12 +48,12 @@ public class UserService {
         return UserMapper.INSTANCE.userToGetUserDto(user);
     }
 
-    public GetUserDto getUserByMemberId(String memberId) throws Exception {
+    public GetUserDto getUserByMemberId(String memberId) throws MemberException {
         var user = userRepository.findByMemberMemberId(memberId);
         if (user.isPresent()) {
             return UserMapper.INSTANCE.userToGetUserDto(user.get());
         }
-        throw new CommonException(ResponseCode.NOT_FOUND_ERROR);
+        throw new MemberException(ResponseCode.NOT_FOUND_ERROR);
     }
 
     public Boolean isExistedUserByLoginId(String loginId) {

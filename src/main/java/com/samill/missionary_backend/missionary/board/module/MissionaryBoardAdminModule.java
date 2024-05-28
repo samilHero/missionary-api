@@ -6,6 +6,7 @@ import com.samill.missionary_backend.missionary.board.service.MissionaryBoardSer
 import com.samill.missionary_backend.missionary.dto.CreateMissionaryBoardCommand;
 import com.samill.missionary_backend.missionary.dto.DeleteMissionaryBoardCommand;
 import com.samill.missionary_backend.missionary.dto.GetMissionaryBoardsQuery;
+import com.samill.missionary_backend.missionary.dto.GetMissionaryQuery;
 import com.samill.missionary_backend.missionary.dto.UpdateMissionaryBoardCommand;
 import com.samill.missionary_backend.missionary.exception.MissionaryException;
 import com.samill.missionary_backend.missionary.missionary.entity.Missionary;
@@ -33,7 +34,7 @@ public class MissionaryBoardAdminModule implements MissionaryBoardModule {
 
     @Override
     public String createMissionaryBoard(@NonNull String memberId, @NonNull CreateMissionaryBoardCommand command) throws MissionaryException {
-        final Missionary missionary = missionaryService.getMissionary(command.missionaryId());
+        final Missionary missionary = missionaryService.getMissionary(new GetMissionaryQuery(command.missionaryId()));
         final MissionaryBoard missionaryBoard = missionaryBoardService.createMissionaryBoard(missionary, command);
 
         return missionaryBoard.getId();

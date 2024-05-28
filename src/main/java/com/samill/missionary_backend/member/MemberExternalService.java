@@ -31,7 +31,7 @@ public interface MemberExternalService {
 
     GetAdminDto getAdminByLoginId(String loginId) throws Exception;
 
-    GetUserDto getUserByMemberId(String memberId) throws Exception;
+    GetUserDto getUserByMemberId(String memberId) throws MemberException;
 
     void getUsers();
 

@@ -119,7 +119,7 @@ public class MemberManagement implements MemberExternalService {
     }
 
     @Transactional(readOnly = true)
-    public GetUserDto getUserByMemberId(String memberId) throws Exception {
+    public GetUserDto getUserByMemberId(String memberId) throws MemberException {
         return userService.getUserByMemberId(memberId);
     }
 

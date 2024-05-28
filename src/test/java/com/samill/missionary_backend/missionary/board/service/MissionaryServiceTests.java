@@ -41,7 +41,7 @@ class MissionaryServiceTests extends AbstractSpringBootTests {
 
         assertThat(missionaryBoards).isNotEmpty();
     }
-    
+
     @Test
     @Transactional
     void 선교_게시글_작성() throws MissionaryException {
