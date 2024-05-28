@@ -43,8 +43,14 @@ public class MissionaryBoardFile extends BaseEntity {
     @JoinColumn(name = "missionary_board_id")
     private MissionaryBoard board;
 
-    
+
     private OffsetDateTime deletedAt;
+
+
+    public void unlink() {
+        this.board = null;
+    }
+
 
 }
 

@@ -1,23 +1,35 @@
 package com.samill.missionary_backend.missionary.board.entity;
 
 import com.samill.missionary_backend.common.entity.BaseEntity;
+import com.samill.missionary_backend.missionary.board.enums.MissionaryBoardType;
 import com.samill.missionary_backend.missionary.missionary.entity.Missionary;
-import jakarta.persistence.*;
-import lombok.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
+import java.time.OffsetDateTime;
+import java.util.List;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 
-import java.time.OffsetDateTime;
-import java.util.ArrayList;
-import java.util.List;
-
 @Entity
 @Getter
-@Builder
 @NoArgsConstructor(
-        access = AccessLevel.PROTECTED
+    access = AccessLevel.PROTECTED
 )
+@Builder
 @AllArgsConstructor
 @SQLDelete(sql = "UPDATE missionary_board SET deleted_at = current_timestamp WHERE id = ?")
 @SQLRestriction(value = "deleted_at is NULL")
@@ -37,8 +49,7 @@ public class MissionaryBoard extends BaseEntity {
     private String content;
 
     @Builder.Default
-    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<MissionaryBoardFile> files = new ArrayList<>();
+    private MissionaryBoardFiles files = new MissionaryBoardFiles();
 
     @Getter(AccessLevel.NONE)
     @ManyToOne
@@ -50,13 +61,32 @@ public class MissionaryBoard extends BaseEntity {
 
     private OffsetDateTime deletedAt;
 
-    void updateBoard(String title, String content) {
+    public void changeTitle(@NonNull String title) {
         this.title = title;
+    }
+
+    public void changeContent(@NonNull String content) {
         this.content = content;
     }
 
-    void setWriter(MissionaryBoardWriter writer) {
-        this.writer = writer;
+    public void changeFiles(
+        @NonNull
+        List<String> removeTargets,
+        @NonNull
+        MissionaryBoardFiles newFiles
+    ) {
+        files.changeFiles(removeTargets, newFiles);
     }
 
+    public void linkMissionary(Missionary missionary) {
+        this.missionary = missionary;
+    }
+
+    public String getMissionaryId() {
+        return missionary.getId();
+    }
+
+    public int getFilesCount() {
+        return files.getFiles().size();
+    }
 }

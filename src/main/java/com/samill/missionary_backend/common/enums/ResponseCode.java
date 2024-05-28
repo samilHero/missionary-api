@@ -13,8 +13,14 @@ public enum ResponseCode implements EnumModel {
     INVALID_LOGIN_PASSWORD_ERROR(802, "비밀번호가 일치하지 않습니다."),
     NOT_FOUND_MISSIONARY_ERROR(900, "존재하지 않는 선교입니다."),
 
+
     INVALID_PARTICIPATION_PERIOD(901, "참여 기간이 올바르지 않습니다."),
     INVALID_WORK_PERIOD(902, "활동 기간이 올바르지 않습니다."),
+
+
+    NOT_FOUND_MISSIONARY_BOARD(930, "존재하지 않는 게시글입니다."),
+
+    ACCESS_DENIED_MISSIONARY_BOARD(931, "게시판에 접근 권한이 없습니다."),
 
     NOT_FOUND_MISSIONARY_STAFF(999, "존재 하지 않는 스태프입니다."),
 
