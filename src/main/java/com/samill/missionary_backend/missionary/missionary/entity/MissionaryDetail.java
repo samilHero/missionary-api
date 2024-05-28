@@ -35,8 +35,8 @@ public class MissionaryDetail {
     })
     private BankAccount bankAccount;
 
-    public boolean isParticipationPeriod(OffsetDateTime now) {
-        return participationPeriod.inPeriod(now);
+    public boolean isParticipationPeriod(OffsetDateTime date) {
+        return participationPeriod.inPeriod(date);
     }
 
 

@@ -3,6 +3,7 @@ package com.samill.missionary_backend.missionary.missionary.service;
 import com.samill.missionary_backend.church.dto.CreateMissionaryCommandResult;
 import com.samill.missionary_backend.common.exception.CommonException;
 import com.samill.missionary_backend.missionary.dto.CreateMissionaryCommand;
+import com.samill.missionary_backend.missionary.dto.GetMissionaryIdsQuery;
 import com.samill.missionary_backend.missionary.dto.GetMissionaryQuery;
 import com.samill.missionary_backend.missionary.dto.GetMissionaryQueryResult;
 import com.samill.missionary_backend.missionary.dto.UpdateMissionaryCommand;
@@ -10,6 +11,8 @@ import com.samill.missionary_backend.missionary.missionary.entity.Missionary;
 import com.samill.missionary_backend.missionary.missionary.exception.NotFoundMissionaryException;
 import com.samill.missionary_backend.missionary.missionary.mapper.MissionaryMapper;
 import com.samill.missionary_backend.missionary.missionary.repository.MissionaryRepository;
+import java.time.OffsetDateTime;
+import java.util.List;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -86,11 +89,25 @@ public class MissionaryService {
     public void getMissionaries(String cursor) {
     }
 
-    public boolean checkParticipate(@NonNull String missionaryId, @NonNull Integer participantCount) throws CommonException {
-        final Missionary missionary = missionaryRepository.findById(missionaryId)
-            .orElseThrow(NotFoundMissionaryException::new);
+    public List<String> getDaysBeforeMissionaryIds(GetMissionaryIdsQuery getMissionaryIdsQuery) {
+        return missionaryRepository.findAllByDetail_ParticipationPeriod_EndDateLessThanEqual(getMissionaryIdsQuery.endDate())
+            .stream()
+            .map(Missionary::getId)
+            .toList();
+    }
 
-        return missionary.canParticipate(participantCount);
+    public boolean checkParticipate(@NonNull String missionaryId, @NonNull Integer participantCount) throws CommonException {
+//        missionaryRepository.findById(missionaryId)
+//            .orElseThrow(NotFoundMissionaryException::new).che
+//
+//        return missionary.canParticipate(participantCount);
+
+        return true;
+    }
+
+    public boolean isParticipationPeriod(@NonNull String missionaryId) throws CommonException {
+        return missionaryRepository.findById(missionaryId)
+            .orElseThrow(NotFoundMissionaryException::new).isParticipationPeriod(OffsetDateTime.now());
     }
 
 
