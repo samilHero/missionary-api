@@ -7,6 +7,7 @@ import com.samill.missionary_backend.missionary.dto.GetMissionaryIdsQuery;
 import com.samill.missionary_backend.missionary.dto.GetMissionaryQuery;
 import com.samill.missionary_backend.missionary.dto.GetMissionaryQueryResult;
 import com.samill.missionary_backend.missionary.dto.UpdateMissionaryCommand;
+import com.samill.missionary_backend.missionary.exception.MissionaryException;
 import com.samill.missionary_backend.missionary.missionary.entity.Missionary;
 import com.samill.missionary_backend.missionary.missionary.exception.NotFoundMissionaryException;
 import com.samill.missionary_backend.missionary.missionary.mapper.MissionaryMapper;
