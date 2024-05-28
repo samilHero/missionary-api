@@ -42,6 +42,10 @@ public class MissionaryPoster {
 
     private OffsetDateTime deletedAt;
 
+    public void linkMissionary(Missionary missionary) {
+        this.missionary = missionary;
+    }
+
     public void unlinkMissionary() {
         this.missionary = null;
     }

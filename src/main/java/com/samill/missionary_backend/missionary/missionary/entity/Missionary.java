@@ -48,20 +48,7 @@ public class Missionary extends BaseEntity {
     private String name;
 
     @Embedded
-    @AttributeOverrides({
-        @AttributeOverride(name = "startDate", column = @Column(name = "participation_start_date")),
-        @AttributeOverride(name = "endDate", column = @Column(name = "participation_end_date")),
-    })
-    private Period participationPeriod;
-
-    @Embedded
-    @AttributeOverrides({
-        @AttributeOverride(name = "startDate", column = @Column(name = "work_start_date")),
-        @AttributeOverride(name = "endDate", column = @Column(name = "work_end_date")),
-    })
-    private Period workPeriod;
-
-    private Integer price;
+    private Period period;
 
     @Embedded
     @AttributeOverrides({
@@ -70,20 +57,8 @@ public class Missionary extends BaseEntity {
     })
     private Pastor pastor;
 
-    private String description;
-
-    private Integer maximumParticipantCount;
-
-    @Builder.Default
-    private Integer currentParticipantCount = 0;
-
     @Embedded
-    @AttributeOverrides({
-        @AttributeOverride(name = "bankName", column = @Column(name = "bank_account_bank_name")),
-        @AttributeOverride(name = "placeHolder", column = @Column(name = "bank_account_place_holder")),
-        @AttributeOverride(name = "number", column = @Column(name = "bank_account_number")),
-    })
-    private BankAccount bankAccount;
+    private MissionaryDetail detail;
 
     @Builder.Default
     @OneToMany(mappedBy = "missionary", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -163,6 +138,10 @@ public class Missionary extends BaseEntity {
     public boolean aaaa(OffsetDateTime date) {
         return participationPeriod.getStartDate().isAfter(date);
     }
+//
+//    public boolean aaaa(OffsetDateTime date) {
+//        return participationPeriod.getStartDate().isAfter(date);
+//    }
 
 
 }
