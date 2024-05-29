@@ -29,7 +29,7 @@ public class JwtFilter extends OncePerRequestFilter {
     private final TokenProvider tokenProvider;
 
     // 실제 필터릴 로직
-    // 토큰의 인증정보를 SecurityContext에 저장하는 역할 수행
+    // 토큰의 인증정보를 SecurityContext에 저장하는 역할 test수행
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
         throws ServletException, IOException {
