@@ -5,6 +5,7 @@ import com.samill.missionary_backend.authentication.mapper.AuthenticationMapper;
 import com.samill.missionary_backend.common.util.RequestContextUtil;
 import com.samill.missionary_backend.member.MemberExternalService;
 import com.samill.missionary_backend.member.exception.MemberException;
+import com.samill.missionary_backend.member.member.enums.ServiceType;
 import com.samill.missionary_backend.token.provider.TokenProvider;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -74,7 +75,22 @@ public class JwtFilter extends OncePerRequestFilter {
             return Boolean.TRUE;
         }
 
-        return !requestURI.startsWith(String.join("/", API_ROOT, serviceTypeDto.serviceType().getRoot()));
+        var serviceType = serviceTypeDto.serviceType().getRoot();
+        String serviceRootPath = String.join("/", API_ROOT, serviceType);
+        var isUserService = ServiceType.USER_SERVICE.getRoot().equals(serviceType);
+        var isAdminService = ServiceType.ADMIN_SERVICE.getRoot().equals(serviceType);
+
+        if (isUserService) {
+            var isStaffPath = requestURI.startsWith(String.join("/", API_ROOT, "staff"));
+            if (isStaffPath) {
+                return Boolean.FALSE;
+            }
+            return !requestURI.startsWith(serviceRootPath);
+        } else if (isAdminService) {
+            return !requestURI.startsWith(serviceRootPath);
+        }
+
+        return Boolean.TRUE;
     }
 
     // Request Header 에서 토큰 정보를 꺼내오기 위한 메소드
