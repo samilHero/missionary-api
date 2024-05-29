@@ -30,6 +30,7 @@ public class SecurityConfig {
                     .requestMatchers(HttpMethod.GET, "/docs/**").permitAll()
                     .requestMatchers(HttpMethod.GET, "/v3/api-docs/**").permitAll()
                     .requestMatchers(HttpMethod.GET, "/health-check").permitAll()
+                    .requestMatchers(HttpMethod.GET, "/api/public/**").permitAll()
                     .requestMatchers(HttpMethod.POST, "/api/user/login").permitAll()
                     .requestMatchers(HttpMethod.POST, "/api/admin/login").permitAll()
                     .requestMatchers(HttpMethod.POST, "/api/user/user").permitAll()
