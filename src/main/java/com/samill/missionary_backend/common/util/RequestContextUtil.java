@@ -4,6 +4,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.net.InetAddress;
 import java.util.Optional;
+import lombok.NonNull;
 import lombok.experimental.UtilityClass;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
@@ -15,12 +16,12 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 @UtilityClass
 public class RequestContextUtil {
 
-    public void setAttribute(String key, Object value) {
+    public void setAttribute(@NonNull String key, @NonNull Object value) {
         Optional.ofNullable(RequestContextHolder.getRequestAttributes())
             .ifPresent((var requestAttributes) -> requestAttributes.setAttribute(key, value, RequestAttributes.SCOPE_REQUEST));
     }
 
-    public String getAttribute(String key) {
+    public String getAttribute(@NonNull String key) {
         RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
         if (null != requestAttributes) {
             return Optional.ofNullable(requestAttributes.getAttribute(key, RequestAttributes.SCOPE_REQUEST)).orElseGet(String::new).toString();
@@ -29,7 +30,7 @@ public class RequestContextUtil {
         }
     }
 
-    public String getHeader(String key) {
+    public String getHeader(@NonNull String key) {
         HttpServletRequest servletRequest = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
 
         if (key.equals(HttpHeaders.AUTHORIZATION)) {
@@ -56,8 +57,7 @@ public class RequestContextUtil {
     public HttpServletRequest getCurrentHttpReq() {
         RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
         if (requestAttributes instanceof ServletRequestAttributes) {
-            HttpServletRequest request = ((ServletRequestAttributes) requestAttributes).getRequest();
-            return request;
+            return ((ServletRequestAttributes) requestAttributes).getRequest();
         }
         return null;
     }

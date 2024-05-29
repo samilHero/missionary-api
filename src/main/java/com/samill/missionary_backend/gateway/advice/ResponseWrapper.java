@@ -3,6 +3,7 @@ package com.samill.missionary_backend.gateway.advice;
 import com.samill.missionary_backend.common.enums.ResponseCode;
 import com.samill.missionary_backend.common.exception.CommonException;
 import com.samill.missionary_backend.gateway.dto.ApiResponse;
+import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.MediaType;
@@ -29,8 +30,8 @@ public class ResponseWrapper implements ResponseBodyAdvice<Object> {
 
     @Override
     public boolean supports(
-        MethodParameter returnType,
-        Class<? extends HttpMessageConverter<?>> converterType
+        @NonNull MethodParameter returnType,
+        @NonNull Class<? extends HttpMessageConverter<?>> converterType
     ) {
         return MappingJackson2HttpMessageConverter.class.isAssignableFrom(converterType);
     }
@@ -38,11 +39,11 @@ public class ResponseWrapper implements ResponseBodyAdvice<Object> {
     @Override
     public Object beforeBodyWrite(
         Object body,
-        MethodParameter returnType,
-        MediaType selectedContentType,
-        Class<? extends HttpMessageConverter<?>> selectedConverterType,
-        ServerHttpRequest request,
-        ServerHttpResponse response
+        @NonNull MethodParameter returnType,
+        @NonNull MediaType selectedContentType,
+        @NonNull Class<? extends HttpMessageConverter<?>> selectedConverterType,
+        @NonNull ServerHttpRequest request,
+        @NonNull ServerHttpResponse response
     ) {
 
         if (body instanceof ProblemDetail problemDetail) {

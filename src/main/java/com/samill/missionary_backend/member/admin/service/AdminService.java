@@ -9,6 +9,7 @@ import com.samill.missionary_backend.member.dto.CreateAdminCommand;
 import com.samill.missionary_backend.member.dto.GetAdminDto;
 import com.samill.missionary_backend.member.mapper.AdminMapper;
 import com.samill.missionary_backend.member.member.entity.Member;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +21,7 @@ public class AdminService {
     private final AdminRepository adminRepository;
     private final PasswordUtil passwordUtil;
 
-    public void createAdmin(CreateAdminCommand request, Member member) {
+    public void createAdmin(@NonNull CreateAdminCommand request, @NonNull Member member) {
 
         var password = passwordUtil.encodePassword(request.getPassword());
         adminRepository.save(Admin.builder()
@@ -36,7 +37,7 @@ public class AdminService {
             .build());
     }
 
-    public GetAdminDto getAdminById(String id) throws Exception {
+    public GetAdminDto getAdminById(@NonNull String id) throws Exception {
         var admin = adminRepository.findById(id);
         if (admin.isPresent()) {
             return AdminMapper.INSTANCE.adminToGetAdminDto(admin.get());
@@ -44,17 +45,17 @@ public class AdminService {
         throw new CommonException(ResponseCode.NOT_FOUND_ERROR);
     }
 
-    public GetAdminDto getAdminByLoginId(String loginId) {
+    public GetAdminDto getAdminByLoginId(@NonNull String loginId) {
         var admin = adminRepository.findByLoginId(loginId);
         return AdminMapper.INSTANCE.adminToGetAdminDto(admin);
     }
 
-    public GetAdminDto getAdminByMemberId(String memberId) throws Exception {
+    public GetAdminDto getAdminByMemberId(@NonNull String memberId) throws Exception {
         var admin = adminRepository.findByMemberMemberId(memberId).orElseThrow(() -> new CommonException(ResponseCode.NOT_FOUND_ERROR));
         return AdminMapper.INSTANCE.adminToGetAdminDto(admin);
     }
 
-    public Boolean isExistedAdminByLoginId(String loginId) {
+    public Boolean isExistedAdminByLoginId(@NonNull String loginId) {
         return adminRepository.existsByLoginId(loginId);
     }
 
