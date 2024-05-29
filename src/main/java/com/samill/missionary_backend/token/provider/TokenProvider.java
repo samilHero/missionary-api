@@ -1,4 +1,4 @@
-package com.samill.missionary_backend.authentication.security;
+package com.samill.missionary_backend.token.provider;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;

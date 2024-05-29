@@ -1,7 +1,6 @@
 package com.samill.missionary_backend.member;
 
 
-import com.samill.missionary_backend.authentication.security.TokenProvider;
 import com.samill.missionary_backend.common.enums.ResponseCode;
 import com.samill.missionary_backend.common.util.PasswordUtil;
 import com.samill.missionary_backend.member.admin.service.AdminService;
@@ -18,6 +17,7 @@ import com.samill.missionary_backend.member.exception.MemberException;
 import com.samill.missionary_backend.member.mapper.MemberMapper;
 import com.samill.missionary_backend.member.member.service.MemberService;
 import com.samill.missionary_backend.member.user.service.UserService;
+import com.samill.missionary_backend.token.provider.TokenProvider;
 import java.time.OffsetDateTime;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;

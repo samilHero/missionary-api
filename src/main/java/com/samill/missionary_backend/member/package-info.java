@@ -1,11 +1,10 @@
 @org.springframework.modulith.ApplicationModule(
     allowedDependencies = {
-        "authentication",
-        "authentication::security",
         "common::entity",
         "common::enums",
         "common::util",
-        "common::exception"
+        "common::exception",
+        "token::provider"
     }
 )
 package com.samill.missionary_backend.member;
