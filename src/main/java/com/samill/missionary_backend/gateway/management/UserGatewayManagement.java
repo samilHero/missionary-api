@@ -1,8 +1,12 @@
 package com.samill.missionary_backend.gateway.management;
 
+import static com.samill.missionary_backend.gateway.endPoint.UserGatewayManagementEndPoint.CREATE_PARTICIPATION;
 import static com.samill.missionary_backend.gateway.endPoint.UserGatewayManagementEndPoint.CREATE_USER_URI;
+import static com.samill.missionary_backend.gateway.endPoint.UserGatewayManagementEndPoint.DELETE_PARTICIPATION;
+import static com.samill.missionary_backend.gateway.endPoint.UserGatewayManagementEndPoint.GET_IS_EXISTED_USER_ID_URI;
 import static com.samill.missionary_backend.gateway.endPoint.UserGatewayManagementEndPoint.GET_MISSIONARIES;
 import static com.samill.missionary_backend.gateway.endPoint.UserGatewayManagementEndPoint.GET_USER_URI;
+import static com.samill.missionary_backend.gateway.endPoint.UserGatewayManagementEndPoint.UPDATE_PARTICIPATION;
 import static com.samill.missionary_backend.gateway.endPoint.UserGatewayManagementEndPoint.USER_LOGIN_URI;
 
 import com.samill.missionary_backend.common.dto.MemberContext;
@@ -31,9 +35,13 @@ import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
-
-import static com.samill.missionary_backend.gateway.endPoint.UserGatewayManagementEndPoint.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
 @RestController
@@ -68,6 +76,11 @@ public class UserGatewayManagement {
         );
     }
 
+    @GetMapping(GET_IS_EXISTED_USER_ID_URI)
+    public Boolean isExistedUserId(@PathVariable String loginId) {
+        return memberManagement.isExistedUserByLoginId(loginId);
+    }
+
     @GetMapping(GET_MISSIONARIES)
     public GetUserMissionariesResult getMissionaries(GetUserMissionariesRequest request) throws Exception {
         return new GetUserMissionariesResult(
@@ -86,6 +99,7 @@ public class UserGatewayManagement {
             false
         );
     }
+
     @PostMapping(CREATE_PARTICIPATION)
     public void createParticipation(CreateParticipation createParticipation, MemberContext memberContext) throws Exception {
         createParticipation.setUserInfo(memberContext);

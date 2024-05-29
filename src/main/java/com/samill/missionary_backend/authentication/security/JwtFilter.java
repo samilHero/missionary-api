@@ -49,7 +49,7 @@ public class JwtFilter extends OncePerRequestFilter {
 
             // request uri가 /api/{serviceType} 이 아니면 unauthorized error 발생
             if (isUnauthorizedServiceType(requestURI, authentication)) {
-                response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");
+                response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
                 return;
             }
 

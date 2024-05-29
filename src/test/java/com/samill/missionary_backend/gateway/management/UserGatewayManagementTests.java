@@ -4,6 +4,7 @@ import static com.epages.restdocs.apispec.MockMvcRestDocumentationWrapper.docume
 import static com.epages.restdocs.apispec.ResourceDocumentation.parameterWithName;
 import static com.epages.restdocs.apispec.ResourceDocumentation.resource;
 import static com.samill.missionary_backend.gateway.endPoint.UserGatewayManagementEndPoint.CREATE_USER_URI;
+import static com.samill.missionary_backend.gateway.endPoint.UserGatewayManagementEndPoint.GET_IS_EXISTED_USER_ID_URI;
 import static com.samill.missionary_backend.gateway.endPoint.UserGatewayManagementEndPoint.GET_MISSIONARIES;
 import static com.samill.missionary_backend.gateway.endPoint.UserGatewayManagementEndPoint.GET_USER_URI;
 import static com.samill.missionary_backend.gateway.endPoint.UserGatewayManagementEndPoint.USER_LOGIN_URI;
@@ -125,6 +126,30 @@ class UserGatewayManagementTests extends AbstractControllerTest {
     }
 
     @Test
+    @DisplayName("get is existed userId test")
+    @Transactional
+    void getIsExistedUserIdTest() {
+
+        Assertions.assertDoesNotThrow(() -> {
+            mockMvc.perform(RestDocumentationRequestBuilders.get(GET_IS_EXISTED_USER_ID_URI, "hanbyul.jung1")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .accept(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andDo(
+                    document(snippetPath,
+                        "선교대원 로그인 API",
+                        responseFields(
+                            fieldWithPath("statusCode").type(JsonFieldType.NUMBER).description("결과코드"),
+                            fieldWithPath("message").type(JsonFieldType.STRING).description("결과 메시지"),
+                            fieldWithPath("data").type(JsonFieldType.BOOLEAN).description("존재 여부")
+                        )
+                    )
+                )
+                .andExpect(MockMvcResultMatchers.status().isOk());
+        });
+    }
+
+    @Test
     @DisplayName("get user test")
     @Transactional
     public void getApiResponseTest() throws Exception {
@@ -206,18 +231,18 @@ class UserGatewayManagementTests extends AbstractControllerTest {
     void createParticipationTest() throws Exception {
         mockMvc.perform(
                 RestDocumentationRequestBuilders.post(UserGatewayManagementEndPoint.CREATE_PARTICIPATION)
-                        .content(
-                            jacksonObjectMapper.writeValueAsString(
-                                new CreateParticipationCommand(
-                                        "71d8cee6-e2bc-472a-ab1f-c61c70dc0e51",
-                                        "MEM1",
-                                        "장예찬",
-                                        "jang1",
-                                        "932393-2929292",
-                                        "19940616",
-                                        30000,
-                                        false
-                                )
+                    .content(
+                        jacksonObjectMapper.writeValueAsString(
+                            new CreateParticipationCommand(
+                                "71d8cee6-e2bc-472a-ab1f-c61c70dc0e51",
+                                "MEM1",
+                                "장예찬",
+                                "jang1",
+                                "932393-2929292",
+                                "19940616",
+                                30000,
+                                false
+                            )
                         ))
                     .header("Authorization", getAuthorizationUserOfHeader())
                     .contentType(MediaType.APPLICATION_JSON)

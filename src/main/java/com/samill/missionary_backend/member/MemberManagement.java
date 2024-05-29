@@ -141,6 +141,16 @@ public class MemberManagement implements MemberExternalService {
         return memberService.getMemberServiceType(memberId);
     }
 
+    @Override
+    @Transactional(readOnly = true)
+    public Boolean isExistedUserByLoginId(@NonNull String loginId) {
+        return userService.isExistedUserByLoginId(loginId);
+    }
+
+    private Boolean isExistedAdminByLoginId(@NonNull String loginId) {
+        return adminService.isExistedAdminByLoginId(loginId);
+    }
+
 
     private LoginUserQueryResult createUserToken(@NonNull GetUserDto request) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -157,14 +167,4 @@ public class MemberManagement implements MemberExternalService {
         var token = tokenProvider.createToken(authentication, claims);
         return LoginAdminQueryResult.builder().token(token).build();
     }
-
-    private Boolean isExistedUserByLoginId(@NonNull String loginId) {
-        return userService.isExistedUserByLoginId(loginId);
-    }
-
-    private Boolean isExistedAdminByLoginId(@NonNull String loginId) {
-        return adminService.isExistedAdminByLoginId(loginId);
-    }
-
-
 }
