@@ -7,6 +7,7 @@ import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,12 +32,11 @@ public class JwtFilter extends OncePerRequestFilter {
     // 실제 필터릴 로직
     // 토큰의 인증정보를 SecurityContext에 저장하는 역할 test수행
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+    protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain)
         throws ServletException, IOException {
 
-        HttpServletRequest httpServletRequest = request;
         String jwt = resolveToken();
-        String requestURI = httpServletRequest.getRequestURI();
+        String requestURI = request.getRequestURI();
 
         if (StringUtils.hasText(jwt) && tokenProvider.validateToken(jwt)) {
             Authentication authentication = tokenProvider.getAuthentication(jwt);

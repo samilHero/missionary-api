@@ -19,6 +19,7 @@ import com.samill.missionary_backend.member.mapper.MemberMapper;
 import com.samill.missionary_backend.member.member.service.MemberService;
 import com.samill.missionary_backend.member.user.service.UserService;
 import java.time.OffsetDateTime;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -37,7 +38,7 @@ public class MemberManagement implements MemberExternalService {
 
     @Override
     @Transactional
-    public void createUser(CreateUserCommand request) throws MemberException {
+    public void createUser(@NonNull CreateUserCommand request) throws MemberException {
         var isExistedUser = isExistedUserByLoginId(request.getLoginId());
 
         if (isExistedUser) {
@@ -51,7 +52,7 @@ public class MemberManagement implements MemberExternalService {
 
     @Override
     @Transactional
-    public LoginUserQueryResult loginUser(LoginUserQuery request) throws MemberException {
+    public LoginUserQueryResult loginUser(@NonNull LoginUserQuery request) throws MemberException {
         var isExistedUser = isExistedUserByLoginId(request.getLoginId());
         if (!isExistedUser) {
             throw new MemberException(ResponseCode.IS_NOT_EXITED_LOGIN_ID_ERROR);
@@ -67,7 +68,7 @@ public class MemberManagement implements MemberExternalService {
 
     @Override
     @Transactional
-    public LoginAdminQueryResult loginAdmin(LoginAdminQuery request) throws Exception {
+    public LoginAdminQueryResult loginAdmin(@NonNull LoginAdminQuery request) throws Exception {
         var isExistedAdmin = isExistedAdminByLoginId(request.getLoginId());
         if (!isExistedAdmin) {
             throw new MemberException(ResponseCode.IS_NOT_EXITED_LOGIN_ID_ERROR);
@@ -84,7 +85,7 @@ public class MemberManagement implements MemberExternalService {
 
     @Override
     @Transactional
-    public void createAdmin(CreateAdminCommand request) throws MemberException {
+    public void createAdmin(@NonNull CreateAdminCommand request) throws MemberException {
         var isExistedAdmin = isExistedAdminByLoginId(request.getLoginId());
 
         if (isExistedAdmin) {
@@ -103,28 +104,28 @@ public class MemberManagement implements MemberExternalService {
 
     @Override
     @Transactional(readOnly = true)
-    public GetUserDto getUserById(String userId) throws Exception {
+    public GetUserDto getUserById(@NonNull String userId) throws Exception {
         return userService.getUserById(userId);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public GetUserDto getUserByLoginId(String loginId) {
+    public GetUserDto getUserByLoginId(@NonNull String loginId) {
         return userService.getUserByLoginId(loginId);
     }
 
     @Transactional(readOnly = true)
-    public GetAdminDto getAdminByLoginId(String loginId) {
+    public GetAdminDto getAdminByLoginId(@NonNull String loginId) {
         return adminService.getAdminByLoginId(loginId);
     }
 
     @Transactional(readOnly = true)
-    public GetUserDto getUserByMemberId(String memberId) throws MemberException {
+    public GetUserDto getUserByMemberId(@NonNull String memberId) throws MemberException {
         return userService.getUserByMemberId(memberId);
     }
 
     @Transactional(readOnly = true)
-    public GetAdminDto getAdminByMemberId(String memberId) throws Exception {
+    public GetAdminDto getAdminByMemberId(@NonNull String memberId) throws Exception {
         return adminService.getAdminByMemberId(memberId);
     }
 
@@ -136,12 +137,12 @@ public class MemberManagement implements MemberExternalService {
 
     @Override
     @Transactional(readOnly = true)
-    public GetMemberServiceTypeDto getMemberServiceType(String memberId) throws MemberException {
+    public GetMemberServiceTypeDto getMemberServiceType(@NonNull String memberId) throws MemberException {
         return memberService.getMemberServiceType(memberId);
     }
 
 
-    private LoginUserQueryResult createUserToken(GetUserDto request) {
+    private LoginUserQueryResult createUserToken(@NonNull GetUserDto request) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         // JWT 토큰 생성
         var claims = memberService.createClaims(request, OffsetDateTime.now());
@@ -149,7 +150,7 @@ public class MemberManagement implements MemberExternalService {
         return LoginUserQueryResult.builder().token(token).build();
     }
 
-    private LoginAdminQueryResult createAdminToken(GetAdminDto request) {
+    private LoginAdminQueryResult createAdminToken(@NonNull GetAdminDto request) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         // JWT 토큰 생성
         var claims = memberService.createClaims(request, OffsetDateTime.now());
@@ -157,11 +158,11 @@ public class MemberManagement implements MemberExternalService {
         return LoginAdminQueryResult.builder().token(token).build();
     }
 
-    private Boolean isExistedUserByLoginId(String loginId) {
+    private Boolean isExistedUserByLoginId(@NonNull String loginId) {
         return userService.isExistedUserByLoginId(loginId);
     }
 
-    private Boolean isExistedAdminByLoginId(String loginId) {
+    private Boolean isExistedAdminByLoginId(@NonNull String loginId) {
         return adminService.isExistedAdminByLoginId(loginId);
     }
 

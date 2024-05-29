@@ -10,6 +10,7 @@ import com.samill.missionary_backend.member.mapper.UserMapper;
 import com.samill.missionary_backend.member.member.entity.Member;
 import com.samill.missionary_backend.member.user.entity.User;
 import com.samill.missionary_backend.member.user.repository.UserRepository;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +21,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordUtil passwordUtil;
 
-    public void createUser(CreateUserCommand request, Member member) {
+    public void createUser(@NonNull CreateUserCommand request, @NonNull Member member) {
 
         var password = passwordUtil.encodePassword(request.getPassword());
         userRepository.save(User.builder()
@@ -38,17 +39,17 @@ public class UserService {
     }
 
 
-    public GetUserDto getUserById(String id) throws Exception {
+    public GetUserDto getUserById(@NonNull String id) throws Exception {
         var user = userRepository.findById(id).orElseThrow(() -> new CommonException(ResponseCode.NOT_FOUND_ERROR));
         return UserMapper.INSTANCE.userToGetUserDto(user);
     }
 
-    public GetUserDto getUserByLoginId(String loginId) {
+    public GetUserDto getUserByLoginId(@NonNull String loginId) {
         var user = userRepository.findByLoginId(loginId);
         return UserMapper.INSTANCE.userToGetUserDto(user);
     }
 
-    public GetUserDto getUserByMemberId(String memberId) throws MemberException {
+    public GetUserDto getUserByMemberId(@NonNull String memberId) throws MemberException {
         var user = userRepository.findByMemberMemberId(memberId);
         if (user.isPresent()) {
             return UserMapper.INSTANCE.userToGetUserDto(user.get());
@@ -56,7 +57,7 @@ public class UserService {
         throw new MemberException(ResponseCode.NOT_FOUND_ERROR);
     }
 
-    public Boolean isExistedUserByLoginId(String loginId) {
+    public Boolean isExistedUserByLoginId(@NonNull String loginId) {
         return userRepository.existsByLoginId(loginId);
     }
 
