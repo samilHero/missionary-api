@@ -1,8 +1,8 @@
-package com.samill.missionary_backend.participation.service;
+package com.samill.missionary_backend.missionary.participation.service;
 
 import com.samill.missionary_backend.common.exception.CommonException;
-import com.samill.missionary_backend.participation.dto.*;
-import com.samill.missionary_backend.participation.entity.Participation;
+import com.samill.missionary_backend.missionary.dto.*;
+import com.samill.missionary_backend.missionary.participation.entity.Participation;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 

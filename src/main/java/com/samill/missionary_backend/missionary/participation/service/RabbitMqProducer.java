@@ -1,6 +1,6 @@
-package com.samill.missionary_backend.participation.service;
+package com.samill.missionary_backend.missionary.participation.service;
 
-import com.samill.missionary_backend.participation.dto.MessageDto;
+import com.samill.missionary_backend.missionary.dto.MessageDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;

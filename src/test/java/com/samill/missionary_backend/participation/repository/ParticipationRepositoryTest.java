@@ -3,10 +3,12 @@ package com.samill.missionary_backend.participation.repository;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.samill.missionary_backend.common.AbstractSpringBootTests;
-import com.samill.missionary_backend.participation.dto.CreateParticipationCommand;
-import com.samill.missionary_backend.participation.entity.Participation;
-import com.samill.missionary_backend.participation.mapper.ParticipationMapper;
+import com.samill.missionary_backend.missionary.dto.CreateParticipationCommand;
+import com.samill.missionary_backend.missionary.participation.entity.Participation;
+import com.samill.missionary_backend.missionary.participation.mapper.ParticipationMapper;
 import java.util.UUID;
+
+import com.samill.missionary_backend.missionary.participation.repository.ParticipationRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;

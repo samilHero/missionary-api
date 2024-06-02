@@ -1,14 +1,11 @@
 package com.samill.missionary_backend.gateway.mapper;
 
 import com.samill.missionary_backend.gateway.dto.Participation.*;
-import com.samill.missionary_backend.participation.dto.*;
-import org.mapstruct.IterableMapping;
+import com.samill.missionary_backend.missionary.dto.*;
 import org.mapstruct.Mapper;
 import org.mapstruct.Named;
 import org.mapstruct.ReportingPolicy;
 import org.mapstruct.factory.Mappers;
-
-import java.util.List;
 
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface ParticipationGatewayMapper {

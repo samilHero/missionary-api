@@ -1,10 +1,10 @@
-package com.samill.missionary_backend.participation.repository;
+package com.samill.missionary_backend.missionary.participation.repository;
 
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.samill.missionary_backend.participation.dto.GetParticipationQueryResult;
-import com.samill.missionary_backend.participation.dto.GetParticipationsQuery;
-import com.samill.missionary_backend.participation.entity.QParticipation;
+import com.samill.missionary_backend.missionary.dto.GetParticipationQueryResult;
+import com.samill.missionary_backend.missionary.dto.GetParticipationsQuery;
+import com.samill.missionary_backend.missionary.participation.entity.QParticipation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;

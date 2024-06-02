@@ -5,7 +5,6 @@ import static com.samill.missionary_backend.gateway.endPoint.AdminGatewayManagem
 import static com.samill.missionary_backend.gateway.endPoint.AdminGatewayManagementEndPoint.CREATE_ADMIN_URI;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
-import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
@@ -26,8 +25,8 @@ import com.samill.missionary_backend.gateway.dto.CreateChurchRequest;
 import com.samill.missionary_backend.gateway.dto.LoginUserRequest;
 import com.samill.missionary_backend.gateway.dto.UpdateChurchRequest;
 import com.samill.missionary_backend.gateway.endPoint.AdminGatewayManagementEndPoint;
-import com.samill.missionary_backend.participation.ParticipationExternalService;
-import com.samill.missionary_backend.participation.dto.GetParticipationQueryResult;
+import com.samill.missionary_backend.missionary.participation.ParticipationExternalService;
+import com.samill.missionary_backend.missionary.dto.GetParticipationQueryResult;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.UUID;

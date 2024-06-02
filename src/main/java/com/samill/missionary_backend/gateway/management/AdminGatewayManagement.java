@@ -1,7 +1,6 @@
 package com.samill.missionary_backend.gateway.management;
 
 import com.samill.missionary_backend.church.ChurchExternalService;
-import com.samill.missionary_backend.common.dto.MemberContext;
 import com.samill.missionary_backend.common.exception.CommonException;
 import com.samill.missionary_backend.gateway.mapper.ParticipationGatewayMapper;
 import com.samill.missionary_backend.gateway.dto.CreateAdminRequest;
@@ -19,9 +18,9 @@ import com.samill.missionary_backend.gateway.mapper.AdminGatewayMapper;
 import com.samill.missionary_backend.gateway.mapper.ChurchGatewayMapper;
 import com.samill.missionary_backend.member.MemberExternalService;
 import com.samill.missionary_backend.missionary.MissionaryExternalService;
-import com.samill.missionary_backend.participation.ParticipationExternalService;
-import com.samill.missionary_backend.participation.dto.GetParticipationQueryResult;
-import com.samill.missionary_backend.participation.dto.GetParticipationsQuery;
+import com.samill.missionary_backend.missionary.participation.ParticipationExternalService;
+import com.samill.missionary_backend.missionary.dto.GetParticipationQueryResult;
+import com.samill.missionary_backend.missionary.dto.GetParticipationsQuery;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -34,8 +33,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 
 @Slf4j
 @RestController

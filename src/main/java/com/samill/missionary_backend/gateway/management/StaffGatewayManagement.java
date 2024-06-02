@@ -6,21 +6,18 @@ import com.samill.missionary_backend.gateway.dto.GetChurchResult;
 import com.samill.missionary_backend.gateway.dto.GetChurchesResult;
 import com.samill.missionary_backend.gateway.dto.Participation.GetParticipationResult;
 import com.samill.missionary_backend.gateway.dto.Participation.GetParticipations;
-import com.samill.missionary_backend.gateway.endPoint.AdminGatewayManagementEndPoint;
 import com.samill.missionary_backend.gateway.endPoint.StaffGatewayManagementEndPoint;
 import com.samill.missionary_backend.gateway.mapper.ChurchGatewayMapper;
 import com.samill.missionary_backend.gateway.mapper.ParticipationGatewayMapper;
-import com.samill.missionary_backend.participation.ParticipationExternalService;
-import com.samill.missionary_backend.participation.dto.GetParticipationQueryResult;
-import com.samill.missionary_backend.participation.dto.GetParticipationsQuery;
+import com.samill.missionary_backend.missionary.participation.ParticipationExternalService;
+import com.samill.missionary_backend.missionary.dto.GetParticipationQueryResult;
+import com.samill.missionary_backend.missionary.dto.GetParticipationsQuery;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-
-import java.util.List;
 
 @Controller
 @RequiredArgsConstructor

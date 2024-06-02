@@ -20,10 +20,10 @@ import com.samill.missionary_backend.gateway.dto.Participation.UpdateParticipati
 import com.samill.missionary_backend.gateway.mapper.ParticipationGatewayMapper;
 import com.samill.missionary_backend.gateway.mapper.UserGatewayMapper;
 import com.samill.missionary_backend.member.MemberExternalService;
-import com.samill.missionary_backend.participation.ParticipationExternalService;
-import com.samill.missionary_backend.participation.dto.CreateParticipationCommand;
-import com.samill.missionary_backend.participation.dto.DeleteParticipationCommand;
-import com.samill.missionary_backend.participation.dto.UpdateParticipationCommand;
+import com.samill.missionary_backend.missionary.participation.ParticipationExternalService;
+import com.samill.missionary_backend.missionary.dto.CreateParticipationCommand;
+import com.samill.missionary_backend.missionary.dto.DeleteParticipationCommand;
+import com.samill.missionary_backend.missionary.dto.UpdateParticipationCommand;
 import jakarta.validation.Valid;
 import java.time.OffsetDateTime;
 import java.util.List;
