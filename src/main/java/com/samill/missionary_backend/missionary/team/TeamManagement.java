@@ -1,7 +1,7 @@
 package com.samill.missionary_backend.missionary.team;
 
 import com.samill.missionary_backend.common.exception.CommonException;
-import com.samill.missionary_backend.missionary.team.dto.*;
+import com.samill.missionary_backend.missionary.dto.*;
 import com.samill.missionary_backend.missionary.team.entity.Team;
 import com.samill.missionary_backend.missionary.team.entity.TeamMember;
 import com.samill.missionary_backend.missionary.team.mapper.TeamMapper;
