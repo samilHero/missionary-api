@@ -1,6 +1,6 @@
 package com.samill.missionary_backend.missionary.team.entity;
 
-import com.samill.missionary_backend.missionary.team.dto.UpdateTeamCommand;
+import com.samill.missionary_backend.missionary.dto.UpdateTeamCommand;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
@@ -30,6 +30,7 @@ public class Team {
     private String churchId;
     private String leaderUserId;
     private String teamName;
+    @Builder.Default
     @OneToMany(mappedBy = "team", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<TeamMember> teamMemberList = new ArrayList<>();
     private OffsetDateTime deletedAt;

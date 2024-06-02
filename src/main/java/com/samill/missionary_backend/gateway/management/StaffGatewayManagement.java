@@ -9,8 +9,7 @@ import com.samill.missionary_backend.gateway.endPoint.StaffGatewayManagementEndP
 import com.samill.missionary_backend.gateway.mapper.ChurchGatewayMapper;
 import com.samill.missionary_backend.gateway.mapper.ParticipationGatewayMapper;
 import com.samill.missionary_backend.gateway.mapper.TeamGatewayMapper;
-import com.samill.missionary_backend.missionary.team.TeamExternalService;
-import com.samill.missionary_backend.missionary.team.dto.CreateTeamCommand;
+import com.samill.missionary_backend.missionary.MissionaryExternalService;
 import com.samill.missionary_backend.participation.ParticipationExternalService;
 import com.samill.missionary_backend.participation.dto.GetParticipationQueryResult;
 import com.samill.missionary_backend.participation.dto.GetParticipationsQuery;
@@ -29,7 +28,7 @@ public class StaffGatewayManagement {
 
     private final ChurchExternalService churchExternalService;
     private final ParticipationExternalService participationExternalService;
-    private final TeamExternalService teamExternalService;
+    private final MissionaryExternalService missionaryExternalService;
 
     @GetMapping(StaffGatewayManagementEndPoint.GET_CHURCH)
     public GetChurchResult getChurch(@PathVariable String churchId) throws CommonException {
@@ -57,31 +56,31 @@ public class StaffGatewayManagement {
 
     @PostMapping(StaffGatewayManagementEndPoint.CREATE_TEAM)
     public void createTeam(@Valid @RequestBody CreateTeamRequest createTeamRequest) {
-        teamExternalService.createTeam(TeamGatewayMapper.INSTANCE.createTeamRequestToCreateTeamCommand(createTeamRequest));
+        missionaryExternalService.createTeam(TeamGatewayMapper.INSTANCE.createTeamRequestToCreateTeamCommand(createTeamRequest));
     }
 
     @PutMapping(StaffGatewayManagementEndPoint.UPDATE_TEAM)
     public void updateTeam(@PathVariable String teamId, @RequestBody UpdateTeamRequest updateTeamRequest) throws CommonException {
-        teamExternalService.updateTeam(teamId, TeamGatewayMapper.INSTANCE.updateTeamRequestToUpdateTeamCommand(updateTeamRequest));
+        missionaryExternalService.updateTeam(teamId, TeamGatewayMapper.INSTANCE.updateTeamRequestToUpdateTeamCommand(updateTeamRequest));
     }
 
     @PutMapping(StaffGatewayManagementEndPoint.UPDATE_TEAM_MEMBER)
     public void updateTeamMembers(@PathVariable String teamId, @Valid @RequestBody List<UpdateTeamMemberRequest> list) throws CommonException {
-        teamExternalService.updateTeamMember(teamId, TeamGatewayMapper.INSTANCE.updateTeamMEmberRequestsToUpdateTeamMEmberCommands(list));
+        missionaryExternalService.updateTeamMember(teamId, TeamGatewayMapper.INSTANCE.updateTeamMEmberRequestsToUpdateTeamMEmberCommands(list));
     }
 
     @GetMapping(StaffGatewayManagementEndPoint.GET_TEAM)
     public GetTeamResult getTeam(@PathVariable String teamId) throws CommonException {
-        return TeamGatewayMapper.INSTANCE.GetTeamQueryResultToGetTeamResult(teamExternalService.getTeam(teamId));
+        return TeamGatewayMapper.INSTANCE.GetTeamQueryResultToGetTeamResult(missionaryExternalService.getTeam(teamId));
     }
 
     @GetMapping(StaffGatewayManagementEndPoint.GET_TEAMS)
     public List<GetTeamResult> getTeams(@PathVariable String missionaryId) {
-        return TeamGatewayMapper.INSTANCE.GetTeamQueryResultsToGetTeamResults(teamExternalService.getTeams(missionaryId));
+        return TeamGatewayMapper.INSTANCE.GetTeamQueryResultsToGetTeamResults(missionaryExternalService.getTeams(missionaryId));
     }
 
     @DeleteMapping(StaffGatewayManagementEndPoint.DELETE_TEAM)
     public void deleteTeam(@PathVariable String teamId) {
-        teamExternalService.deleteTeam(teamId);
+        missionaryExternalService.deleteTeam(teamId);
     }
 }

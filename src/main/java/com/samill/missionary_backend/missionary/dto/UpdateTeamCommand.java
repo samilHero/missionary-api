@@ -1,4 +1,4 @@
-package com.samill.missionary_backend.missionary.team.dto;
+package com.samill.missionary_backend.missionary.dto;
 
 import lombok.Builder;
 

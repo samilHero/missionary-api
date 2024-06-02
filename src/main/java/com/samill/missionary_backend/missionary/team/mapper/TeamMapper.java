@@ -1,12 +1,12 @@
 package com.samill.missionary_backend.missionary.team.mapper;
 
-import com.samill.missionary_backend.missionary.team.dto.*;
+import com.samill.missionary_backend.missionary.dto.CreateTeamCommand;
+import com.samill.missionary_backend.missionary.dto.GetTeamQueryResult;
+import com.samill.missionary_backend.missionary.dto.UpdateTeamCommand;
+import com.samill.missionary_backend.missionary.dto.UpdateTeamMemberCommand;
 import com.samill.missionary_backend.missionary.team.entity.Team;
 import com.samill.missionary_backend.missionary.team.entity.TeamMember;
-import org.mapstruct.IterableMapping;
-import org.mapstruct.Mapper;
-import org.mapstruct.Named;
-import org.mapstruct.ReportingPolicy;
+import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
 
 import java.util.List;
@@ -26,6 +26,7 @@ public interface TeamMapper {
     List<TeamMember> updateTeamMemberCommandToEntity(List<UpdateTeamMemberCommand> updateTeamMemberCommandList);
 
     @Named("TEAM")
+    @Mapping(source = "team.teamMemberList", target = "teamMemberList")
     GetTeamQueryResult entityToGetTeamQueryResult(Team team);
 
     @IterableMapping(qualifiedByName = "TEAM")

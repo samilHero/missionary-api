@@ -1,6 +1,5 @@
-package com.samill.missionary_backend.missionary.team.dto;
+package com.samill.missionary_backend.missionary.dto;
 
-import com.samill.missionary_backend.missionary.team.entity.TeamMember;
 import lombok.Builder;
 
 import java.util.List;
@@ -12,6 +11,6 @@ public record GetTeamQueryResult(
         String churchId,
         String leaderUserId,
         String teamName,
-        List<TeamMember> teamMemberList
+        List<GetTeamMemberQueryResult> teamMemberList
 ) {
 }

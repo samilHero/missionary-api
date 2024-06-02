@@ -3,7 +3,7 @@ package com.samill.missionary_backend.team.service;
 import com.samill.missionary_backend.MissionaryBackendApplication;
 import com.samill.missionary_backend.common.AbstractControllerTest;
 import com.samill.missionary_backend.common.exception.CommonException;
-import com.samill.missionary_backend.missionary.team.dto.UpdateTeamCommand;
+import com.samill.missionary_backend.missionary.dto.UpdateTeamCommand;
 import com.samill.missionary_backend.missionary.team.entity.Team;
 import com.samill.missionary_backend.missionary.team.entity.TeamMember;
 import com.samill.missionary_backend.missionary.team.repository.TeamMemberRepository;

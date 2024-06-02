@@ -12,6 +12,6 @@ public record GetTeamResult(
         String churchId,
         String leaderUserId,
         String teamName,
-        List<TeamMember> teamMemberList
+        List<TeamMemberResults> teamMemberList
 ) {
 }

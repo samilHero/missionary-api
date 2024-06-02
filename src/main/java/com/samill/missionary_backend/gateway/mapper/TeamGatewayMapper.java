@@ -4,11 +4,11 @@ import com.samill.missionary_backend.gateway.dto.CreateTeamRequest;
 import com.samill.missionary_backend.gateway.dto.GetTeamResult;
 import com.samill.missionary_backend.gateway.dto.UpdateTeamMemberRequest;
 import com.samill.missionary_backend.gateway.dto.UpdateTeamRequest;
-import com.samill.missionary_backend.missionary.team.dto.*;
-import org.mapstruct.IterableMapping;
-import org.mapstruct.Mapper;
-import org.mapstruct.Named;
-import org.mapstruct.ReportingPolicy;
+import com.samill.missionary_backend.missionary.dto.CreateTeamCommand;
+import com.samill.missionary_backend.missionary.dto.GetTeamQueryResult;
+import com.samill.missionary_backend.missionary.dto.UpdateTeamCommand;
+import com.samill.missionary_backend.missionary.dto.UpdateTeamMemberCommand;
+import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
 
 import java.util.List;
@@ -28,6 +28,7 @@ public interface TeamGatewayMapper {
     List<UpdateTeamMemberCommand> updateTeamMEmberRequestsToUpdateTeamMEmberCommands(List<UpdateTeamMemberRequest> updateTeamMemberRequests);
 
     @Named("TEAM")
+    @Mapping(source = "getTeamQueryResult.teamMemberList", target = "teamMemberList")
     GetTeamResult GetTeamQueryResultToGetTeamResult(GetTeamQueryResult getTeamQueryResult);
 
     @IterableMapping(qualifiedByName = "TEAM")
