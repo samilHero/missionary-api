@@ -26,14 +26,14 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-        
+
       - name: Set up JDK 21
         uses: actions/setup-java@v4
         with:
           java-version: '21'
           distribution: 'corretto'
 
-      - name: Set environment variables
+      - name: Set application.yml environment variables
         uses: microsoft/variable-substitution@v1
         with:
           files: ./src/main/resources/application.yml
@@ -88,7 +88,7 @@ jobs:
         id: build-image
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          ECR_REPOSITORY: samill-missionary-api
+          ECR_REPOSITORY: ${{ secrets.AWS_EB_APP_NAME }}
           IMAGE_TAG: latest
         run: |
           docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
@@ -102,6 +102,13 @@ jobs:
           format: YYYYMMDD_HH-mm-ss
           utcOffset: "+09:00"
 
+      - name: Set Dockerrun.aws.json environment variables
+        use: microsoft/variable-substitution@v1
+        with:
+          files: ./Dockerrun.aws.json
+        env:
+          Image.Name: ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.ap-northeast-1.amazonaws.com/${{ secrets.AWS_EB_APP_NAME }}:latest
+
       - name: Generate deployment package
         run: |
           mkdir -p deploy
@@ -113,9 +120,9 @@ jobs:
         with:
           aws_access_key: ${{ secrets.AWS_ACCESS_KEY }}
           aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          application_name: samill-missionary-api
-          environment_name: samill-missionary-api-env
-          version_label: samill-missionary-api-${{steps.current-time.outputs.formattedTime}}
+          application_name: ${{ secrets.AWS_EB_APP_NAME }}
+          environment_name: ${{ secrets.AWS_EB_ENV_NAME }}
+          version_label: ${{ secrets.AWS_EB_APP_NAME }}-${{steps.current-time.outputs.formattedTime}}
           region: ${{ secrets.AWS_REGION }}
           deployment_package: deploy/deploy.zip
           wait_for_environment_recovery: 200
