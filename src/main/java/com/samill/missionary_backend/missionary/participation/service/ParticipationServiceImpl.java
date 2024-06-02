@@ -49,8 +49,8 @@ public class ParticipationServiceImpl implements ParticipationService {
     }
 
     @Override
-    public Page<GetParticipationQueryResult> getParticipations(GetParticipationsQuery getParticipationsQuery, Pageable pageable) {
-        return participationRepository.findAllByQuery(getParticipationsQuery, pageable);
+    public Page<GetParticipationQueryResult> getParticipations(String missionaryId, GetParticipationsQuery getParticipationsQuery, Pageable pageable) {
+        return participationRepository.findAllByQuery(missionaryId, getParticipationsQuery, pageable);
     }
 
     @Override

@@ -4,15 +4,16 @@ import static com.epages.restdocs.apispec.MockMvcRestDocumentationWrapper.docume
 import static com.samill.missionary_backend.gateway.endPoint.AdminGatewayManagementEndPoint.ADMIN_LOGIN_URI;
 import static com.samill.missionary_backend.gateway.endPoint.AdminGatewayManagementEndPoint.CREATE_ADMIN_URI;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
-import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
-import static org.springframework.restdocs.request.RequestDocumentation.queryParameters;
+import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.epages.restdocs.apispec.ResourceDocumentation;
 import com.epages.restdocs.apispec.ResourceSnippetParametersBuilder;
 import com.samill.missionary_backend.church.ChurchExternalService;
 import com.samill.missionary_backend.church.dto.CreateChurchCommandResult;
@@ -25,7 +26,7 @@ import com.samill.missionary_backend.gateway.dto.CreateChurchRequest;
 import com.samill.missionary_backend.gateway.dto.LoginUserRequest;
 import com.samill.missionary_backend.gateway.dto.UpdateChurchRequest;
 import com.samill.missionary_backend.gateway.endPoint.AdminGatewayManagementEndPoint;
-import com.samill.missionary_backend.missionary.participation.ParticipationExternalService;
+import com.samill.missionary_backend.missionary.MissionaryExternalService;
 import com.samill.missionary_backend.missionary.dto.GetParticipationQueryResult;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -52,7 +53,7 @@ class AdminGatewayManagementTests extends AbstractControllerTest {
     private ChurchExternalService churchExternalService;
 
     @MockBean
-    private ParticipationExternalService participationExternalService;
+    private MissionaryExternalService missionaryExternalService;
 
     @Test
     @DisplayName("create admin test")
@@ -334,7 +335,7 @@ class AdminGatewayManagementTests extends AbstractControllerTest {
     @Transactional
     void getParticipationsTest() throws Exception {
         final String missionaryId = UUID.randomUUID().toString();
-        when(participationExternalService.getParticipations(any(), any()))
+        when(missionaryExternalService.getParticipations(anyString(), any(), any()))
                 .thenReturn(
                         new PageImpl<>(
                         List.of(
@@ -350,19 +351,32 @@ class AdminGatewayManagementTests extends AbstractControllerTest {
                                     "940626-2012345",
                                     false,
                                     OffsetDateTime.now()
+                            ),
+                            new GetParticipationQueryResult(
+                                    "Participation Id",
+                                    missionaryId,
+                                    "hong2",
+                                    "김길동",
+                                    "UUID1",
+                                    "19940616",
+                                    30000,
+                                    true,
+                                    "940626-2012345",
+                                    false,
+                                    OffsetDateTime.now()
                             )
                         ))
                 );
 
         mockMvc.perform(
-                RestDocumentationRequestBuilders.get(AdminGatewayManagementEndPoint.GET_PARTICIPATIONS)
-                    .contentType(MediaType.APPLICATION_JSON)
+                RestDocumentationRequestBuilders.get(AdminGatewayManagementEndPoint.GET_PARTICIPATIONS, missionaryId)
+                        .param("pageSize", "50")
+                        .param("pageNumber", "1")
+                        .param("name", "")
+                        .param("userId", "")
+                        .param("isPaid", "")
+                        .contentType(MediaType.APPLICATION_JSON)
                     .header("Authorization", getAuthorizationAdminOfHeader())
-                    .queryParam("missionaryId", missionaryId)
-                    .queryParam("name", "")
-                    .queryParam("userId", "")
-                    .queryParam("pageSize", "50")
-                    .queryParam("pageNumber", "0")
             )
             .andExpect(status().isOk())
             .andDo(
@@ -370,10 +384,10 @@ class AdminGatewayManagementTests extends AbstractControllerTest {
                     new ResourceSnippetParametersBuilder()
                         .tag("ADMIN_PARTICIPATION")
                         .description("신청자 목록 조회 API")
-                        .pathParameters(
+                        .queryParameters(
                             parameterWithName("name").description("신청자 이름"),
                             parameterWithName("userId").description("신청자 ID"),
-                            parameterWithName("missionaryId").description("선교 ID"),
+                            parameterWithName("isPaid").description("선교비 입금여부"),
                             parameterWithName("pageSize").description("조회할 페이지 단위"),
                             parameterWithName("pageNumber").description("현재 페이지")
                         )
@@ -401,7 +415,7 @@ class AdminGatewayManagementTests extends AbstractControllerTest {
     @Transactional
     void getParticipationTest() throws Exception {
         final String participationId = UUID.randomUUID().toString();
-        when(participationExternalService.getParticipation(participationId))
+        when(missionaryExternalService.getParticipation(participationId))
                 .thenReturn(
                         new GetParticipationQueryResult(
                                 participationId,

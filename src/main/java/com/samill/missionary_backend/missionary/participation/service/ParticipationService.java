@@ -12,7 +12,7 @@ public interface ParticipationService {
     void createParticipation(CreateParticipationCommand createParticipationDto, int maxCount) throws CommonException;
     void deleteParticipation(String participationId, DeleteParticipationCommand deleteParticipationCommand) throws CommonException;
     void updateParticipation(String participationId, UpdateParticipationCommand updateParticipationCommand) throws CommonException;
-    Page<GetParticipationQueryResult> getParticipations(GetParticipationsQuery getParticipationsQuery, Pageable pageable);
+    Page<GetParticipationQueryResult> getParticipations(String missionaryId, GetParticipationsQuery getParticipationsQuery, Pageable pageable);
     Participation getParticipation(String participationId) throws CommonException;
     void updateParticipationPrivacyInfo(List<String> list);
 }

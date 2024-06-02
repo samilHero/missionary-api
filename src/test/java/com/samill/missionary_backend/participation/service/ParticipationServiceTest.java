@@ -128,11 +128,10 @@ class ParticipationServiceTest extends AbstractSpringBootTests {
 
         //when
         GetParticipationsQuery getParticipationsQuery = GetParticipationsQuery.builder()
-            .missionaryId(missionaryId)
             .build();
         PageRequest pageRequest = PageRequest.of(0, 3);
 
-        Page<GetParticipationQueryResult> participationQueryResults = participationService.getParticipations(getParticipationsQuery, pageRequest);
+        Page<GetParticipationQueryResult> participationQueryResults = participationService.getParticipations(missionaryId, getParticipationsQuery, pageRequest);
 
         //then
         assertEquals(3, participationQueryResults.getSize());

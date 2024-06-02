@@ -7,7 +7,9 @@
         "church::dto",
         "common::entity",
         "common::enums",
-        "common::exception"
+        "common::exception",
+        "common::util",
+        "common::event"
     }
 )
 package com.samill.missionary_backend.missionary;

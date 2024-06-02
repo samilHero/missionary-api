@@ -6,6 +6,8 @@ import com.samill.missionary_backend.missionary.dto.*;
 
 import java.util.List;
 import lombok.NonNull;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface MissionaryExternalService {
 
@@ -85,9 +87,24 @@ public interface MissionaryExternalService {
     //    );
     //
     void createTeam(CreateTeamCommand createTeamCommand);
+
     void updateTeam(String teamId, UpdateTeamCommand updateTeamCommand) throws CommonException;
+
     void updateTeamMember(String teamId, List<UpdateTeamMemberCommand> updateTeamMemberCommand) throws CommonException;
+
     void deleteTeam(String teamId);
+
     GetTeamQueryResult getTeam(String teamId) throws CommonException;
+
     List<GetTeamQueryResult> getTeams(String missionaryId);
+
+    void createParticipation(CreateParticipationCommand createParticipationDto) throws Exception;
+
+    void deleteParticipation(String participationId, DeleteParticipationCommand deleteParticipationCommand) throws CommonException;
+
+    Page<GetParticipationQueryResult> getParticipations(String missionaryId, GetParticipationsQuery getParticipationsQuery, Pageable pageable);
+
+    GetParticipationQueryResult getParticipation(String participationId) throws CommonException;
+
+    void updateParticipation(String participationId, UpdateParticipationCommand updateParticipationCommand) throws CommonException;
 }
