@@ -10,17 +10,15 @@ import com.samill.missionary_backend.gateway.mapper.ChurchGatewayMapper;
 import com.samill.missionary_backend.gateway.mapper.ParticipationGatewayMapper;
 import com.samill.missionary_backend.gateway.mapper.TeamGatewayMapper;
 import com.samill.missionary_backend.missionary.MissionaryExternalService;
-import com.samill.missionary_backend.participation.ParticipationExternalService;
-import com.samill.missionary_backend.participation.dto.GetParticipationQueryResult;
-import com.samill.missionary_backend.participation.dto.GetParticipationsQuery;
+import com.samill.missionary_backend.missionary.participation.ParticipationExternalService;
+import com.samill.missionary_backend.missionary.dto.GetParticipationQueryResult;
+import com.samill.missionary_backend.missionary.dto.GetParticipationsQuery;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @Controller
 @RequiredArgsConstructor

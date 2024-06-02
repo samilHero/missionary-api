@@ -1,6 +1,6 @@
-package com.samill.missionary_backend.participation.repository;
+package com.samill.missionary_backend.missionary.participation.repository;
 
-import com.samill.missionary_backend.participation.entity.Participation;
+import com.samill.missionary_backend.missionary.participation.entity.Participation;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

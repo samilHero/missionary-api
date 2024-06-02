@@ -1,4 +1,4 @@
-package com.samill.missionary_backend.participation.repository;
+package com.samill.missionary_backend.missionary.participation.repository;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;

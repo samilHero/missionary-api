@@ -1,4 +1,4 @@
-package com.samill.missionary_backend.participation.entity;
+package com.samill.missionary_backend.missionary.participation.entity;
 
 import com.samill.missionary_backend.common.entity.BaseEntity;
 import com.samill.missionary_backend.common.util.AesEncryptConverter;

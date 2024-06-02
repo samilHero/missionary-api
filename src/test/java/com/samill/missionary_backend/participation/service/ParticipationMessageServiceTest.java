@@ -3,9 +3,11 @@ package com.samill.missionary_backend.participation.service;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import com.samill.missionary_backend.common.AbstractSpringBootTests;
-import com.samill.missionary_backend.participation.dto.CreateParticipationCommand;
-import com.samill.missionary_backend.participation.dto.MessageDto;
+import com.samill.missionary_backend.missionary.dto.CreateParticipationCommand;
+import com.samill.missionary_backend.missionary.dto.MessageDto;
 import java.util.UUID;
+
+import com.samill.missionary_backend.missionary.participation.service.RabbitMqProducer;
 
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;

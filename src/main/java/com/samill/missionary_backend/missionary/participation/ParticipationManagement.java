@@ -1,15 +1,14 @@
-package com.samill.missionary_backend.participation;
+package com.samill.missionary_backend.missionary.participation;
 
 import com.samill.missionary_backend.common.enums.ResponseCode;
 import com.samill.missionary_backend.common.exception.CommonException;
 import com.samill.missionary_backend.member.MemberExternalService;
 import com.samill.missionary_backend.member.dto.GetUserDto;
 import com.samill.missionary_backend.missionary.MissionaryExternalService;
-import com.samill.missionary_backend.missionary.dto.GetMissionaryQuery;
-import com.samill.missionary_backend.participation.dto.*;
-import com.samill.missionary_backend.participation.entity.Participation;
-import com.samill.missionary_backend.participation.mapper.ParticipationMapper;
-import com.samill.missionary_backend.participation.service.ParticipationService;
+import com.samill.missionary_backend.missionary.dto.*;
+import com.samill.missionary_backend.missionary.participation.entity.Participation;
+import com.samill.missionary_backend.missionary.participation.mapper.ParticipationMapper;
+import com.samill.missionary_backend.missionary.participation.service.ParticipationService;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;

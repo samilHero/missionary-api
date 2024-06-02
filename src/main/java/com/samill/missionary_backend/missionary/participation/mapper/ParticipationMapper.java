@@ -1,9 +1,9 @@
-package com.samill.missionary_backend.participation.mapper;
+package com.samill.missionary_backend.missionary.participation.mapper;
 
-import com.samill.missionary_backend.participation.dto.CreateParticipationCommand;
-import com.samill.missionary_backend.participation.dto.GetParticipationQueryResult;
-import com.samill.missionary_backend.participation.dto.UpdateParticipationCommand;
-import com.samill.missionary_backend.participation.entity.Participation;
+import com.samill.missionary_backend.missionary.dto.CreateParticipationCommand;
+import com.samill.missionary_backend.missionary.dto.GetParticipationQueryResult;
+import com.samill.missionary_backend.missionary.dto.UpdateParticipationCommand;
+import com.samill.missionary_backend.missionary.participation.entity.Participation;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 import org.mapstruct.factory.Mappers;

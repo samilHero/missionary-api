@@ -1,12 +1,12 @@
-package com.samill.missionary_backend.participation.service;
+package com.samill.missionary_backend.missionary.participation.service;
 
 import com.samill.missionary_backend.common.enums.ResponseCode;
 import com.samill.missionary_backend.common.event.ParticipationCanceled;
 import com.samill.missionary_backend.common.exception.CommonException;
-import com.samill.missionary_backend.participation.dto.*;
-import com.samill.missionary_backend.participation.entity.Participation;
-import com.samill.missionary_backend.participation.repository.ParticipantCountRepository;
-import com.samill.missionary_backend.participation.repository.ParticipationRepository;
+import com.samill.missionary_backend.missionary.dto.*;
+import com.samill.missionary_backend.missionary.participation.entity.Participation;
+import com.samill.missionary_backend.missionary.participation.repository.ParticipantCountRepository;
+import com.samill.missionary_backend.missionary.participation.repository.ParticipationRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
