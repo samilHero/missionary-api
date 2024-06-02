@@ -1,7 +1,7 @@
 {
   "AWSEBDockerrunVersion": "1",
   "Image": {
-    "Name": "898673828537.dkr.ecr.ap-northeast-1.amazonaws.com/samill-missionary-api:latest",
+    "Name": "767397838566.dkr.ecr.ap-northeast-1.amazonaws.com/${AWS_EB_APP_NAME}:latest",
     "Update": "true"
   },
   "Ports": [
