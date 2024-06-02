@@ -9,7 +9,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-public class UpdateParticipation {
+public class UpdateParticipationRequest {
     private String identificationNumber;
     private Boolean isOwnCar;
 }

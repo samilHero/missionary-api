@@ -1,16 +1,15 @@
 package com.samill.missionary_backend.gateway.dto.Participation;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.OffsetDateTime;
-
+@Builder
 @Getter
 @Setter
-@Builder
-public class GetParticipations {
-    private String name;
+@AllArgsConstructor
+public class DeleteParticipationRequest {
     private String missionaryId;
     private String userId;
 }

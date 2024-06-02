@@ -1,13 +1,11 @@
-package com.samill.missionary_backend.team;
+package com.samill.missionary_backend.missionary.team;
 
 import com.samill.missionary_backend.common.exception.CommonException;
-import com.samill.missionary_backend.team.dto.CreateTeamCommand;
-import com.samill.missionary_backend.team.dto.UpdateTeamCommand;
-import com.samill.missionary_backend.team.dto.UpdateTeamMemberCommand;
-import com.samill.missionary_backend.team.entity.Team;
-import com.samill.missionary_backend.team.entity.TeamMember;
-import com.samill.missionary_backend.team.mapper.TeamMapper;
-import com.samill.missionary_backend.team.service.TeamService;
+import com.samill.missionary_backend.missionary.team.dto.*;
+import com.samill.missionary_backend.missionary.team.entity.Team;
+import com.samill.missionary_backend.missionary.team.entity.TeamMember;
+import com.samill.missionary_backend.missionary.team.mapper.TeamMapper;
+import com.samill.missionary_backend.missionary.team.service.TeamService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -38,5 +36,17 @@ class TeamManagement implements TeamExternalService {
     @Override
     public void deleteTeam(String teamId) {
         teamService.deleteTeam(teamId);
+    }
+
+    @Override
+    public GetTeamQueryResult getTeam(String teamId) throws CommonException {
+        Team team = teamService.getTeam(teamId);
+        return TeamMapper.INSTANCE.entityToGetTeamQueryResult(team);
+    }
+
+    @Override
+    public List<GetTeamQueryResult> getTeams(String missionaryId) {
+        List<Team> teams = teamService.getTeams(missionaryId);
+        return TeamMapper.INSTANCE.entityToGetTeamsQueryResult(teams);
     }
 }

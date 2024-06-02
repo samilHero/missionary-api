@@ -1,9 +1,11 @@
-package com.samill.missionary_backend.team.dto;
+package com.samill.missionary_backend.gateway.dto;
 
 import jakarta.validation.constraints.NotNull;
+import lombok.Builder;
 
-public record CreateTeamCommand(
-        @NotNull String leaderUserId,
+@Builder
+public record CreateTeamRequest(
+        String leaderUserId,
         @NotNull String missionaryId,
         String teamName,
         @NotNull String churchId
