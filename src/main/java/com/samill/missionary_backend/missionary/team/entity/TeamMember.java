@@ -1,4 +1,4 @@
-package com.samill.missionary_backend.team.entity;
+package com.samill.missionary_backend.missionary.team.entity;
 
 import jakarta.persistence.*;
 import lombok.*;

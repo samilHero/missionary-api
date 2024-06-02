@@ -1,6 +1,6 @@
-package com.samill.missionary_backend.team.entity;
+package com.samill.missionary_backend.missionary.team.entity;
 
-import com.samill.missionary_backend.team.dto.UpdateTeamCommand;
+import com.samill.missionary_backend.missionary.team.dto.UpdateTeamCommand;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
@@ -8,6 +8,7 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -18,7 +19,7 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@SQLDelete(sql = "UPDATE participation SET deleted_at = current_timestamp WHERE id = ?")
+@SQLDelete(sql = "UPDATE team SET deleted_at = current_timestamp WHERE id = ?")
 @SQLRestriction(value = "deleted_at is NULL")
 public class Team {
     @Id
@@ -30,7 +31,7 @@ public class Team {
     private String leaderUserId;
     private String teamName;
     @OneToMany(mappedBy = "team", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<TeamMember> teamMemberList;
+    private List<TeamMember> teamMemberList = new ArrayList<>();
     private OffsetDateTime deletedAt;
 
     public void updateInfo(UpdateTeamCommand command) {
@@ -40,7 +41,7 @@ public class Team {
     }
 
     public void addTeamMember(TeamMember teamMember) {
-        teamMemberList.add(teamMember);
+        this.teamMemberList.add(teamMember);
         teamMember.updateTeam(this);
     }
 }

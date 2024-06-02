@@ -6,4 +6,4 @@
     }
 )
 
-package com.samill.missionary_backend.team;
+package com.samill.missionary_backend.missionary.team;

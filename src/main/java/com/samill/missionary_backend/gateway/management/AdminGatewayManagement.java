@@ -1,7 +1,6 @@
 package com.samill.missionary_backend.gateway.management;
 
 import com.samill.missionary_backend.church.ChurchExternalService;
-import com.samill.missionary_backend.common.dto.MemberContext;
 import com.samill.missionary_backend.common.exception.CommonException;
 import com.samill.missionary_backend.gateway.mapper.ParticipationGatewayMapper;
 import com.samill.missionary_backend.gateway.dto.CreateAdminRequest;
@@ -12,7 +11,7 @@ import com.samill.missionary_backend.gateway.dto.GetChurchesResult;
 import com.samill.missionary_backend.gateway.dto.LoginAdminRequest;
 import com.samill.missionary_backend.gateway.dto.LoginAdminResult;
 import com.samill.missionary_backend.gateway.dto.Participation.GetParticipationResult;
-import com.samill.missionary_backend.gateway.dto.Participation.GetParticipations;
+import com.samill.missionary_backend.gateway.dto.Participation.GetParticipationsResult;
 import com.samill.missionary_backend.gateway.dto.UpdateChurchRequest;
 import com.samill.missionary_backend.gateway.endPoint.AdminGatewayManagementEndPoint;
 import com.samill.missionary_backend.gateway.mapper.AdminGatewayMapper;
@@ -34,8 +33,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 
 @Slf4j
 @RestController
@@ -94,7 +91,7 @@ public class AdminGatewayManagement {
     }
 
     @GetMapping(AdminGatewayManagementEndPoint.GET_PARTICIPATIONS)
-    public Page<GetParticipationResult> getParticipations(GetParticipations getParticipation, Pageable pageable) {
+    public Page<GetParticipationResult> getParticipations(GetParticipationsResult getParticipation, Pageable pageable) {
         GetParticipationsQuery getParticipationsQuery
                 = ParticipationGatewayMapper.INSTANCE.getParticipationsToGetParticipationsQuery(getParticipation);
         Page<GetParticipationQueryResult> list = participationExternalService.getParticipations(getParticipationsQuery, pageable);

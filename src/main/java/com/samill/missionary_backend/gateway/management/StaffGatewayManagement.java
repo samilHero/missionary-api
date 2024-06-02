@@ -2,23 +2,24 @@ package com.samill.missionary_backend.gateway.management;
 
 import com.samill.missionary_backend.church.ChurchExternalService;
 import com.samill.missionary_backend.common.exception.CommonException;
-import com.samill.missionary_backend.gateway.dto.GetChurchResult;
-import com.samill.missionary_backend.gateway.dto.GetChurchesResult;
+import com.samill.missionary_backend.gateway.dto.*;
 import com.samill.missionary_backend.gateway.dto.Participation.GetParticipationResult;
-import com.samill.missionary_backend.gateway.dto.Participation.GetParticipations;
-import com.samill.missionary_backend.gateway.endPoint.AdminGatewayManagementEndPoint;
+import com.samill.missionary_backend.gateway.dto.Participation.GetParticipationsResult;
 import com.samill.missionary_backend.gateway.endPoint.StaffGatewayManagementEndPoint;
 import com.samill.missionary_backend.gateway.mapper.ChurchGatewayMapper;
 import com.samill.missionary_backend.gateway.mapper.ParticipationGatewayMapper;
+import com.samill.missionary_backend.gateway.mapper.TeamGatewayMapper;
+import com.samill.missionary_backend.missionary.team.TeamExternalService;
+import com.samill.missionary_backend.missionary.team.dto.CreateTeamCommand;
 import com.samill.missionary_backend.participation.ParticipationExternalService;
 import com.samill.missionary_backend.participation.dto.GetParticipationQueryResult;
 import com.samill.missionary_backend.participation.dto.GetParticipationsQuery;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -28,6 +29,7 @@ public class StaffGatewayManagement {
 
     private final ChurchExternalService churchExternalService;
     private final ParticipationExternalService participationExternalService;
+    private final TeamExternalService teamExternalService;
 
     @GetMapping(StaffGatewayManagementEndPoint.GET_CHURCH)
     public GetChurchResult getChurch(@PathVariable String churchId) throws CommonException {
@@ -40,7 +42,7 @@ public class StaffGatewayManagement {
     }
 
     @GetMapping(StaffGatewayManagementEndPoint.GET_PARTICIPATIONS)
-    public Page<GetParticipationResult> getParticipations(GetParticipations getParticipation, Pageable pageable) {
+    public Page<GetParticipationResult> getParticipations(GetParticipationsResult getParticipation, Pageable pageable) {
         GetParticipationsQuery getParticipationsQuery
                 = ParticipationGatewayMapper.INSTANCE.getParticipationsToGetParticipationsQuery(getParticipation);
         Page<GetParticipationQueryResult> list = participationExternalService.getParticipations(getParticipationsQuery, pageable);
@@ -53,4 +55,33 @@ public class StaffGatewayManagement {
         return ParticipationGatewayMapper.INSTANCE.getParticipationQueryResultToGetParticipationResult(result);
     }
 
+    @PostMapping(StaffGatewayManagementEndPoint.CREATE_TEAM)
+    public void createTeam(@Valid @RequestBody CreateTeamRequest createTeamRequest) {
+        teamExternalService.createTeam(TeamGatewayMapper.INSTANCE.createTeamRequestToCreateTeamCommand(createTeamRequest));
+    }
+
+    @PutMapping(StaffGatewayManagementEndPoint.UPDATE_TEAM)
+    public void updateTeam(@PathVariable String teamId, @RequestBody UpdateTeamRequest updateTeamRequest) throws CommonException {
+        teamExternalService.updateTeam(teamId, TeamGatewayMapper.INSTANCE.updateTeamRequestToUpdateTeamCommand(updateTeamRequest));
+    }
+
+    @PutMapping(StaffGatewayManagementEndPoint.UPDATE_TEAM_MEMBER)
+    public void updateTeamMembers(@PathVariable String teamId, @Valid @RequestBody List<UpdateTeamMemberRequest> list) throws CommonException {
+        teamExternalService.updateTeamMember(teamId, TeamGatewayMapper.INSTANCE.updateTeamMEmberRequestsToUpdateTeamMEmberCommands(list));
+    }
+
+    @GetMapping(StaffGatewayManagementEndPoint.GET_TEAM)
+    public GetTeamResult getTeam(@PathVariable String teamId) throws CommonException {
+        return TeamGatewayMapper.INSTANCE.GetTeamQueryResultToGetTeamResult(teamExternalService.getTeam(teamId));
+    }
+
+    @GetMapping(StaffGatewayManagementEndPoint.GET_TEAMS)
+    public List<GetTeamResult> getTeams(@PathVariable String missionaryId) {
+        return TeamGatewayMapper.INSTANCE.GetTeamQueryResultsToGetTeamResults(teamExternalService.getTeams(missionaryId));
+    }
+
+    @DeleteMapping(StaffGatewayManagementEndPoint.DELETE_TEAM)
+    public void deleteTeam(@PathVariable String teamId) {
+        teamExternalService.deleteTeam(teamId);
+    }
 }
