@@ -2,17 +2,8 @@ package com.samill.missionary_backend.missionary;
 
 import com.samill.missionary_backend.church.dto.CreateMissionaryCommandResult;
 import com.samill.missionary_backend.common.exception.CommonException;
-import com.samill.missionary_backend.missionary.dto.CreateMissionaryBoardCommand;
-import com.samill.missionary_backend.missionary.dto.CreateMissionaryBoardCommandResult;
-import com.samill.missionary_backend.missionary.dto.CreateMissionaryCommand;
-import com.samill.missionary_backend.missionary.dto.DeleteMissionaryBoardCommand;
-import com.samill.missionary_backend.missionary.dto.GetMissionaryBoardsQuery;
-import com.samill.missionary_backend.missionary.dto.GetMissionaryBoardsQueryResult;
-import com.samill.missionary_backend.missionary.dto.GetMissionaryIdsQuery;
-import com.samill.missionary_backend.missionary.dto.GetMissionaryQuery;
-import com.samill.missionary_backend.missionary.dto.GetMissionaryQueryResult;
-import com.samill.missionary_backend.missionary.dto.UpdateMissionaryBoardCommand;
-import com.samill.missionary_backend.missionary.dto.UpdateMissionaryCommand;
+import com.samill.missionary_backend.missionary.dto.*;
+
 import java.util.List;
 import lombok.NonNull;
 
@@ -93,5 +84,10 @@ public interface MissionaryExternalService {
     //        @NonNull String missionaryBoardId
     //    );
     //
-
+    void createTeam(CreateTeamCommand createTeamCommand);
+    void updateTeam(String teamId, UpdateTeamCommand updateTeamCommand) throws CommonException;
+    void updateTeamMember(String teamId, List<UpdateTeamMemberCommand> updateTeamMemberCommand) throws CommonException;
+    void deleteTeam(String teamId);
+    GetTeamQueryResult getTeam(String teamId) throws CommonException;
+    List<GetTeamQueryResult> getTeams(String missionaryId);
 }

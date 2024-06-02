@@ -10,22 +10,17 @@ import com.samill.missionary_backend.missionary.board.module.MissionaryBoardModu
 import com.samill.missionary_backend.missionary.board.module.MissionaryBoardStaffModule;
 import com.samill.missionary_backend.missionary.board.module.MissionaryBoardUserModule;
 import com.samill.missionary_backend.missionary.board.service.MissionaryBoardService;
-import com.samill.missionary_backend.missionary.dto.CreateMissionaryBoardCommand;
-import com.samill.missionary_backend.missionary.dto.CreateMissionaryBoardCommandResult;
-import com.samill.missionary_backend.missionary.dto.CreateMissionaryCommand;
-import com.samill.missionary_backend.missionary.dto.DeleteMissionaryBoardCommand;
-import com.samill.missionary_backend.missionary.dto.GetMissionaryBoardsQuery;
-import com.samill.missionary_backend.missionary.dto.GetMissionaryBoardsQueryResult;
-import com.samill.missionary_backend.missionary.dto.GetMissionaryIdsQuery;
-import com.samill.missionary_backend.missionary.dto.GetMissionaryQuery;
-import com.samill.missionary_backend.missionary.dto.GetMissionaryQueryResult;
-import com.samill.missionary_backend.missionary.dto.UpdateMissionaryBoardCommand;
-import com.samill.missionary_backend.missionary.dto.UpdateMissionaryCommand;
+import com.samill.missionary_backend.missionary.dto.*;
 import com.samill.missionary_backend.missionary.mapper.MissionaryBoardMapper;
 import com.samill.missionary_backend.missionary.missionary.mapper.MissionaryMapper;
 import com.samill.missionary_backend.missionary.missionary.service.MissionaryService;
 import com.samill.missionary_backend.missionary.staff.service.MissionaryStaffService;
 import java.util.List;
+
+import com.samill.missionary_backend.missionary.team.entity.Team;
+import com.samill.missionary_backend.missionary.team.entity.TeamMember;
+import com.samill.missionary_backend.missionary.team.mapper.TeamMapper;
+import com.samill.missionary_backend.missionary.team.service.TeamService;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -40,6 +35,7 @@ class MissionaryManagement implements MissionaryExternalService {
     private final MemberExternalService memberExternalService;
     private final MissionaryBoardService missionaryBoardService;
     private final MissionaryBoardModuleMapFactory missionaryBoardModuleMapFactory;
+    private final TeamService teamService;
 
     @Override
     @Transactional
@@ -140,5 +136,37 @@ class MissionaryManagement implements MissionaryExternalService {
         return missionaryBoardModuleMapFactory.getMissionaryBoardModule(missionaryBoardAdminModuleClass);
     }
 
+    @Override
+    public void createTeam(CreateTeamCommand createTeamCommand) {
+        Team team = TeamMapper.INSTANCE.createTeamCommandToEntity(createTeamCommand);
+        teamService.createTeam(team);
+    }
 
+    @Override
+    public void updateTeam(String teamId, UpdateTeamCommand updateTeamCommand) throws CommonException {
+        teamService.updateTeam(teamId, updateTeamCommand);
+    }
+
+    @Override
+    public void updateTeamMember(String teamId, List<UpdateTeamMemberCommand> updateTeamMemberCommand) throws CommonException {
+        List<TeamMember> teamMembers = TeamMapper.INSTANCE.updateTeamMemberCommandToEntity(updateTeamMemberCommand);
+        teamService.updateTeamMember(teamId, teamMembers);
+    }
+
+    @Override
+    public void deleteTeam(String teamId) {
+        teamService.deleteTeam(teamId);
+    }
+
+    @Override
+    public GetTeamQueryResult getTeam(String teamId) throws CommonException {
+        Team team = teamService.getTeam(teamId);
+        return TeamMapper.INSTANCE.entityToGetTeamQueryResult(team);
+    }
+
+    @Override
+    public List<GetTeamQueryResult> getTeams(String missionaryId) {
+        List<Team> teams = teamService.getTeams(missionaryId);
+        return TeamMapper.INSTANCE.entityToGetTeamsQueryResult(teams);
+    }
 }
