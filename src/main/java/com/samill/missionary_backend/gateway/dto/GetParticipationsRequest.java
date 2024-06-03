@@ -5,8 +5,9 @@ import lombok.Builder;
 @Builder
 public record GetParticipationsRequest(
         String name,
-        String userId,
         Boolean isPaid,
+        String fromDate,
+        String endDate,
         int pageSize
 ) {
 }

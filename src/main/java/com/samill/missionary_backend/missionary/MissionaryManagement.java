@@ -209,6 +209,11 @@ class MissionaryManagement implements MissionaryExternalService {
         participationService.updateParticipation(participationId, updateParticipationCommand);
     }
 
+    @Override
+    public void updateParticipationPaid(List<String> ids) {
+        participationService.updateParticipationPaid(ids);
+    }
+
     private void validateParticipationPeriod(String missionaryId) throws CommonException {
         if (!missionaryService.isParticipationPeriod(missionaryId)) {
             throw new CommonException(ResponseCode.INVALID_PARTICIPATION_PERIOD);

@@ -107,4 +107,6 @@ public interface MissionaryExternalService {
     GetParticipationQueryResult getParticipation(String participationId) throws CommonException;
 
     void updateParticipation(String participationId, UpdateParticipationCommand updateParticipationCommand) throws CommonException;
+
+    void updateParticipationPaid(List<String> ids);
 }

@@ -75,7 +75,13 @@ public class ParticipationServiceImpl implements ParticipationService {
             .flatMap(List::stream)
             .peek(data -> data.updateIdentificationNumber(""))
             .collect(Collectors.toList());
-        participationRepository.saveAll(participationList);
+    }
+
+    @Override
+    public void updateParticipationPaid(List<String> ids) {
+        ids.stream()
+            .map(participationRepository::findById)
+            .forEach(optParticipation -> optParticipation.ifPresent(participation -> participation.updateIsPaid(true)));
     }
 
     private void validateCreateParticipation(CreateParticipationCommand createParticipationDto, int maxUserCount) throws CommonException {

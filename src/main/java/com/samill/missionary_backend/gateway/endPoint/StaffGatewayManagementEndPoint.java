@@ -13,6 +13,8 @@ public class StaffGatewayManagementEndPoint {
 
     public static final String GET_PARTICIPATION = BASE_URL + "/participation/{participationId}";
 
+    public static final String UPDATE_PARTICIPATION_APPROVE = BASE_URL + "/participation/approve";
+
     public static final String CREATE_TEAM = BASE_URL + "/team";
 
     public static final String GET_TEAMS = BASE_URL + "/teams/{missionaryId}";

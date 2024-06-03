@@ -42,4 +42,8 @@ public class Participation extends BaseEntity {
     public void updateIdentificationNumber(String identificationNumber) {
         this.identificationNumber = identificationNumber;
     }
+
+    public void updateIsPaid(Boolean isPaid) {
+        this.isPaid = isPaid;
+    }
 }

@@ -15,4 +15,5 @@ public interface ParticipationService {
     Page<GetParticipationQueryResult> getParticipations(String missionaryId, GetParticipationsQuery getParticipationsQuery, Pageable pageable);
     Participation getParticipation(String participationId) throws CommonException;
     void updateParticipationPrivacyInfo(List<String> list);
+    void updateParticipationPaid(List<String> ids);
 }

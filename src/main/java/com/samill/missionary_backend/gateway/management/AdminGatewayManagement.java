@@ -75,7 +75,7 @@ public class AdminGatewayManagement {
     }
 
     @GetMapping(AdminGatewayManagementEndPoint.GET_PARTICIPATIONS)
-    public Page<GetParticipationResult> getParticipations(@PathVariable String missionaryId, GetParticipationsRequest getParticipationsRequest, Pageable pageable) {
+    public Page<GetParticipationResult> getParticipationList(@PathVariable String missionaryId, GetParticipationsRequest getParticipationsRequest, Pageable pageable) {
         GetParticipationsQuery getParticipationsQuery
                 = ParticipationGatewayMapper.INSTANCE.getParticipationsToGetParticipationsQuery(getParticipationsRequest);
         Page<GetParticipationQueryResult> list = missionaryExternalService.getParticipations(missionaryId, getParticipationsQuery, pageable);

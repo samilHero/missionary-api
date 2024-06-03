@@ -373,7 +373,8 @@ class AdminGatewayManagementTests extends AbstractControllerTest {
                         .param("pageSize", "50")
                         .param("pageNumber", "1")
                         .param("name", "")
-                        .param("userId", "")
+                        .param("fromDate", "")
+                        .param("endDate", "")
                         .param("isPaid", "")
                         .contentType(MediaType.APPLICATION_JSON)
                     .header("Authorization", getAuthorizationAdminOfHeader())
@@ -386,8 +387,9 @@ class AdminGatewayManagementTests extends AbstractControllerTest {
                         .description("신청자 목록 조회 API")
                         .queryParameters(
                             parameterWithName("name").description("신청자 이름"),
-                            parameterWithName("userId").description("신청자 ID"),
                             parameterWithName("isPaid").description("선교비 입금여부"),
+                            parameterWithName("fromDate").description("신청일 시작"),
+                            parameterWithName("fromDate").description("신청일 종료"),
                             parameterWithName("pageSize").description("조회할 페이지 단위"),
                             parameterWithName("pageNumber").description("현재 페이지")
                         )

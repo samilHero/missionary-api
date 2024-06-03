@@ -11,6 +11,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
+import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -36,7 +38,9 @@ public class ParticipationCustomRepositoryImpl implements ParticipationCustomRep
                 .from(participation)
                 .where(
                         participation.missionaryId.eq(missionaryId),
-                        isPaid(getParticipationsQuery.isPaid()))
+                        isPaid(getParticipationsQuery.isPaid()),
+                        isName(getParticipationsQuery.name()),
+                        betweenCreateDate(getParticipationsQuery.fromDate(), getParticipationsQuery.endDate()))
                 .orderBy(participation.createdAt.asc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
@@ -77,4 +81,10 @@ public class ParticipationCustomRepositoryImpl implements ParticipationCustomRep
     private BooleanExpression isPaid(Boolean isPaid) {
         return isPaid == null ? null : participation.isPaid.eq(isPaid);
     }
+
+    private BooleanExpression betweenCreateDate(String fromDate, String endDate) {
+        return fromDate == null ? null : participation.createdAt.between(OffsetDateTime.parse(fromDate), OffsetDateTime.parse(endDate));
+    }
+
+    private BooleanExpression isName(String name) { return name == null ? null : participation.name.eq(name); }
 }

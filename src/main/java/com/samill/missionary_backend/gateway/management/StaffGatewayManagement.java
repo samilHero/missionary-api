@@ -38,7 +38,7 @@ public class StaffGatewayManagement {
     }
 
     @GetMapping(StaffGatewayManagementEndPoint.GET_PARTICIPATIONS)
-    public Page<GetParticipationResult> getParticipations(
+    public Page<GetParticipationResult> getParticipationList(
             @PathVariable String missionaryId,
             GetParticipationsRequest getParticipationsRequest,
             Pageable pageable) {
@@ -52,6 +52,11 @@ public class StaffGatewayManagement {
     public GetParticipationResult getParticipation(@PathVariable String participationId) throws CommonException {
         GetParticipationQueryResult result = missionaryExternalService.getParticipation(participationId);
         return ParticipationGatewayMapper.INSTANCE.getParticipationQueryResultToGetParticipationResult(result);
+    }
+
+    @PutMapping(StaffGatewayManagementEndPoint.UPDATE_PARTICIPATION_APPROVE)
+    public void updateParticipationPaid(List<String> ids) {
+        missionaryExternalService.updateParticipationPaid(ids);
     }
 
     @PostMapping(StaffGatewayManagementEndPoint.CREATE_TEAM)
