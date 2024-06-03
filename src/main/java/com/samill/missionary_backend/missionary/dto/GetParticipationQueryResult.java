@@ -1,4 +1,4 @@
-package com.samill.missionary_backend.participation.dto;
+package com.samill.missionary_backend.missionary.dto;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.samill.missionary_backend.common.dto.MaskingType;

@@ -1,4 +1,4 @@
-package com.samill.missionary_backend.participation.dto;
+package com.samill.missionary_backend.missionary.dto;
 
 import com.samill.missionary_backend.member.dto.GetUserDto;
 import lombok.*;

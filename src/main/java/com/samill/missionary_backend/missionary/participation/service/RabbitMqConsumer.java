@@ -1,12 +1,12 @@
-package com.samill.missionary_backend.participation.service;
+package com.samill.missionary_backend.missionary.participation.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.samill.missionary_backend.common.event.ParticipationRegistered;
-import com.samill.missionary_backend.participation.dto.CreateParticipationCommand;
-import com.samill.missionary_backend.participation.dto.MessageDto;
-import com.samill.missionary_backend.participation.entity.Participation;
-import com.samill.missionary_backend.participation.mapper.ParticipationMapper;
-import com.samill.missionary_backend.participation.repository.ParticipationRepository;
+import com.samill.missionary_backend.missionary.dto.CreateParticipationCommand;
+import com.samill.missionary_backend.missionary.dto.MessageDto;
+import com.samill.missionary_backend.missionary.participation.entity.Participation;
+import com.samill.missionary_backend.missionary.participation.mapper.ParticipationMapper;
+import com.samill.missionary_backend.missionary.participation.repository.ParticipationRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;

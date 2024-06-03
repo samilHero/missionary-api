@@ -6,9 +6,12 @@ import jakarta.persistence.AttributeOverrides;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.Embedded;
+import lombok.Getter;
+
 import java.time.OffsetDateTime;
 
 @Embeddable
+@Getter
 public class MissionaryDetail {
 
     @Embedded
@@ -22,7 +25,7 @@ public class MissionaryDetail {
 
     //    private String description;
 //
-//    private Integer maximumParticipantCount;
+    private Integer maximumParticipantCount;
 //
 //    @Builder.Default
 //    private Integer currentParticipantCount = 0;

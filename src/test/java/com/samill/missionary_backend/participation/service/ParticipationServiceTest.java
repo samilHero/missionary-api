@@ -5,15 +5,17 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.samill.missionary_backend.common.AbstractSpringBootTests;
 import com.samill.missionary_backend.common.exception.CommonException;
-import com.samill.missionary_backend.participation.dto.CreateParticipationCommand;
-import com.samill.missionary_backend.participation.dto.DeleteParticipationCommand;
-import com.samill.missionary_backend.participation.dto.GetParticipationQueryResult;
-import com.samill.missionary_backend.participation.dto.GetParticipationsQuery;
-import com.samill.missionary_backend.participation.entity.Participation;
-import com.samill.missionary_backend.participation.mapper.ParticipationMapper;
-import com.samill.missionary_backend.participation.repository.ParticipationRepository;
+import com.samill.missionary_backend.missionary.dto.CreateParticipationCommand;
+import com.samill.missionary_backend.missionary.dto.DeleteParticipationCommand;
+import com.samill.missionary_backend.missionary.dto.GetParticipationQueryResult;
+import com.samill.missionary_backend.missionary.dto.GetParticipationsQuery;
+import com.samill.missionary_backend.missionary.participation.entity.Participation;
+import com.samill.missionary_backend.missionary.participation.mapper.ParticipationMapper;
+import com.samill.missionary_backend.missionary.participation.repository.ParticipationRepository;
 import java.util.Optional;
 import java.util.UUID;
+
+import com.samill.missionary_backend.missionary.participation.service.ParticipationService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -90,6 +92,7 @@ class ParticipationServiceTest extends AbstractSpringBootTests {
         Participation participation =
             participationRepository.save(ParticipationMapper.INSTANCE.createParticipationCommandToEntity(createParticipationDto));
 
+
         DeleteParticipationCommand deleteParticipationCommand = DeleteParticipationCommand.builder()
             .missionaryId(missionaryId)
             .userId("kdf1")
@@ -125,11 +128,10 @@ class ParticipationServiceTest extends AbstractSpringBootTests {
 
         //when
         GetParticipationsQuery getParticipationsQuery = GetParticipationsQuery.builder()
-            .missionaryId(missionaryId)
             .build();
         PageRequest pageRequest = PageRequest.of(0, 3);
 
-        Page<GetParticipationQueryResult> participationQueryResults = participationService.getParticipations(getParticipationsQuery, pageRequest);
+        Page<GetParticipationQueryResult> participationQueryResults = participationService.getParticipations(missionaryId, getParticipationsQuery, pageRequest);
 
         //then
         assertEquals(3, participationQueryResults.getSize());

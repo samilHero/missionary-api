@@ -1,20 +1,12 @@
-package com.samill.missionary_backend.participation.service;
+package com.samill.missionary_backend.missionary.participation.service;
 
 import com.samill.missionary_backend.common.enums.ResponseCode;
 import com.samill.missionary_backend.common.event.ParticipationCanceled;
 import com.samill.missionary_backend.common.exception.CommonException;
-import com.samill.missionary_backend.participation.dto.CreateParticipationCommand;
-import com.samill.missionary_backend.participation.dto.DeleteParticipationCommand;
-import com.samill.missionary_backend.participation.dto.GetParticipationQueryResult;
-import com.samill.missionary_backend.participation.dto.GetParticipationsQuery;
-import com.samill.missionary_backend.participation.dto.MessageDto;
-import com.samill.missionary_backend.participation.dto.UpdateParticipationCommand;
-import com.samill.missionary_backend.participation.entity.Participation;
-import com.samill.missionary_backend.participation.repository.ParticipantCountRepository;
-import com.samill.missionary_backend.participation.repository.ParticipationRepository;
-import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
+import com.samill.missionary_backend.missionary.dto.*;
+import com.samill.missionary_backend.missionary.participation.entity.Participation;
+import com.samill.missionary_backend.missionary.participation.repository.ParticipantCountRepository;
+import com.samill.missionary_backend.missionary.participation.repository.ParticipationRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
@@ -22,6 +14,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -53,8 +49,8 @@ public class ParticipationServiceImpl implements ParticipationService {
     }
 
     @Override
-    public Page<GetParticipationQueryResult> getParticipations(GetParticipationsQuery getParticipationsQuery, Pageable pageable) {
-        return participationRepository.findAllByQuery(getParticipationsQuery, pageable);
+    public Page<GetParticipationQueryResult> getParticipations(String missionaryId, GetParticipationsQuery getParticipationsQuery, Pageable pageable) {
+        return participationRepository.findAllByQuery(missionaryId, getParticipationsQuery, pageable);
     }
 
     @Override
@@ -84,7 +80,6 @@ public class ParticipationServiceImpl implements ParticipationService {
 
     private void validateCreateParticipation(CreateParticipationCommand createParticipationDto, int maxUserCount) throws CommonException {
         Participation participation = participationRepository.findByUserIdAndMissionaryId(createParticipationDto.getUserId(), createParticipationDto.getMissionaryId());
-
 
         if (Objects.nonNull(participation)) {
             throw new CommonException(ResponseCode.PARTICIPATION_ALREADY_PARTICIPATED);

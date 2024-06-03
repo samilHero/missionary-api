@@ -1,4 +1,4 @@
-package com.samill.missionary_backend.participation.dto;
+package com.samill.missionary_backend.missionary.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

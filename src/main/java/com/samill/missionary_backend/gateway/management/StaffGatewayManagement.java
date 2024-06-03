@@ -4,15 +4,13 @@ import com.samill.missionary_backend.church.ChurchExternalService;
 import com.samill.missionary_backend.common.exception.CommonException;
 import com.samill.missionary_backend.gateway.dto.*;
 import com.samill.missionary_backend.gateway.dto.Participation.GetParticipationResult;
-import com.samill.missionary_backend.gateway.dto.Participation.GetParticipationsResult;
 import com.samill.missionary_backend.gateway.endPoint.StaffGatewayManagementEndPoint;
 import com.samill.missionary_backend.gateway.mapper.ChurchGatewayMapper;
 import com.samill.missionary_backend.gateway.mapper.ParticipationGatewayMapper;
 import com.samill.missionary_backend.gateway.mapper.TeamGatewayMapper;
 import com.samill.missionary_backend.missionary.MissionaryExternalService;
-import com.samill.missionary_backend.participation.ParticipationExternalService;
-import com.samill.missionary_backend.participation.dto.GetParticipationQueryResult;
-import com.samill.missionary_backend.participation.dto.GetParticipationsQuery;
+import com.samill.missionary_backend.missionary.dto.GetParticipationQueryResult;
+import com.samill.missionary_backend.missionary.dto.GetParticipationsQuery;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -27,7 +25,6 @@ import java.util.List;
 public class StaffGatewayManagement {
 
     private final ChurchExternalService churchExternalService;
-    private final ParticipationExternalService participationExternalService;
     private final MissionaryExternalService missionaryExternalService;
 
     @GetMapping(StaffGatewayManagementEndPoint.GET_CHURCH)
@@ -41,16 +38,19 @@ public class StaffGatewayManagement {
     }
 
     @GetMapping(StaffGatewayManagementEndPoint.GET_PARTICIPATIONS)
-    public Page<GetParticipationResult> getParticipations(GetParticipationsResult getParticipation, Pageable pageable) {
+    public Page<GetParticipationResult> getParticipations(
+            @PathVariable String missionaryId,
+            GetParticipationsRequest getParticipationsRequest,
+            Pageable pageable) {
         GetParticipationsQuery getParticipationsQuery
-                = ParticipationGatewayMapper.INSTANCE.getParticipationsToGetParticipationsQuery(getParticipation);
-        Page<GetParticipationQueryResult> list = participationExternalService.getParticipations(getParticipationsQuery, pageable);
+                = ParticipationGatewayMapper.INSTANCE.getParticipationsToGetParticipationsQuery(getParticipationsRequest);
+        Page<GetParticipationQueryResult> list = missionaryExternalService.getParticipations(missionaryId, getParticipationsQuery, pageable);
         return list.map(ParticipationGatewayMapper.INSTANCE::getParticipationQueryResultToGetParticipationResult);
     }
 
     @GetMapping(StaffGatewayManagementEndPoint.GET_PARTICIPATION)
     public GetParticipationResult getParticipation(@PathVariable String participationId) throws CommonException {
-        GetParticipationQueryResult result = participationExternalService.getParticipation(participationId);
+        GetParticipationQueryResult result = missionaryExternalService.getParticipation(participationId);
         return ParticipationGatewayMapper.INSTANCE.getParticipationQueryResultToGetParticipationResult(result);
     }
 

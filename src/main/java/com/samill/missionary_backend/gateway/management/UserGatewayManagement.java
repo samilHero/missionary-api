@@ -24,10 +24,10 @@ import com.samill.missionary_backend.gateway.dto.Participation.UpdateParticipati
 import com.samill.missionary_backend.gateway.mapper.ParticipationGatewayMapper;
 import com.samill.missionary_backend.gateway.mapper.UserGatewayMapper;
 import com.samill.missionary_backend.member.MemberExternalService;
-import com.samill.missionary_backend.participation.ParticipationExternalService;
-import com.samill.missionary_backend.participation.dto.CreateParticipationCommand;
-import com.samill.missionary_backend.participation.dto.DeleteParticipationCommand;
-import com.samill.missionary_backend.participation.dto.UpdateParticipationCommand;
+import com.samill.missionary_backend.missionary.MissionaryExternalService;
+import com.samill.missionary_backend.missionary.dto.CreateParticipationCommand;
+import com.samill.missionary_backend.missionary.dto.DeleteParticipationCommand;
+import com.samill.missionary_backend.missionary.dto.UpdateParticipationCommand;
 import jakarta.validation.Valid;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -50,7 +50,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserGatewayManagement {
 
     private final MemberExternalService memberManagement;
-    private final ParticipationExternalService participationExternalService;
+    private final MissionaryExternalService missionaryExternalService;
 
     @GetMapping(GET_USER_URI)
     // controller parameter 에 Usercontext 를 받으면 token 정보를 받아올수 있습니다.
@@ -104,19 +104,19 @@ public class UserGatewayManagement {
     public void createParticipation(CreateParticipationRequest createParticipationRequest, MemberContext memberContext) throws Exception {
         createParticipationRequest.setUserInfo(memberContext);
         CreateParticipationCommand command = ParticipationGatewayMapper.INSTANCE.createParticipationToCreateParticipationCommand(createParticipationRequest);
-        participationExternalService.createParticipation(command);
+        missionaryExternalService.createParticipation(command);
     }
 
     @PutMapping(UPDATE_PARTICIPATION)
     public void updateParticipation(@PathVariable String participationId, UpdateParticipationRequest updateParticipationRequest) throws CommonException {
         UpdateParticipationCommand command = ParticipationGatewayMapper.INSTANCE.updateParticipationToUpdateParticipationCommand(updateParticipationRequest);
-        participationExternalService.updateParticipation(participationId, command);
+        missionaryExternalService.updateParticipation(participationId, command);
     }
 
     @DeleteMapping(DELETE_PARTICIPATION)
     public void deleteParticipation(@PathVariable String participationId, DeleteParticipationRequest deleteParticipationRequest) throws CommonException {
         DeleteParticipationCommand command = ParticipationGatewayMapper.INSTANCE.deleteParticipationToDeleteParticipationCommand(deleteParticipationRequest);
-        participationExternalService.deleteParticipation(participationId, command);
+        missionaryExternalService.deleteParticipation(participationId, command);
     }
 
 
