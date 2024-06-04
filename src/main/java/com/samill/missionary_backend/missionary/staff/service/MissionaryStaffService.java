@@ -2,9 +2,11 @@ package com.samill.missionary_backend.missionary.staff.service;
 
 
 import com.samill.missionary_backend.common.enums.ResponseCode;
+import com.samill.missionary_backend.missionary.dto.AppointMissionaryStaffsCommand;
 import com.samill.missionary_backend.missionary.exception.MissionaryException;
 import com.samill.missionary_backend.missionary.staff.entity.MissionaryStaff;
 import com.samill.missionary_backend.missionary.staff.repository.MissionaryStaffRepository;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -28,5 +30,11 @@ public class MissionaryStaffService {
         return missionaryStaffRepository.findByMissionary_IdAndUserId(missionaryId, userId).isPresent();
     }
 
+
+    public void appointMissionaryStaffs(@NonNull AppointMissionaryStaffsCommand command) {
+//        return missionaryStaffRepository.saveAll(
+//
+//        );
+    }
 
 }

@@ -3,10 +3,19 @@ package com.samill.missionary_backend.missionary.participation.service;
 import com.samill.missionary_backend.common.enums.ResponseCode;
 import com.samill.missionary_backend.common.event.ParticipationCanceled;
 import com.samill.missionary_backend.common.exception.CommonException;
-import com.samill.missionary_backend.missionary.dto.*;
+import com.samill.missionary_backend.missionary.dto.CreateParticipationCommand;
+import com.samill.missionary_backend.missionary.dto.DeleteParticipationCommand;
+import com.samill.missionary_backend.missionary.dto.GetParticipationQueryResult;
+import com.samill.missionary_backend.missionary.dto.GetParticipationsQuery;
+import com.samill.missionary_backend.missionary.dto.MessageDto;
+import com.samill.missionary_backend.missionary.dto.UpdateParticipationCommand;
 import com.samill.missionary_backend.missionary.participation.entity.Participation;
 import com.samill.missionary_backend.missionary.participation.repository.ParticipantCountRepository;
 import com.samill.missionary_backend.missionary.participation.repository.ParticipationRepository;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
@@ -14,10 +23,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -49,7 +54,8 @@ public class ParticipationServiceImpl implements ParticipationService {
     }
 
     @Override
-    public Page<GetParticipationQueryResult> getParticipations(String missionaryId, GetParticipationsQuery getParticipationsQuery, Pageable pageable) {
+    public Page<GetParticipationQueryResult> getParticipations(String missionaryId, GetParticipationsQuery getParticipationsQuery,
+        Pageable pageable) {
         return participationRepository.findAllByQuery(missionaryId, getParticipationsQuery, pageable);
     }
 
@@ -63,7 +69,7 @@ public class ParticipationServiceImpl implements ParticipationService {
     @Override
     public Participation getParticipation(String participationId) throws CommonException {
         Participation participation = participationRepository.findById(participationId)
-                .orElseThrow(() -> new CommonException(ResponseCode.PARTICIPATION_NOT_FOUND));
+            .orElseThrow(() -> new CommonException(ResponseCode.PARTICIPATION_NOT_FOUND));
         return participation;
     }
 
@@ -71,15 +77,22 @@ public class ParticipationServiceImpl implements ParticipationService {
     public void updateParticipationPrivacyInfo(List<String> list) {
         // 선교 종료일 >= beforeDate 인 경우 주민번호 삭제
         List<Participation> participationList = list.stream()
-            .map(missionaryId -> participationRepository.findByMissionaryId(missionaryId))
+            .map(participationRepository::findByMissionaryId)
             .flatMap(List::stream)
             .peek(data -> data.updateIdentificationNumber(""))
             .collect(Collectors.toList());
         participationRepository.saveAll(participationList);
     }
 
+    @Override
+    public boolean isParticipating(@NonNull String missionaryId, @NonNull String userId) {
+        /// TODO: missionaryId, userId로 참여 여부 확인
+        return true;
+    }
+
     private void validateCreateParticipation(CreateParticipationCommand createParticipationDto, int maxUserCount) throws CommonException {
-        Participation participation = participationRepository.findByUserIdAndMissionaryId(createParticipationDto.getUserId(), createParticipationDto.getMissionaryId());
+        Participation participation = participationRepository.findByUserIdAndMissionaryId(createParticipationDto.getUserId(),
+            createParticipationDto.getMissionaryId());
 
         if (Objects.nonNull(participation)) {
             throw new CommonException(ResponseCode.PARTICIPATION_ALREADY_PARTICIPATED);

@@ -28,7 +28,7 @@ public class MissionaryBoardService {
         @NonNull Missionary missionary,
         @NonNull CreateMissionaryBoardCommand command
     ) {
-        final MissionaryBoard missionaryBoard = MissionaryBoardMapper.INSTANCE.createMissionaryBoardCommandToMissionaryBoard(command);
+        final var missionaryBoard = MissionaryBoardMapper.INSTANCE.createMissionaryBoardCommandToMissionaryBoard(command);
         missionaryBoard.linkMissionary(missionary);
 
         return missionaryBoardRepository.save(missionaryBoard);
@@ -52,7 +52,7 @@ public class MissionaryBoardService {
 
 
     public void updateMissionaryBoard(@NonNull UpdateMissionaryBoardCommand command) throws MissionaryBoardException {
-        final MissionaryBoard missionaryBoard = missionaryBoardRepository.findById(command.id())
+        final var missionaryBoard = missionaryBoardRepository.findById(command.id())
             .orElseThrow(NotFoundMissionaryBoardException::new);
 
         missionaryBoard.changeTitle(command.title());
