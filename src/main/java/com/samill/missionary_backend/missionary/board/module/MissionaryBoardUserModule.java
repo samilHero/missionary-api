@@ -35,17 +35,19 @@ public class MissionaryBoardUserModule implements MissionaryBoardModule {
 
     @Override
     public @NonNull MissionaryBoard getMissionaryBoard(@NonNull String memberId, @NonNull String missionaryBoardId) throws CommonException {
-//        this.memberExternalService.getUserByMemberId(memberId).id();
-//
-//        this.participationService.isParticipating(memberId, missionaryBoardId);
+        final var missionaryBoard = missionaryBoardService.getMissionaryBoard(missionaryBoardId);
 
-        throw new AccessDeniedMissionaryBoardException();
+        checkParticipatingOrThrow(missionaryBoard.getMissionaryId(), memberId);
+
+        return missionaryBoard;
     }
 
     @Override
     public @NonNull Page<MissionaryBoard> getMissionaryBoards(@NonNull String memberId, @NonNull GetMissionaryBoardsQuery query)
         throws MissionaryBoardException {
-        throw new AccessDeniedMissionaryBoardException();
+        checkParticipatingOrThrow(query.missionaryId(), memberId);
+
+        return missionaryBoardService.getMissionaryBoards(query);
     }
 
     @Override
@@ -59,5 +61,11 @@ public class MissionaryBoardUserModule implements MissionaryBoardModule {
 
     }
 
+
+    void checkParticipatingOrThrow(@NonNull String missionaryId, @NonNull String userId) throws AccessDeniedMissionaryBoardException {
+        if (!participationService.isParticipating(missionaryId, userId)) {
+            throw new AccessDeniedMissionaryBoardException();
+        }
+    }
 
 }

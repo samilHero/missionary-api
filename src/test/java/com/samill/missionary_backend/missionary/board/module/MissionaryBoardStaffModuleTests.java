@@ -6,7 +6,6 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import com.samill.missionary_backend.common.AbstractControllerTest;
 import com.samill.missionary_backend.common.exception.CommonException;
 import com.samill.missionary_backend.missionary.board.enums.MissionaryBoardType;
-import com.samill.missionary_backend.missionary.board.exception.MissionaryBoardException;
 import com.samill.missionary_backend.missionary.dto.CreateMissionaryBoardCommand;
 import com.samill.missionary_backend.missionary.dto.GetMissionaryBoardsQuery;
 import com.samill.missionary_backend.missionary.dto.UpdateMissionaryBoardCommand;
@@ -39,7 +38,7 @@ class MissionaryBoardStaffModuleTests extends AbstractControllerTest {
 
 
     @Test
-    void 선교_게시글_목록_조회() throws MissionaryBoardException {
+    void 선교_게시글_목록_조회() throws CommonException {
         final var missionaryBoards = missionaryBoardModule.getMissionaryBoards(
             memberId,
             new GetMissionaryBoardsQuery(

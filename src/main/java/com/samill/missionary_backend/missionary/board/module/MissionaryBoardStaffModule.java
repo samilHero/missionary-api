@@ -29,7 +29,7 @@ public class MissionaryBoardStaffModule implements MissionaryBoardModule {
 
     @Override
     public @NonNull String createMissionaryBoard(@NonNull String memberId, @NonNull CreateMissionaryBoardCommand command) throws CommonException {
-        checkMissionaryStaff(command.missionaryId(), memberExternalService.getUserByMemberId(memberId).id());
+        checkMissionaryStaffOrThrow(command.missionaryId(), memberExternalService.getUserByMemberId(memberId).id());
 
         final var missionary = missionaryService.getMissionary(command.missionaryId());
 
@@ -40,7 +40,7 @@ public class MissionaryBoardStaffModule implements MissionaryBoardModule {
     public @NonNull MissionaryBoard getMissionaryBoard(@NonNull String memberId, @NonNull String missionaryBoardId) throws CommonException {
         final var missionaryBoard = missionaryBoardService.getMissionaryBoard(missionaryBoardId);
 
-        checkMissionaryStaff(missionaryBoard.getMissionaryId(), memberExternalService.getUserByMemberId(memberId).id());
+        checkMissionaryStaffOrThrow(missionaryBoard.getMissionaryId(), memberExternalService.getUserByMemberId(memberId).id());
 
         return missionaryBoard;
 
@@ -50,7 +50,7 @@ public class MissionaryBoardStaffModule implements MissionaryBoardModule {
     public @NonNull Page<MissionaryBoard> getMissionaryBoards(@NonNull String memberId, @NonNull GetMissionaryBoardsQuery query)
         throws CommonException {
 
-        checkMissionaryStaff(query.missionaryId(), memberExternalService.getUserByMemberId(memberId).id());
+        checkMissionaryStaffOrThrow(query.missionaryId(), memberExternalService.getUserByMemberId(memberId).id());
 
         return missionaryBoardService.getMissionaryBoards(query);
     }
@@ -59,7 +59,7 @@ public class MissionaryBoardStaffModule implements MissionaryBoardModule {
     public void updateBoard(@NonNull String memberId, @NonNull UpdateMissionaryBoardCommand command) throws CommonException {
         final var missionaryBoard = missionaryBoardService.getMissionaryBoard(command.id());
 
-        checkMissionaryStaff(missionaryBoard.getMissionaryId(), memberExternalService.getUserByMemberId(memberId).id());
+        checkMissionaryStaffOrThrow(missionaryBoard.getMissionaryId(), memberExternalService.getUserByMemberId(memberId).id());
 
         missionaryBoardService.updateMissionaryBoard(command);
     }
@@ -70,7 +70,7 @@ public class MissionaryBoardStaffModule implements MissionaryBoardModule {
     }
 
 
-    void checkMissionaryStaff(String missionaryId, String memberId) throws AccessDeniedMissionaryBoardException {
+    void checkMissionaryStaffOrThrow(String missionaryId, String memberId) throws AccessDeniedMissionaryBoardException {
         if (!missionaryStaffService.isExistedMissionaryStaff(missionaryId, memberId)) {
             throw new AccessDeniedMissionaryBoardException();
         }
