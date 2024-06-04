@@ -11,28 +11,20 @@ import com.samill.missionary_backend.missionary.exception.MissionaryException;
 import com.samill.missionary_backend.missionary.missionary.entity.Missionary;
 import com.samill.missionary_backend.missionary.missionary.service.MissionaryService;
 import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor
 public class MissionaryBoardAdminModule implements MissionaryBoardModule {
 
     private final MissionaryBoardService missionaryBoardService;
     private final MissionaryService missionaryService;
 
-    public MissionaryBoardAdminModule(
-        @NonNull
-        MissionaryBoardService missionaryBoardService,
-        @NonNull
-        MissionaryService missionaryService
-    ) {
-        this.missionaryBoardService = missionaryBoardService;
-        this.missionaryService = missionaryService;
-    }
-
 
     @Override
-    public String createMissionaryBoard(@NonNull String memberId, @NonNull CreateMissionaryBoardCommand command) throws MissionaryException {
+    public @NonNull String createMissionaryBoard(@NonNull String memberId, @NonNull CreateMissionaryBoardCommand command) throws MissionaryException {
         final Missionary missionary = missionaryService.getMissionary(command.missionaryId());
         final MissionaryBoard missionaryBoard = missionaryBoardService.createMissionaryBoard(missionary, command);
 
@@ -40,12 +32,12 @@ public class MissionaryBoardAdminModule implements MissionaryBoardModule {
     }
 
     @Override
-    public MissionaryBoard getMissionaryBoard(@NonNull String memberId, @NonNull String missionaryBoardId) throws MissionaryBoardException {
+    public @NonNull MissionaryBoard getMissionaryBoard(@NonNull String memberId, @NonNull String missionaryBoardId) throws MissionaryBoardException {
         return missionaryBoardService.getMissionaryBoard(missionaryBoardId);
     }
 
     @Override
-    public Page<MissionaryBoard> getMissionaryBoards(@NonNull String memberId, @NonNull GetMissionaryBoardsQuery query)
+    public @NonNull Page<MissionaryBoard> getMissionaryBoards(@NonNull String memberId, @NonNull GetMissionaryBoardsQuery query)
         throws MissionaryBoardException {
         return missionaryBoardService.getMissionaryBoards(query);
     }

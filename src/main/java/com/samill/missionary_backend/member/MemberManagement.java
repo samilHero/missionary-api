@@ -137,7 +137,7 @@ public class MemberManagement implements MemberExternalService {
 
     @Override
     @Transactional(readOnly = true)
-    public GetMemberServiceTypeDto getMemberServiceType(@NonNull String memberId) throws MemberException {
+    public @NonNull GetMemberServiceTypeDto getMemberServiceType(@NonNull String memberId) throws MemberException {
         return memberService.getMemberServiceType(memberId);
     }
 

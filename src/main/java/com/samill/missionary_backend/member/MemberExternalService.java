@@ -10,6 +10,7 @@ import com.samill.missionary_backend.member.dto.LoginAdminQueryResult;
 import com.samill.missionary_backend.member.dto.LoginUserQuery;
 import com.samill.missionary_backend.member.dto.LoginUserQueryResult;
 import com.samill.missionary_backend.member.exception.MemberException;
+import lombok.NonNull;
 
 public interface MemberExternalService {
 
@@ -35,7 +36,7 @@ public interface MemberExternalService {
 
     void getUsers();
 
-    GetMemberServiceTypeDto getMemberServiceType(String memberId) throws MemberException;
+    @NonNull GetMemberServiceTypeDto getMemberServiceType(String memberId) throws MemberException;
 
     Boolean isExistedUserByLoginId(String userId);
 }
