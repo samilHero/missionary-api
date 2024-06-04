@@ -1,7 +1,6 @@
 package com.samill.missionary_backend.missionary.missionary.service;
 
 import com.samill.missionary_backend.church.dto.CreateMissionaryCommandResult;
-import com.samill.missionary_backend.common.exception.CommonException;
 import com.samill.missionary_backend.missionary.dto.CreateMissionaryCommand;
 import com.samill.missionary_backend.missionary.dto.GetMissionaryIdsQuery;
 import com.samill.missionary_backend.missionary.dto.UpdateMissionaryCommand;
@@ -23,7 +22,7 @@ public class MissionaryService {
     private final MissionaryRepository missionaryRepository;
 
     public CreateMissionaryCommandResult createMissionary(@NonNull CreateMissionaryCommand createMissionaryCommand)
-        throws CommonException {
+        throws MissionaryException {
 
         final Missionary missionary = missionaryRepository.save(
             MissionaryMapper.INSTANCE.createMissionaryCommandToMissionary(createMissionaryCommand)
@@ -32,7 +31,7 @@ public class MissionaryService {
         return new CreateMissionaryCommandResult(missionary.getId());
     }
 
-    public void updateMissionary(@NonNull String missionaryId, @NonNull UpdateMissionaryCommand updateMissionaryCommand) throws CommonException {
+    public void updateMissionary(@NonNull String missionaryId, @NonNull UpdateMissionaryCommand updateMissionaryCommand) throws MissionaryException {
         final Missionary missionary = missionaryRepository.findById(missionaryId).orElseThrow(NotFoundMissionaryException::new);
 //
 //        if (updateMissionaryCommand.isNotValidParticipationPeriod()) {
@@ -94,7 +93,7 @@ public class MissionaryService {
             .toList();
     }
 
-    public boolean checkParticipate(@NonNull String missionaryId, @NonNull Integer participantCount) throws CommonException {
+    public boolean checkParticipate(@NonNull String missionaryId, @NonNull Integer participantCount) throws MissionaryException {
 //        missionaryRepository.findById(missionaryId)
 //            .orElseThrow(NotFoundMissionaryException::new).che
 //
@@ -103,10 +102,9 @@ public class MissionaryService {
         return true;
     }
 
-    public boolean isParticipationPeriod(@NonNull String missionaryId) throws CommonException {
+    public boolean isParticipationPeriod(@NonNull String missionaryId) throws MissionaryException {
         return missionaryRepository.findById(missionaryId)
             .orElseThrow(NotFoundMissionaryException::new).isParticipationPeriod(OffsetDateTime.now());
     }
-
 
 }

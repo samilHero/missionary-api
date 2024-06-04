@@ -44,7 +44,6 @@ public class MissionaryStaff extends BaseEntity {
     private String userId;
 
     @Enumerated(value = EnumType.STRING)
+    
     private MissionaryStaffRole role;
-
-
 }
