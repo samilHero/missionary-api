@@ -4,7 +4,6 @@ import com.samill.missionary_backend.common.exception.CommonException;
 import com.samill.missionary_backend.member.MemberExternalService;
 import com.samill.missionary_backend.missionary.board.entity.MissionaryBoard;
 import com.samill.missionary_backend.missionary.board.exception.AccessDeniedMissionaryBoardException;
-import com.samill.missionary_backend.missionary.board.exception.MissionaryBoardException;
 import com.samill.missionary_backend.missionary.board.service.MissionaryBoardService;
 import com.samill.missionary_backend.missionary.dto.CreateMissionaryBoardCommand;
 import com.samill.missionary_backend.missionary.dto.DeleteMissionaryBoardCommand;
@@ -65,7 +64,12 @@ public class MissionaryBoardStaffModule implements MissionaryBoardModule {
     }
 
     @Override
-    public void deleteMissionaryBoard(@NonNull String memberId, @NonNull DeleteMissionaryBoardCommand command) throws MissionaryBoardException {
+    public void deleteMissionaryBoard(@NonNull String memberId, @NonNull DeleteMissionaryBoardCommand command) throws CommonException {
+
+        final var missionaryBoard = missionaryBoardService.getMissionaryBoard(command.missionaryBoardId());
+
+        checkMissionaryStaffOrThrow(missionaryBoard.getMissionaryId(), memberExternalService.getUserByMemberId(memberId).id());
+
         missionaryBoardService.deleteMissionaryBoard(command);
     }
 

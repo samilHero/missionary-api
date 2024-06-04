@@ -45,12 +45,12 @@ class MissionaryBoardUserModuleTests extends AbstractControllerTest {
     }
 
     /// TODO: 진족쓰 참가 신청 여부 작업 되면 작성 필요
-    @Test
-    void 미참가_선교_게시글_조회() {
+//    @Test
+//    void 미참가_선교_게시글_조회() {
 //        assertThatThrownBy(
 //            () -> missionaryBoardModule.getMissionaryBoard(memberId, notParticipatingMissionaryId)
 //        ).isInstanceOf(AccessDeniedMissionaryBoardException.class);
-    }
+//    }
 
     @Test
     void 참가_선교_게시글_목록_조회() throws CommonException {
@@ -68,8 +68,8 @@ class MissionaryBoardUserModuleTests extends AbstractControllerTest {
     }
 
     /// TODO: 진족쓰 참가 신청 여부 작업 되면 작성 필요
-    @Test
-    void 미참가_선교_게시글_목록_조회() {
+//    @Test
+//    void 미참가_선교_게시글_목록_조회() {
 //        assertThatThrownBy(
 //            () -> missionaryBoardModule.getMissionaryBoards(
 //                memberId,
@@ -81,7 +81,7 @@ class MissionaryBoardUserModuleTests extends AbstractControllerTest {
 //                )
 //            )
 //        ).isInstanceOf(AccessDeniedMissionaryBoardException.class);
-    }
+//    }
 
     @Test
     void 선교_게시글_작성() throws CommonException {
