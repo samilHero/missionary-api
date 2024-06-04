@@ -1,6 +1,6 @@
 package com.samill.missionary_backend.missionary.church.service;
 
-import com.samill.missionary_backend.missionary.church.repository.MissionaryMissionaryChurchRepository;
+import com.samill.missionary_backend.missionary.church.repository.MissionaryChurchRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class MissionaryChurchService {
 
-    private final MissionaryMissionaryChurchRepository churchRepository;
+    private final MissionaryChurchRepository churchRepository;
 
 //    public GetMissionaryChurchesResult getChurches(@NonNull GetMissionaryChurchesRequest request) {
 //
