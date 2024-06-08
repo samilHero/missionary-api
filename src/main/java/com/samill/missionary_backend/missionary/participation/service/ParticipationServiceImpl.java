@@ -100,12 +100,6 @@ public class ParticipationServiceImpl implements ParticipationService {
         return participationRepository.findAllByQueryForCsv(missionaryId, getParticipationsDownloadQuery);
     }
 
-    @Override
-    public boolean isParticipating(@NonNull String missionaryId, @NonNull String userId) {
-        /// TODO: missionaryId, userId로 참여 여부 확인
-        return true;
-    }
-
     private void validateCreateParticipation(CreateParticipationCommand createParticipationDto, int maxUserCount) throws CommonException {
         Participation participation = participationRepository.findByUserIdAndMissionaryId(createParticipationDto.getUserId(),
             createParticipationDto.getMissionaryId());
