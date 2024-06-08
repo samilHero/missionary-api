@@ -15,6 +15,7 @@ import com.samill.missionary_backend.missionary.participation.repository.Partici
 import com.samill.missionary_backend.missionary.participation.repository.ParticipationRepository;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -76,8 +77,7 @@ public class ParticipationServiceImpl implements ParticipationService {
     @Override
     public void updateParticipationPrivacyInfo(List<String> list) {
         // 선교 종료일 >= beforeDate 인 경우 주민번호 삭제
-        list.stream()
-            .map(participationRepository::findByMissionaryId)
+        list.stream().map(participationRepository::findByMissionaryId)
             .flatMap(List::stream)
             .peek(data -> data.updateIdentificationNumber(""));
     }
@@ -98,6 +98,12 @@ public class ParticipationServiceImpl implements ParticipationService {
     public List<GetParticipationQueryResult> getParticipationsForDownload(@NonNull String missionaryId,
         GetParticipationsDownloadQuery getParticipationsDownloadQuery) {
         return participationRepository.findAllByQueryForCsv(missionaryId, getParticipationsDownloadQuery);
+    }
+
+    @Override
+    public boolean isParticipating(@NonNull String missionaryId, @NonNull String userId) {
+        /// TODO: missionaryId, userId로 참여 여부 확인
+        return true;
     }
 
     private void validateCreateParticipation(CreateParticipationCommand createParticipationDto, int maxUserCount) throws CommonException {

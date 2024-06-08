@@ -33,4 +33,6 @@ public interface ParticipationService {
 
     List<GetParticipationQueryResult> getParticipationsForDownload(@NonNull String missionaryId,
         GetParticipationsDownloadQuery getParticipationsDownloadQuery);
+  
+    boolean isParticipating(@NonNull String missionaryId, @NonNull String userId);
 }
