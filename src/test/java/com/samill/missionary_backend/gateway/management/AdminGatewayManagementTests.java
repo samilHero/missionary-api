@@ -6,14 +6,14 @@ import static com.samill.missionary_backend.gateway.endPoint.AdminGatewayManagem
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
-import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
-import static org.springframework.restdocs.payload.PayloadDocumentation.*;
-import static org.springframework.restdocs.request.RequestDocumentation.*;
+import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
+import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
+import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.epages.restdocs.apispec.ResourceDocumentation;
 import com.epages.restdocs.apispec.ResourceSnippetParametersBuilder;
 import com.samill.missionary_backend.church.ChurchExternalService;
 import com.samill.missionary_backend.church.dto.CreateChurchCommandResult;
@@ -336,47 +336,47 @@ class AdminGatewayManagementTests extends AbstractControllerTest {
     void getParticipationsTest() throws Exception {
         final String missionaryId = UUID.randomUUID().toString();
         when(missionaryExternalService.getParticipations(anyString(), any(), any()))
-                .thenReturn(
-                        new PageImpl<>(
-                        List.of(
-                            new GetParticipationQueryResult(
-                                    "Participation Id",
-                                    missionaryId,
-                                    "hong1",
-                                    "홍길동",
-                                    "UUID1",
-                                    "19940616",
-                                    30000,
-                                    true,
-                                    "940626-2012345",
-                                    false,
-                                    OffsetDateTime.now()
-                            ),
-                            new GetParticipationQueryResult(
-                                    "Participation Id",
-                                    missionaryId,
-                                    "hong2",
-                                    "김길동",
-                                    "UUID1",
-                                    "19940616",
-                                    30000,
-                                    true,
-                                    "940626-2012345",
-                                    false,
-                                    OffsetDateTime.now()
-                            )
-                        ))
-                );
+            .thenReturn(
+                new PageImpl<>(
+                    List.of(
+                        new GetParticipationQueryResult(
+                            "Participation Id",
+                            missionaryId,
+                            "hong1",
+                            "홍길동",
+                            "UUID1",
+                            "19940616",
+                            30000,
+                            true,
+                            "940626-2012345",
+                            false,
+                            OffsetDateTime.now()
+                        ),
+                        new GetParticipationQueryResult(
+                            "Participation Id",
+                            missionaryId,
+                            "hong2",
+                            "김길동",
+                            "UUID1",
+                            "19940616",
+                            30000,
+                            true,
+                            "940626-2012345",
+                            false,
+                            OffsetDateTime.now()
+                        )
+                    ))
+            );
 
         mockMvc.perform(
                 RestDocumentationRequestBuilders.get(AdminGatewayManagementEndPoint.GET_PARTICIPATIONS, missionaryId)
-                        .param("pageSize", "50")
-                        .param("pageNumber", "1")
-                        .param("name", "")
-                        .param("fromDate", "")
-                        .param("endDate", "")
-                        .param("isPaid", "")
-                        .contentType(MediaType.APPLICATION_JSON)
+                    .param("pageSize", "50")
+                    .param("pageNumber", "1")
+                    .param("name", "")
+                    .param("fromDate", "")
+                    .param("endDate", "")
+                    .param("isPaid", "")
+                    .contentType(MediaType.APPLICATION_JSON)
                     .header("Authorization", getAuthorizationAdminOfHeader())
             )
             .andExpect(status().isOk())
@@ -418,21 +418,21 @@ class AdminGatewayManagementTests extends AbstractControllerTest {
     void getParticipationTest() throws Exception {
         final String participationId = UUID.randomUUID().toString();
         when(missionaryExternalService.getParticipation(participationId))
-                .thenReturn(
-                        new GetParticipationQueryResult(
-                                participationId,
-                                "71d8cee6-e2bc-472a-ab1f-c61c70dc0e51",
-                                "hong",
-                                "홍길동",
-                                "UUID-1",
-                                "19940616",
-                                30000,
-                                true,
-                                "940555-2012345",
-                                false,
-                                OffsetDateTime.now()
-                        )
-                );
+            .thenReturn(
+                new GetParticipationQueryResult(
+                    participationId,
+                    "71d8cee6-e2bc-472a-ab1f-c61c70dc0e51",
+                    "hong",
+                    "홍길동",
+                    "UUID-1",
+                    "19940616",
+                    30000,
+                    true,
+                    "940555-2012345",
+                    false,
+                    OffsetDateTime.now()
+                )
+            );
 
         mockMvc.perform(
                 RestDocumentationRequestBuilders.get(AdminGatewayManagementEndPoint.GET_PARTICIPATION, participationId)
@@ -464,5 +464,38 @@ class AdminGatewayManagementTests extends AbstractControllerTest {
                         )
                 )
             );
+    }
+
+    @Test
+    @Transactional
+    void updateParticipationPaid() throws Exception {
+        mockMvc.perform(
+                RestDocumentationRequestBuilders.put(
+                        AdminGatewayManagementEndPoint.UPDATE_PARTICIPATION_APPROVE
+                    )
+                    .content(
+                        List.of("UUID1", "UUID2").toString()
+                    )
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .header("Authorization", getAuthorizationAdminOfHeader())
+            )
+            .andDo(print())
+            .andDo(
+                document(snippetPath,
+
+                    new ResourceSnippetParametersBuilder()
+                        .tag("ADMIN_PARTICIPATION")
+                        .description("대량승인 API")
+                        .requestFields(
+                            fieldWithPath("ids[]").description("참가신청 ID")
+                        )
+                        .responseFields(
+                            fieldWithPath("statusCode").type(JsonFieldType.NUMBER).description("결과 코드"),
+                            fieldWithPath("message").type(JsonFieldType.STRING).description("결과 메시지"),
+                            fieldWithPath("data").type(JsonFieldType.NULL).description("결과")
+                        )
+                )
+            )
+            .andExpect(status().isOk());
     }
 }

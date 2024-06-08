@@ -6,6 +6,7 @@ import com.samill.missionary_backend.common.exception.CommonException;
 import com.samill.missionary_backend.missionary.dto.CreateParticipationCommand;
 import com.samill.missionary_backend.missionary.dto.DeleteParticipationCommand;
 import com.samill.missionary_backend.missionary.dto.GetParticipationQueryResult;
+import com.samill.missionary_backend.missionary.dto.GetParticipationsDownloadQuery;
 import com.samill.missionary_backend.missionary.dto.GetParticipationsQuery;
 import com.samill.missionary_backend.missionary.dto.MessageDto;
 import com.samill.missionary_backend.missionary.dto.UpdateParticipationCommand;
@@ -14,7 +15,6 @@ import com.samill.missionary_backend.missionary.participation.repository.Partici
 import com.samill.missionary_backend.missionary.participation.repository.ParticipationRepository;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -76,11 +76,10 @@ public class ParticipationServiceImpl implements ParticipationService {
     @Override
     public void updateParticipationPrivacyInfo(List<String> list) {
         // 선교 종료일 >= beforeDate 인 경우 주민번호 삭제
-        List<Participation> participationList = list.stream()
+        list.stream()
             .map(participationRepository::findByMissionaryId)
             .flatMap(List::stream)
-            .peek(data -> data.updateIdentificationNumber(""))
-            .collect(Collectors.toList());
+            .peek(data -> data.updateIdentificationNumber(""));
     }
 
     @Override
@@ -92,8 +91,13 @@ public class ParticipationServiceImpl implements ParticipationService {
 
     @Override
     public boolean isParticipating(@NonNull String missionaryId, @NonNull String userId) {
-        /// TODO: missionaryId, userId로 참여 여부 확인
-        return true;
+        return Objects.nonNull(participationRepository.findByUserIdAndMissionaryId(userId, missionaryId));
+    }
+
+    @Override
+    public List<GetParticipationQueryResult> getParticipationsForDownload(@NonNull String missionaryId,
+        GetParticipationsDownloadQuery getParticipationsDownloadQuery) {
+        return participationRepository.findAllByQueryForCsv(missionaryId, getParticipationsDownloadQuery);
     }
 
     private void validateCreateParticipation(CreateParticipationCommand createParticipationDto, int maxUserCount) throws CommonException {

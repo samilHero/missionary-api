@@ -57,29 +57,34 @@ public class ParticipationCustomRepositoryImpl implements ParticipationCustomRep
         return new PageImpl<>(content, pageable, count);
     }
 
-    //    @Override
-//    public List<GetParticipationQueryResult> findAllByConditionOrderByCreatedAtAsc(GetParticipationsQuery getParticipationsQuery) {
-//        return jpaQueryFactory
-//                .select(Projections.constructor(GetParticipationQueryResult.class,
-//                participation.id,
-//                participation.missionaryId,
-//                participation.userId,
-//                participation.name,
-//                participation.memberId,
-//                participation.applyFee,
-//                participation.isPaid,
-//                participation.identificationNumber,
-//                participation.isOwnCar,
-//                participation.createdAt))
-//                .from(participation)
-//                .where(
-//                        gtCreateTime(getParticipationsQuery.getCursorId()),
-//                        participation.missionaryId.eq(getParticipationsQuery.getMissionaryId())  //매번 사용되는 검색 조건
-//                ).orderBy(participation.createdAt.asc())
-//                .limit(getParticipationsQuery.getPageSize())
-//                .fetch();
-//    }
-//
+    @Override
+    public List<GetParticipationQueryResult> findAllByQueryForCsv(String missionaryId,
+        GetParticipationsDownloadQuery getParticipationsDownloadQuery) {
+        List<GetParticipationQueryResult> list = jpaQueryFactory
+            .select(Projections.constructor(GetParticipationQueryResult.class,
+                participation.id,
+                participation.missionaryId,
+                participation.userId,
+                participation.name,
+                participation.memberId,
+                participation.birthDate,
+                participation.applyFee,
+                participation.isPaid,
+                participation.identificationNumber,
+                participation.isOwnCar,
+                participation.createdAt))
+            .from(participation)
+            .where(
+                participation.missionaryId.eq(missionaryId),
+                isPaid(getParticipationsDownloadQuery.isPaid()),
+                betweenCreateDate(getParticipationsDownloadQuery.fromDate(), getParticipationsDownloadQuery.endDate()),
+                isName(getParticipationsDownloadQuery.name()))
+            .orderBy(participation.createdAt.asc())
+            .fetch();
+
+        return list;
+    }
+
     private BooleanExpression isPaid(Boolean isPaid) {
         return isPaid == null ? null : participation.isPaid.eq(isPaid);
     }
@@ -88,5 +93,7 @@ public class ParticipationCustomRepositoryImpl implements ParticipationCustomRep
         return fromDate == null ? null : participation.createdAt.between(OffsetDateTime.parse(fromDate), OffsetDateTime.parse(endDate));
     }
 
-    private BooleanExpression isName(String name) { return name == null ? null : participation.name.eq(name); }
+    private BooleanExpression isName(String name) {
+        return name == null ? null : participation.name.eq(name);
+    }
 }

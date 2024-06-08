@@ -26,6 +26,7 @@ import com.samill.missionary_backend.missionary.dto.GetMissionaryIdsQuery;
 import com.samill.missionary_backend.missionary.dto.GetMissionaryQuery;
 import com.samill.missionary_backend.missionary.dto.GetMissionaryQueryResult;
 import com.samill.missionary_backend.missionary.dto.GetParticipationQueryResult;
+import com.samill.missionary_backend.missionary.dto.GetParticipationsDownloadQuery;
 import com.samill.missionary_backend.missionary.dto.GetParticipationsQuery;
 import com.samill.missionary_backend.missionary.dto.GetTeamQueryResult;
 import com.samill.missionary_backend.missionary.dto.UpdateMissionaryBoardCommand;
@@ -45,6 +46,7 @@ import com.samill.missionary_backend.missionary.team.entity.Team;
 import com.samill.missionary_backend.missionary.team.entity.TeamMember;
 import com.samill.missionary_backend.missionary.team.mapper.TeamMapper;
 import com.samill.missionary_backend.missionary.team.service.TeamService;
+import java.util.ArrayList;
 import java.util.List;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -211,6 +213,7 @@ class MissionaryManagement implements MissionaryExternalService {
     }
 
     @Override
+    @Transactional
     public void createParticipation(@NonNull CreateParticipationCommand createParticipationCommand) throws Exception {
         validateParticipationPeriod(createParticipationCommand.getMissionaryId());
         int maxUserCount = getMissionaryMaxCount(createParticipationCommand.getMissionaryId());
@@ -247,6 +250,30 @@ class MissionaryManagement implements MissionaryExternalService {
     @Override
     public void updateParticipationPaid(List<String> ids) {
         participationService.updateParticipationPaid(ids);
+    }
+
+    @Override
+    public List<String[]> downloadParticipationListCsv(String missionaryId,
+        GetParticipationsDownloadQuery getParticipationsDownloadQuery) {
+        List<String[]> listStrings = new ArrayList<>();
+        listStrings.add(new String[]{"이름", "User ID", "생년월일", "선교비", "입금여부", "주민등록번호", "신청일"});
+
+        List<GetParticipationQueryResult> list =
+            participationService.getParticipationsForDownload(missionaryId, getParticipationsDownloadQuery);
+
+        for (GetParticipationQueryResult item : list) {
+            String[] rowData = new String[7];
+            rowData[0] = item.getName();
+            rowData[1] = item.getUserId();
+            rowData[2] = item.getBirthDate();
+            rowData[3] = String.valueOf(item.getApplyFee());
+            rowData[4] = String.valueOf(item.getIsPaid());
+            rowData[5] = String.valueOf(item.getIdentificationNumber());
+            rowData[6] = String.valueOf(item.getCreatedAt());
+            listStrings.add(rowData);
+        }
+
+        return listStrings;
     }
 
     private void validateParticipationPeriod(String missionaryId) throws CommonException {

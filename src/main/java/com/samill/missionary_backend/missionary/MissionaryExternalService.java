@@ -17,6 +17,7 @@ import com.samill.missionary_backend.missionary.dto.GetMissionaryIdsQuery;
 import com.samill.missionary_backend.missionary.dto.GetMissionaryQuery;
 import com.samill.missionary_backend.missionary.dto.GetMissionaryQueryResult;
 import com.samill.missionary_backend.missionary.dto.GetParticipationQueryResult;
+import com.samill.missionary_backend.missionary.dto.GetParticipationsDownloadQuery;
 import com.samill.missionary_backend.missionary.dto.GetParticipationsQuery;
 import com.samill.missionary_backend.missionary.dto.GetTeamQueryResult;
 import com.samill.missionary_backend.missionary.dto.UpdateMissionaryBoardCommand;
@@ -106,4 +107,7 @@ public interface MissionaryExternalService {
     void updateParticipation(String participationId, UpdateParticipationCommand updateParticipationCommand) throws CommonException;
 
     void updateParticipationPaid(List<String> ids);
+
+    List<String[]> downloadParticipationListCsv(String missionaryId,
+        GetParticipationsDownloadQuery getParticipationsDownloadQuery);
 }
