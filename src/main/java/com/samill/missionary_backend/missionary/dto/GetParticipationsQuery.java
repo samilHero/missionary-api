@@ -9,8 +9,9 @@ import java.time.OffsetDateTime;
 @Builder
 public record GetParticipationsQuery(
         String name,
-        String userId,
         Boolean isPaid,
+        String fromDate,
+        String endDate,
         int pageSize
 ) {
 }

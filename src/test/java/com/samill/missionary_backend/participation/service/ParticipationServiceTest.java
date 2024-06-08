@@ -12,6 +12,9 @@ import com.samill.missionary_backend.missionary.dto.GetParticipationsQuery;
 import com.samill.missionary_backend.missionary.participation.entity.Participation;
 import com.samill.missionary_backend.missionary.participation.mapper.ParticipationMapper;
 import com.samill.missionary_backend.missionary.participation.repository.ParticipationRepository;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -135,5 +138,34 @@ class ParticipationServiceTest extends AbstractSpringBootTests {
 
         //then
         assertEquals(3, participationQueryResults.getSize());
+    }
+
+    @Test
+    @Transactional
+    void 대량승인() throws CommonException {
+        // given
+        List<String> ids = new ArrayList<>();
+        String missionaryId = UUID.randomUUID().toString();
+        for (int i = 0; i < 10; i++) {
+            CreateParticipationCommand createParticipationDto = CreateParticipationCommand.builder()
+                    .missionaryId(missionaryId)
+                    .applyFee(10000)
+                    .identificationNumber("980232-1112220")
+                    .memberId("UUIDD1")
+                    .birthDate("19940616")
+                    .userId("kdf1")
+                    .name("홍길동")
+                    .isOwnCar(false)
+                    .build();
+
+            Participation participation = participationRepository.save(ParticipationMapper.INSTANCE.createParticipationCommandToEntity(createParticipationDto));
+            ids.add(participation.getId());
+        }
+
+        // when
+        participationService.updateParticipationPaid(ids);
+
+        // then
+        assertEquals(true, participationService.getParticipation(ids.get(0)).getIsPaid());
     }
 }

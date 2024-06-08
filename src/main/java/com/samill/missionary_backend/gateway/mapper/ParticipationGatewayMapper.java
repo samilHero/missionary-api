@@ -1,5 +1,6 @@
 package com.samill.missionary_backend.gateway.mapper;
 
+import com.samill.missionary_backend.gateway.dto.GetParticipationsDownloadRequest;
 import com.samill.missionary_backend.gateway.dto.GetParticipationsRequest;
 import com.samill.missionary_backend.gateway.dto.Participation.*;
 import com.samill.missionary_backend.missionary.dto.*;
@@ -10,7 +11,8 @@ import org.mapstruct.factory.Mappers;
 
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface ParticipationGatewayMapper {
-    ParticipationGatewayMapper INSTANCE = Mappers.getMapper( ParticipationGatewayMapper.class );
+
+    ParticipationGatewayMapper INSTANCE = Mappers.getMapper(ParticipationGatewayMapper.class);
 
     GetParticipationsQuery getParticipationsToGetParticipationsQuery(GetParticipationsRequest getParticipation);
 
@@ -22,4 +24,7 @@ public interface ParticipationGatewayMapper {
     UpdateParticipationCommand updateParticipationToUpdateParticipationCommand(UpdateParticipationRequest updateParticipation);
 
     DeleteParticipationCommand deleteParticipationToDeleteParticipationCommand(DeleteParticipationRequest deleteParticipation);
+
+    GetParticipationsDownloadQuery getParticipationsDownloadReqeustToGetParticipationDownloadQuery(
+        GetParticipationsDownloadRequest getParticipationsDownloadRequest);
 }

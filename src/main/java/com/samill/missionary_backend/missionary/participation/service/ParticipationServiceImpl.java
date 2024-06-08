@@ -6,6 +6,7 @@ import com.samill.missionary_backend.common.exception.CommonException;
 import com.samill.missionary_backend.missionary.dto.CreateParticipationCommand;
 import com.samill.missionary_backend.missionary.dto.DeleteParticipationCommand;
 import com.samill.missionary_backend.missionary.dto.GetParticipationQueryResult;
+import com.samill.missionary_backend.missionary.dto.GetParticipationsDownloadQuery;
 import com.samill.missionary_backend.missionary.dto.GetParticipationsQuery;
 import com.samill.missionary_backend.missionary.dto.MessageDto;
 import com.samill.missionary_backend.missionary.dto.UpdateParticipationCommand;
@@ -76,12 +77,27 @@ public class ParticipationServiceImpl implements ParticipationService {
     @Override
     public void updateParticipationPrivacyInfo(List<String> list) {
         // 선교 종료일 >= beforeDate 인 경우 주민번호 삭제
-        List<Participation> participationList = list.stream()
-            .map(participationRepository::findByMissionaryId)
+        list.stream().map(participationRepository::findByMissionaryId)
             .flatMap(List::stream)
-            .peek(data -> data.updateIdentificationNumber(""))
-            .collect(Collectors.toList());
-        participationRepository.saveAll(participationList);
+            .peek(data -> data.updateIdentificationNumber(""));
+    }
+
+    @Override
+    public void updateParticipationPaid(List<String> ids) {
+        ids.stream()
+            .map(participationRepository::findById)
+            .forEach(optParticipation -> optParticipation.ifPresent(participation -> participation.updateIsPaid(true)));
+    }
+
+    @Override
+    public boolean isParticipating(@NonNull String missionaryId, @NonNull String userId) {
+        return Objects.nonNull(participationRepository.findByUserIdAndMissionaryId(userId, missionaryId));
+    }
+
+    @Override
+    public List<GetParticipationQueryResult> getParticipationsForDownload(@NonNull String missionaryId,
+        GetParticipationsDownloadQuery getParticipationsDownloadQuery) {
+        return participationRepository.findAllByQueryForCsv(missionaryId, getParticipationsDownloadQuery);
     }
 
     @Override

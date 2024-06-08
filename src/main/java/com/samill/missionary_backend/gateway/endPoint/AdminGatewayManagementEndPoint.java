@@ -31,4 +31,6 @@ public class AdminGatewayManagementEndPoint {
     public static final String GET_PARTICIPATIONS = BASE_URL + "/participations/{missionaryId}";
 
     public static final String GET_PARTICIPATION = BASE_URL + "/participation/{participationId}";
+
+    public static final String UPDATE_PARTICIPATION_APPROVE = BASE_URL + "/participation/approve";
 }
