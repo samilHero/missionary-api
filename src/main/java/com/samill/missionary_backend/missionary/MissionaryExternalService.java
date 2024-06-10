@@ -13,9 +13,11 @@ import com.samill.missionary_backend.missionary.dto.DeleteParticipationCommand;
 import com.samill.missionary_backend.missionary.dto.DisappointMissionaryStaffsCommand;
 import com.samill.missionary_backend.missionary.dto.GetMissionaryBoardsQuery;
 import com.samill.missionary_backend.missionary.dto.GetMissionaryBoardsQueryResult;
+import com.samill.missionary_backend.missionary.dto.GetMissionaryGroupsQueryResult;
 import com.samill.missionary_backend.missionary.dto.GetMissionaryIdsQuery;
 import com.samill.missionary_backend.missionary.dto.GetMissionaryQuery;
 import com.samill.missionary_backend.missionary.dto.GetMissionaryQueryResult;
+import com.samill.missionary_backend.missionary.dto.GetMissionaryStaffsQuery;
 import com.samill.missionary_backend.missionary.dto.GetParticipationQueryResult;
 import com.samill.missionary_backend.missionary.dto.GetParticipationsDownloadQuery;
 import com.samill.missionary_backend.missionary.dto.GetParticipationsQuery;
@@ -80,9 +82,6 @@ public interface MissionaryExternalService {
         DeleteMissionaryBoardCommand command
     ) throws CommonException;
 
-    void appointStaffs(@NonNull AppointMissionaryStaffsCommand command) throws MissionaryException;
-
-    void disappointStaffs(@NonNull DisappointMissionaryStaffsCommand command) throws MissionaryException;
 
     void createTeam(CreateTeamCommand createTeamCommand);
 
@@ -110,4 +109,19 @@ public interface MissionaryExternalService {
 
     List<String[]> downloadParticipationListCsv(String missionaryId,
         GetParticipationsDownloadQuery getParticipationsDownloadQuery);
+
+ void appointMissionaryStaffs(
+        @NonNull String memberId,
+        @NonNull AppointMissionaryStaffsCommand appointMissionaryStaffsCommand
+    ) throws CommonException;
+
+    void disappointMissionaryStaffs(
+        @NonNull String memberId,
+        @NonNull DisappointMissionaryStaffsCommand disappointMissionaryStaffsCommand
+    ) throws MissionaryException;
+
+    void getMissionaryStaffs(@NonNull GetMissionaryStaffsQuery getMissionaryStaffsQuery) throws CommonException;
+
+    GetMissionaryGroupsQueryResult getMissionaryGroups(@NonNull String memberId) throws CommonException;
+
 }

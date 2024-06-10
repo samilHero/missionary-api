@@ -7,7 +7,7 @@ public record DisappointMissionaryStaffsCommand(
     @NonNull
     String missionaryId,
     @NonNull
-    List<String> staffIds
+    List<String> userIds
 ) {
 
 }

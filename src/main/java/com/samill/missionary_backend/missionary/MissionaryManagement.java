@@ -12,6 +12,7 @@ import com.samill.missionary_backend.missionary.board.module.MissionaryBoardStaf
 import com.samill.missionary_backend.missionary.board.module.MissionaryBoardUserModule;
 import com.samill.missionary_backend.missionary.board.service.MissionaryBoardService;
 import com.samill.missionary_backend.missionary.dto.AppointMissionaryStaffsCommand;
+import com.samill.missionary_backend.missionary.dto.AppointMissionaryStaffsCommandStaff;
 import com.samill.missionary_backend.missionary.dto.CreateMissionaryBoardCommand;
 import com.samill.missionary_backend.missionary.dto.CreateMissionaryBoardCommandResult;
 import com.samill.missionary_backend.missionary.dto.CreateMissionaryCommand;
@@ -22,9 +23,11 @@ import com.samill.missionary_backend.missionary.dto.DeleteParticipationCommand;
 import com.samill.missionary_backend.missionary.dto.DisappointMissionaryStaffsCommand;
 import com.samill.missionary_backend.missionary.dto.GetMissionaryBoardsQuery;
 import com.samill.missionary_backend.missionary.dto.GetMissionaryBoardsQueryResult;
+import com.samill.missionary_backend.missionary.dto.GetMissionaryGroupsQueryResult;
 import com.samill.missionary_backend.missionary.dto.GetMissionaryIdsQuery;
 import com.samill.missionary_backend.missionary.dto.GetMissionaryQuery;
 import com.samill.missionary_backend.missionary.dto.GetMissionaryQueryResult;
+import com.samill.missionary_backend.missionary.dto.GetMissionaryStaffsQuery;
 import com.samill.missionary_backend.missionary.dto.GetParticipationQueryResult;
 import com.samill.missionary_backend.missionary.dto.GetParticipationsDownloadQuery;
 import com.samill.missionary_backend.missionary.dto.GetParticipationsQuery;
@@ -81,32 +84,39 @@ class MissionaryManagement implements MissionaryExternalService {
     }
 
     @Override
+    @Transactional
     public void deleteMissionary(@NonNull String missionaryId) {
         missionaryService.deleteMissionary(missionaryId);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public @NonNull GetMissionaryQueryResult getMissionary(@NonNull GetMissionaryQuery getMissionaryQuery) throws MissionaryException {
         return MissionaryMapper.INSTANCE.missionaryToGetMissionaryQueryResult(missionaryService.getMissionary(getMissionaryQuery.missionaryId()));
     }
 
     @Override
+    @Transactional(readOnly = true)
+
     public void getMissionaries(String cursor) {
         missionaryService.getMissionaries(cursor);
     }
 
 
     @Override
+    @Transactional(readOnly = true)
     public boolean isInParticipationPeriod(@NonNull String missionaryId) throws MissionaryException {
         return missionaryService.isParticipationPeriod(missionaryId);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public @NonNull List<String> getDaysBeforeMissionaryIds(GetMissionaryIdsQuery getMissionaryIdsQuery) {
-        return null;
+        return missionaryService.getDaysBeforeMissionaryIds(getMissionaryIdsQuery);
     }
 
     @Override
+    @Transactional
     public @NonNull CreateMissionaryBoardCommandResult createMissionaryBoard(
         @NonNull String memberId,
         @NonNull CreateMissionaryBoardCommand command
@@ -118,6 +128,7 @@ class MissionaryManagement implements MissionaryExternalService {
 
 
     @Override
+    @Transactional(readOnly = true)
     public @NonNull GetMissionaryBoardsQueryResult getMissionaryBoards(
         @NonNull final String memberId,
         @NonNull final GetMissionaryBoardsQuery query
@@ -130,6 +141,7 @@ class MissionaryManagement implements MissionaryExternalService {
 
 
     @Override
+    @Transactional
     public void updateMissionaryBoard(
         @NonNull String memberId,
         @NonNull UpdateMissionaryBoardCommand command
@@ -139,6 +151,7 @@ class MissionaryManagement implements MissionaryExternalService {
     }
 
     @Override
+    @Transactional
     public void deleteMissionaryBoard(
         @NonNull
         String memberId,
@@ -148,15 +161,6 @@ class MissionaryManagement implements MissionaryExternalService {
         getMissionaryBoardModule(memberId, missionaryId).deleteMissionaryBoard(memberId, command);
     }
 
-    @Override
-    public void appointStaffs(@NonNull AppointMissionaryStaffsCommand command) throws MissionaryException {
-
-    }
-
-    @Override
-    public void disappointStaffs(@NonNull DisappointMissionaryStaffsCommand command) throws MissionaryException {
-
-    }
 
     MissionaryBoardModule getMissionaryBoardModule(
         @NonNull
@@ -185,6 +189,7 @@ class MissionaryManagement implements MissionaryExternalService {
     }
 
     @Override
+
     public void updateTeam(String teamId, UpdateTeamCommand updateTeamCommand) throws CommonException {
         teamService.updateTeam(teamId, updateTeamCommand);
     }
@@ -276,6 +281,47 @@ class MissionaryManagement implements MissionaryExternalService {
         return listStrings;
     }
 
+ @Override
+    @Transactional
+    public void appointMissionaryStaffs(
+        @NonNull String memberId,
+        @NonNull AppointMissionaryStaffsCommand appointMissionaryStaffsCommand
+    ) throws CommonException {
+
+        final var missionary = missionaryService.getMissionary(appointMissionaryStaffsCommand.missionaryId());
+
+        /// TODO: 제거된 회원을 스태프에 임명하려고할 때 어떻게 해야하는가?.
+        memberExternalService.getUsersByIds(appointMissionaryStaffsCommand.staffs().stream()
+            .map(AppointMissionaryStaffsCommandStaff::userId)
+            .toList()
+        );
+
+        missionaryStaffService.appointMissionaryStaffs(missionary, appointMissionaryStaffsCommand.staffs());
+    }
+
+    @Override
+    @Transactional
+    public void disappointMissionaryStaffs(@NonNull String memberId, @NonNull DisappointMissionaryStaffsCommand disappointMissionaryStaffsCommand)
+        throws MissionaryException {
+        missionaryStaffService.disappointMissionaryStaffs(
+            disappointMissionaryStaffsCommand.missionaryId(),
+            disappointMissionaryStaffsCommand.userIds()
+        );
+    }
+
+    @Override
+    public void getMissionaryStaffs(@NonNull GetMissionaryStaffsQuery getMissionaryStaffsQuery) throws CommonException {
+//        missionaryStaffService.getMissionaryStaffs(getMissionaryStaffsQuery);
+    }
+
+    @Override
+    public GetMissionaryGroupsQueryResult getMissionaryGroups(@NonNull String memberId) throws CommonException {
+        return MissionaryMapper.INSTANCE.categoryMissionaryMapToGetMissionaryGroupsQueryResult(
+            missionaryService.getMissionariesByCategory(memberExternalService.getUserByMemberId(memberId).id())
+        );
+
+    }
+
     private void validateParticipationPeriod(String missionaryId) throws CommonException {
         if (!missionaryService.isParticipationPeriod(missionaryId)) {
             throw new CommonException(ResponseCode.INVALID_PARTICIPATION_PERIOD);
@@ -294,4 +340,6 @@ class MissionaryManagement implements MissionaryExternalService {
     private int getApplyFee(String missionaryId) throws CommonException {
         return missionaryService.getMissionary(missionaryId).getDetail().getPrice();
     }
+
+
 }
