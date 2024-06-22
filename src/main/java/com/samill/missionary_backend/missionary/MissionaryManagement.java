@@ -29,6 +29,7 @@ import com.samill.missionary_backend.missionary.dto.GetParticipationQueryResult;
 import com.samill.missionary_backend.missionary.dto.GetParticipationsDownloadQuery;
 import com.samill.missionary_backend.missionary.dto.GetParticipationsQuery;
 import com.samill.missionary_backend.missionary.dto.GetTeamQueryResult;
+import com.samill.missionary_backend.missionary.dto.ParticipationExcelType;
 import com.samill.missionary_backend.missionary.dto.UpdateMissionaryBoardCommand;
 import com.samill.missionary_backend.missionary.dto.UpdateMissionaryCommand;
 import com.samill.missionary_backend.missionary.dto.UpdateParticipationCommand;
@@ -256,20 +257,22 @@ class MissionaryManagement implements MissionaryExternalService {
     public List<String[]> downloadParticipationListCsv(String missionaryId,
         GetParticipationsDownloadQuery getParticipationsDownloadQuery) {
         List<String[]> listStrings = new ArrayList<>();
-        listStrings.add(new String[]{"이름", "User ID", "생년월일", "선교비", "입금여부", "주민등록번호", "신청일"});
+        listStrings.add(ParticipationExcelType.getNames());
 
         List<GetParticipationQueryResult> list =
             participationService.getParticipationsForDownload(missionaryId, getParticipationsDownloadQuery);
 
         for (GetParticipationQueryResult item : list) {
-            String[] rowData = new String[7];
+            String[] rowData = new String[ParticipationExcelType.values().length];
             rowData[0] = item.getName();
             rowData[1] = item.getUserId();
             rowData[2] = item.getBirthDate();
-            rowData[3] = String.valueOf(item.getApplyFee());
-            rowData[4] = String.valueOf(item.getIsPaid());
-            rowData[5] = String.valueOf(item.getIdentificationNumber());
-            rowData[6] = String.valueOf(item.getCreatedAt());
+            rowData[3] = item.getChurchName();
+            rowData[4] = item.getLeaderName();
+            rowData[5] = String.valueOf(item.getApplyFee());
+            rowData[6] = String.valueOf(item.getIsPaid());
+            rowData[7] = String.valueOf(item.getIdentificationNumber());
+            rowData[8] = String.valueOf(item.getCreatedAt());
             listStrings.add(rowData);
         }
 

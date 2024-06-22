@@ -2,6 +2,7 @@ package com.samill.missionary_backend.missionary.participation.entity;
 
 import com.samill.missionary_backend.common.entity.BaseEntity;
 import com.samill.missionary_backend.common.util.AesEncryptConverter;
+import com.samill.missionary_backend.missionary.team.entity.Team;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
@@ -21,6 +22,7 @@ import java.time.OffsetDateTime;
 @SQLDelete(sql = "UPDATE participation SET deleted_at = current_timestamp WHERE id = ?")
 @SQLRestriction(value = "deleted_at is NULL")
 public class Participation extends BaseEntity {
+
     @Id
     @GeneratedValue(generator = "uuid2")
     @GenericGenerator(name = "uuid2", strategy = "uuid2")
@@ -35,6 +37,9 @@ public class Participation extends BaseEntity {
     private Boolean isPaid = Boolean.FALSE;
     @Convert(converter = AesEncryptConverter.class)
     private String identificationNumber;
+    @ManyToOne
+    @JoinColumn(name = "teamId")
+    private Team team;
     private OffsetDateTime deletedAt;
     @Builder.Default
     private Boolean isOwnCar = Boolean.FALSE;

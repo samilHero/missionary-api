@@ -3,24 +3,26 @@ package com.samill.missionary_backend.missionary.participation.repository;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.samill.missionary_backend.missionary.church.entity.QMissionaryChurch;
 import com.samill.missionary_backend.missionary.dto.GetParticipationQueryResult;
 import com.samill.missionary_backend.missionary.dto.GetParticipationsDownloadQuery;
 import com.samill.missionary_backend.missionary.dto.GetParticipationsQuery;
 import com.samill.missionary_backend.missionary.participation.entity.QParticipation;
+import com.samill.missionary_backend.missionary.team.entity.QTeam;
+import java.time.OffsetDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import java.time.OffsetDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.List;
 
 @RequiredArgsConstructor
 public class ParticipationCustomRepositoryImpl implements ParticipationCustomRepository {
 
     private final JPAQueryFactory jpaQueryFactory;
     private final QParticipation participation = QParticipation.participation;
+    private final QTeam team = QTeam.team;
+    private final QMissionaryChurch missionaryChurch = QMissionaryChurch.missionaryChurch;
 
     @Override
     public Page<GetParticipationQueryResult> findAllByQuery(String missionaryId, GetParticipationsQuery getParticipationsQuery, Pageable pageable) {
@@ -32,16 +34,20 @@ public class ParticipationCustomRepositoryImpl implements ParticipationCustomRep
                 participation.name,
                 participation.memberId,
                 participation.birthDate,
+                missionaryChurch.name,
+                team.leaderUserName,
                 participation.applyFee,
                 participation.isPaid,
                 participation.identificationNumber,
                 participation.isOwnCar,
                 participation.createdAt))
             .from(participation)
+            .leftJoin(participation.team, team)
+            .innerJoin(missionaryChurch).on(missionaryChurch.id.eq(team.churchId))
             .where(
                 participation.missionaryId.eq(missionaryId),
                 isPaid(getParticipationsQuery.isPaid()),
-                isName(getParticipationsQuery.name()),
+                isParticipantName(getParticipationsQuery.name()),
                 betweenCreateDate(getParticipationsQuery.fromDate(), getParticipationsQuery.endDate()))
             .orderBy(participation.createdAt.asc())
             .offset(pageable.getOffset())
@@ -68,17 +74,21 @@ public class ParticipationCustomRepositoryImpl implements ParticipationCustomRep
                 participation.name,
                 participation.memberId,
                 participation.birthDate,
+                missionaryChurch.name,
+                team.leaderUserName,
                 participation.applyFee,
                 participation.isPaid,
                 participation.identificationNumber,
                 participation.isOwnCar,
                 participation.createdAt))
             .from(participation)
+            .leftJoin(participation.team, team)
+            .innerJoin(missionaryChurch).on(missionaryChurch.id.eq(team.churchId))
             .where(
                 participation.missionaryId.eq(missionaryId),
                 isPaid(getParticipationsDownloadQuery.isPaid()),
                 betweenCreateDate(getParticipationsDownloadQuery.fromDate(), getParticipationsDownloadQuery.endDate()),
-                isName(getParticipationsDownloadQuery.name()))
+                isParticipantName(getParticipationsDownloadQuery.name()))
             .orderBy(participation.createdAt.asc())
             .fetch();
 
@@ -93,7 +103,7 @@ public class ParticipationCustomRepositoryImpl implements ParticipationCustomRep
         return fromDate == null ? null : participation.createdAt.between(OffsetDateTime.parse(fromDate), OffsetDateTime.parse(endDate));
     }
 
-    private BooleanExpression isName(String name) {
+    private BooleanExpression isParticipantName(String name) {
         return name == null ? null : participation.name.eq(name);
     }
 }

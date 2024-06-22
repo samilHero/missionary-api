@@ -18,6 +18,8 @@ public class GetParticipationQueryResult {
     private String name;
     private String memberId;
     private String birthDate;
+    private String churchName;
+    private String leaderName;
     private Integer applyFee;
     private Boolean isPaid;
     private String identificationNumber;

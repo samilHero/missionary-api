@@ -15,7 +15,7 @@ public class StaffGatewayManagementEndPoint {
 
     public static final String UPDATE_PARTICIPATION_APPROVE = BASE_URL + "/participation/approve";
 
-    public static final String GET_DOWNLOAD_PARTICIPATION_LIST = BASE_URL + "/downloadParticipationListCsv/{missionaryId}";
+    public static final String GET_DOWNLOAD_PARTICIPATION_LIST = BASE_URL + "/participation/download/{missionaryId}";
 
     public static final String CREATE_TEAM = BASE_URL + "/team";
 

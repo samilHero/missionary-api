@@ -22,6 +22,7 @@ import java.util.List;
 @SQLDelete(sql = "UPDATE team SET deleted_at = current_timestamp WHERE id = ?")
 @SQLRestriction(value = "deleted_at is NULL")
 public class Team {
+
     @Id
     @GeneratedValue(generator = "uuid2")
     @GenericGenerator(name = "uuid2", strategy = "uuid2")
@@ -29,6 +30,7 @@ public class Team {
     private String missionaryId;
     private String churchId;
     private String leaderUserId;
+    private String leaderUserName;
     private String teamName;
     @Builder.Default
     @OneToMany(mappedBy = "team", cascade = CascadeType.ALL, orphanRemoval = true)

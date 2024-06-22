@@ -1,5 +1,6 @@
 package com.samill.missionary_backend.gateway.management;
 
+import com.opencsv.CSVWriter;
 import com.samill.missionary_backend.church.ChurchExternalService;
 import com.samill.missionary_backend.common.exception.CommonException;
 import com.samill.missionary_backend.gateway.dto.CreateAdminRequest;
@@ -7,12 +8,14 @@ import com.samill.missionary_backend.gateway.dto.CreateChurchRequest;
 import com.samill.missionary_backend.gateway.dto.CreateChurchResult;
 import com.samill.missionary_backend.gateway.dto.GetChurchResult;
 import com.samill.missionary_backend.gateway.dto.GetChurchesResult;
+import com.samill.missionary_backend.gateway.dto.GetParticipationsDownloadRequest;
 import com.samill.missionary_backend.gateway.dto.GetParticipationsRequest;
 import com.samill.missionary_backend.gateway.dto.LoginAdminRequest;
 import com.samill.missionary_backend.gateway.dto.LoginAdminResult;
 import com.samill.missionary_backend.gateway.dto.Participation.GetParticipationResult;
 import com.samill.missionary_backend.gateway.dto.UpdateChurchRequest;
 import com.samill.missionary_backend.gateway.endPoint.AdminGatewayManagementEndPoint;
+import com.samill.missionary_backend.gateway.endPoint.StaffGatewayManagementEndPoint;
 import com.samill.missionary_backend.gateway.mapper.AdminGatewayMapper;
 import com.samill.missionary_backend.gateway.mapper.ChurchGatewayMapper;
 import com.samill.missionary_backend.gateway.mapper.ParticipationGatewayMapper;
@@ -20,7 +23,12 @@ import com.samill.missionary_backend.member.MemberExternalService;
 import com.samill.missionary_backend.missionary.MissionaryExternalService;
 import com.samill.missionary_backend.missionary.dto.GetParticipationQueryResult;
 import com.samill.missionary_backend.missionary.dto.GetParticipationsQuery;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -107,5 +115,27 @@ public class AdminGatewayManagement {
     @PutMapping(AdminGatewayManagementEndPoint.UPDATE_PARTICIPATION_APPROVE)
     public void updateParticipationPaid(List<String> ids) {
         missionaryExternalService.updateParticipationPaid(ids);
+    }
+
+    @GetMapping(AdminGatewayManagementEndPoint.GET_DOWNLOAD_PARTICIPATION_LIST)
+    public void downloadParticipationListCsv(@PathVariable String missionaryId,
+        GetParticipationsDownloadRequest getParticipationsDownloadRequest, HttpServletResponse response) throws IOException {
+        response.setContentType("text/csv; charset=UTF-8");
+        String fileName = URLEncoder.encode("참가신청목록", "UTF-8");
+        response.setHeader("Content-Disposition",
+            "attachment; filename=\"" + fileName + "\"");
+
+        OutputStreamWriter writer = new OutputStreamWriter(response.getOutputStream(),
+            StandardCharsets.UTF_8);
+        writer.write("\uFEFF");
+        CSVWriter csvWriter = new CSVWriter(writer);
+
+        List<String[]> list = missionaryExternalService.downloadParticipationListCsv(missionaryId,
+            ParticipationGatewayMapper.INSTANCE.getParticipationsDownloadReqeustToGetParticipationDownloadQuery(getParticipationsDownloadRequest));
+
+        csvWriter.writeAll(list);
+        csvWriter.close();
+
+        writer.close();
     }
 }

@@ -14,11 +14,15 @@ import java.time.OffsetDateTime;
 @Setter
 @AllArgsConstructor
 public class GetParticipationResult {
+
     private String id;
     private String missionaryId;
     private String userId;
     private String name;
     private String memberId;
+    private String birthDate;
+    private String churchName;
+    private String leaderName;
     private Integer applyFee;
     private Boolean isPaid;
     @MaskRequired(type = MaskingType.IDENTIFICATION_NUMBER)
