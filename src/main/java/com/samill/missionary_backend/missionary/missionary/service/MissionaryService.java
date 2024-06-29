@@ -113,7 +113,8 @@ public class MissionaryService {
     public Map<MissionaryCategory, List<Missionary>> getMissionariesByCategory(String userId) {
         final var missionaries = missionaryRepository.findAllByMissionaryStaffs_UserIdAndPeriod_EndDateGreaterThanEqual(userId, OffsetDateTime.now());
 
-        return missionaries.stream().collect(Collectors.groupingBy(missionary -> missionary.getRegion().getMissionaryCategory()));
+        return missionaries.stream()
+            .collect(Collectors.groupingBy(missionary -> missionary.getRegion().getMissionaryCategory()));
     }
 
 }

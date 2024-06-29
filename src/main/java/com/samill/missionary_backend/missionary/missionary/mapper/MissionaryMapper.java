@@ -8,8 +8,6 @@ import com.samill.missionary_backend.missionary.dto.GetMissionaryQueryResult;
 import com.samill.missionary_backend.missionary.missionary.entity.Missionary;
 import com.samill.missionary_backend.missionary.missionary.entity.MissionaryPoster;
 import com.samill.missionary_backend.missionary.missionary.enums.MissionaryCategory;
-import java.util.AbstractMap;
-import java.util.AbstractMap.SimpleImmutableEntry;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -40,7 +38,6 @@ public interface MissionaryMapper {
 
     GetMissionaryQueryResult missionaryToGetMissionaryQueryResult(Missionary missionary);
 
-
     default GetMissionaryGroupsQueryResult categoryMissionaryMapToGetMissionaryGroupsQueryResult(
         @NonNull Map<MissionaryCategory, List<Missionary>> map
     ) {
@@ -48,14 +45,14 @@ public interface MissionaryMapper {
         return new GetMissionaryGroupsQueryResult(
             map.entrySet()
                 .stream()
-                .map(
-                    entry -> new AbstractMap.SimpleImmutableEntry<>(
-                        entry.getKey(),
-                        entry.getValue().stream().map(this::missionaryToGetMissionaryGroupsQueryResultMissionary).toList()
+                .collect(
+                    Collectors.toMap(
+                        Map.Entry::getKey,
+                        entry -> entry.getValue().stream().map(this::missionaryToGetMissionaryGroupsQueryResultMissionary).toList()
                     )
                 )
-                .collect(Collectors.toMap(SimpleImmutableEntry::getKey, SimpleImmutableEntry::getValue))
         );
+
     }
 
     @Mapping(target = "startDate", source = "period.startDate")

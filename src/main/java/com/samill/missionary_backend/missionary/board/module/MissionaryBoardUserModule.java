@@ -2,6 +2,7 @@ package com.samill.missionary_backend.missionary.board.module;
 
 import com.samill.missionary_backend.common.exception.CommonException;
 import com.samill.missionary_backend.member.MemberExternalService;
+import com.samill.missionary_backend.member.exception.MemberException;
 import com.samill.missionary_backend.missionary.board.entity.MissionaryBoard;
 import com.samill.missionary_backend.missionary.board.exception.AccessDeniedMissionaryBoardException;
 import com.samill.missionary_backend.missionary.board.exception.MissionaryBoardException;
@@ -37,15 +38,15 @@ public class MissionaryBoardUserModule implements MissionaryBoardModule {
     public @NonNull MissionaryBoard getMissionaryBoard(@NonNull String memberId, @NonNull String missionaryBoardId) throws CommonException {
         final var missionaryBoard = missionaryBoardService.getMissionaryBoard(missionaryBoardId);
 
-        checkParticipatingOrThrow(missionaryBoard.getMissionaryId(), memberId);
+        checkParticipatingOrThrow(missionaryBoard.getMissionaryId(), getUserIdByMemberId(memberId));
 
         return missionaryBoard;
     }
 
     @Override
     public @NonNull Page<MissionaryBoard> getMissionaryBoards(@NonNull String memberId, @NonNull GetMissionaryBoardsQuery query)
-        throws MissionaryBoardException {
-        checkParticipatingOrThrow(query.missionaryId(), memberId);
+        throws CommonException {
+        checkParticipatingOrThrow(query.missionaryId(), getUserIdByMemberId(memberId));
 
         return missionaryBoardService.getMissionaryBoards(query);
     }
@@ -62,7 +63,11 @@ public class MissionaryBoardUserModule implements MissionaryBoardModule {
     }
 
 
-    void checkParticipatingOrThrow(@NonNull String missionaryId, @NonNull String userId) throws AccessDeniedMissionaryBoardException {
+    private String getUserIdByMemberId(@NonNull String memberId) throws MemberException {
+        return memberExternalService.getUserByMemberId(memberId).id();
+    }
+
+    private void checkParticipatingOrThrow(@NonNull String missionaryId, @NonNull String userId) throws AccessDeniedMissionaryBoardException {
         if (!participationService.isParticipating(missionaryId, userId)) {
             throw new AccessDeniedMissionaryBoardException();
         }

@@ -3,7 +3,7 @@ package com.samill.missionary_backend.missionary.board.module;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
-import com.samill.missionary_backend.common.AbstractControllerTest;
+import com.samill.missionary_backend.common.AbstractSpringBootTests;
 import com.samill.missionary_backend.common.exception.CommonException;
 import com.samill.missionary_backend.missionary.board.enums.MissionaryBoardType;
 import com.samill.missionary_backend.missionary.dto.CreateMissionaryBoardCommand;
@@ -17,7 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
-class MissionaryBoardAdminModuleTests extends AbstractControllerTest {
+class MissionaryBoardAdminModuleTests extends AbstractSpringBootTests {
 
     private final String missionaryId = "c50bd2bb-69af-4560-a220-cd2fdf409336";
     private final String nonExistMissionaryId = "c50bd2bb-69af-4560-a220-cd2fdf409337";
