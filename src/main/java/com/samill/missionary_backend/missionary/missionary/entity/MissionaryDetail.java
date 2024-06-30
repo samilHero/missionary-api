@@ -6,9 +6,9 @@ import jakarta.persistence.AttributeOverrides;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.Embedded;
-import lombok.Getter;
-
 import java.time.OffsetDateTime;
+import lombok.Builder;
+import lombok.Getter;
 
 @Embeddable
 @Getter
@@ -23,13 +23,13 @@ public class MissionaryDetail {
 
     private Integer price;
 
-    //    private String description;
-//
+    private String description;
+
     private Integer maximumParticipantCount;
-//
-//    @Builder.Default
-//    private Integer currentParticipantCount = 0;
-//
+
+    @Builder.Default
+    private Integer currentParticipantCount = 0;
+
     @Embedded
     @AttributeOverrides({
         @AttributeOverride(name = "bankName", column = @Column(name = "bank_account_bank_name")),

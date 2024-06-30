@@ -23,9 +23,12 @@ public class MissionaryBoardFiles {
     private List<MissionaryBoardFile> files = new ArrayList<>();
 
     public MissionaryBoardFiles(List<MissionaryBoardFile> files) {
-        this.files = List.copyOf(files);
+        this.files = new ArrayList<>(files);
     }
 
+    public static MissionaryBoardFiles empty() {
+        return new MissionaryBoardFiles(List.of());
+    }
 
     public void changeFiles(List<String> removeTargetIds, MissionaryBoardFiles newFiles) {
         removeFilesNotInIds(removeTargetIds);

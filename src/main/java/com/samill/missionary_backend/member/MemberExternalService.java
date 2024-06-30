@@ -10,6 +10,7 @@ import com.samill.missionary_backend.member.dto.LoginAdminQueryResult;
 import com.samill.missionary_backend.member.dto.LoginUserQuery;
 import com.samill.missionary_backend.member.dto.LoginUserQueryResult;
 import com.samill.missionary_backend.member.exception.MemberException;
+import java.util.List;
 import lombok.NonNull;
 
 public interface MemberExternalService {
@@ -34,7 +35,7 @@ public interface MemberExternalService {
 
     GetUserDto getUserByMemberId(String memberId) throws MemberException;
 
-    void getUsers();
+    @NonNull List<GetUserDto> getUsersByIds(@NonNull List<String> userIds);
 
     @NonNull GetMemberServiceTypeDto getMemberServiceType(String memberId) throws MemberException;
 

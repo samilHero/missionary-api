@@ -1,18 +1,18 @@
-package com.samill.missionary_backend.missionary.missionary.entity;
+package com.samill.missionary_backend.missionary.missionary.enums;
 
 import com.samill.missionary_backend.common.enums.EnumModel;
 
-public enum MissionaryRegion implements EnumModel {
-    JEJU("제주선교"),
-    SEOUL("서울선교"),
+public enum MissionaryCategory implements EnumModel {
+    DOMESTIC("국내선교"),
+
+    FOREIGN("해외선교"),
     ;
 
     private final String value;
 
-    MissionaryRegion(String value) {
+    MissionaryCategory(String value) {
         this.value = value;
     }
-
 
     @Override
     public String getKey() {
@@ -23,6 +23,4 @@ public enum MissionaryRegion implements EnumModel {
     public String getValue() {
         return value;
     }
-
-
 }

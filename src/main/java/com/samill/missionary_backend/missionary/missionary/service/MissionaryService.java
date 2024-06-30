@@ -6,11 +6,14 @@ import com.samill.missionary_backend.missionary.dto.GetMissionaryIdsQuery;
 import com.samill.missionary_backend.missionary.dto.UpdateMissionaryCommand;
 import com.samill.missionary_backend.missionary.exception.MissionaryException;
 import com.samill.missionary_backend.missionary.missionary.entity.Missionary;
+import com.samill.missionary_backend.missionary.missionary.enums.MissionaryCategory;
 import com.samill.missionary_backend.missionary.missionary.exception.NotFoundMissionaryException;
 import com.samill.missionary_backend.missionary.missionary.mapper.MissionaryMapper;
 import com.samill.missionary_backend.missionary.missionary.repository.MissionaryRepository;
 import java.time.OffsetDateTime;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -32,7 +35,7 @@ public class MissionaryService {
     }
 
     public void updateMissionary(@NonNull String missionaryId, @NonNull UpdateMissionaryCommand updateMissionaryCommand) throws MissionaryException {
-        final Missionary missionary = missionaryRepository.findById(missionaryId).orElseThrow(NotFoundMissionaryException::new);
+        final var missionary = missionaryRepository.findById(missionaryId).orElseThrow(NotFoundMissionaryException::new);
 //
 //        if (updateMissionaryCommand.isNotValidParticipationPeriod()) {
 //            throw new InvalidParticipationPeriodException();
@@ -105,6 +108,13 @@ public class MissionaryService {
     public boolean isParticipationPeriod(@NonNull String missionaryId) throws MissionaryException {
         return missionaryRepository.findById(missionaryId)
             .orElseThrow(NotFoundMissionaryException::new).isParticipationPeriod(OffsetDateTime.now());
+    }
+
+    public Map<MissionaryCategory, List<Missionary>> getMissionariesByCategory(String userId) {
+        final var missionaries = missionaryRepository.findAllByMissionaryStaffs_UserIdAndPeriod_EndDateGreaterThanEqual(userId, OffsetDateTime.now());
+
+        return missionaries.stream()
+            .collect(Collectors.groupingBy(missionary -> missionary.getRegion().getMissionaryCategory()));
     }
 
 }
