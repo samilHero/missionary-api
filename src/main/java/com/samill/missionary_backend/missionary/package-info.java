@@ -3,6 +3,7 @@
         "member",
         "member::dto",
         "member::enums",
+        "member::exception",
         "church",
         "church::dto",
         "common::entity",
