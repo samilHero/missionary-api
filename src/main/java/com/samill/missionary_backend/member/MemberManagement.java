@@ -19,6 +19,7 @@ import com.samill.missionary_backend.member.member.service.MemberService;
 import com.samill.missionary_backend.member.user.service.UserService;
 import com.samill.missionary_backend.token.provider.TokenProvider;
 import java.time.OffsetDateTime;
+import java.util.List;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
@@ -124,16 +125,16 @@ public class MemberManagement implements MemberExternalService {
         return userService.getUserByMemberId(memberId);
     }
 
+    @Override
+    public @NonNull List<GetUserDto> getUsersByIds(@NonNull List<String> userIds) {
+        /// TODO: 구현 부탁
+        return List.of();
+    }
+
     @Transactional(readOnly = true)
     public GetAdminDto getAdminByMemberId(@NonNull String memberId) throws Exception {
         return adminService.getAdminByMemberId(memberId);
     }
-
-    @Override
-    public void getUsers() {
-
-    }
-
 
     @Override
     @Transactional(readOnly = true)

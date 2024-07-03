@@ -1,9 +1,10 @@
 package com.samill.missionary_backend.missionary.mapper;
 
-import com.samill.missionary_backend.missionary.dto.AppointMissionaryStaffsCommand;
+import com.samill.missionary_backend.missionary.dto.AppointMissionaryStaffsCommandStaff;
+import com.samill.missionary_backend.missionary.missionary.entity.Missionary;
 import com.samill.missionary_backend.missionary.staff.entity.MissionaryStaff;
-import lombok.NonNull;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
 import org.mapstruct.factory.Mappers;
 
@@ -12,7 +13,8 @@ public interface MissionaryStaffMapper {
 
     MissionaryStaffMapper INSTANCE = Mappers.getMapper(MissionaryStaffMapper.class);
 
-
-    MissionaryStaff appointMissionaryStaffToMissionaryStaff(@NonNull AppointMissionaryStaffsCommand command);
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "missionary", source = "missionary")
+    MissionaryStaff appointMissionaryStaffToMissionaryStaff(Missionary missionary, AppointMissionaryStaffsCommandStaff staff);
 
 }

@@ -1,15 +1,20 @@
 package com.samill.missionary_backend.missionary.missionary.entity;
 
 
+import static jakarta.persistence.EnumType.STRING;
+
 import com.samill.missionary_backend.common.entity.BaseEntity;
 import com.samill.missionary_backend.common.entity.Pastor;
 import com.samill.missionary_backend.common.entity.Period;
+import com.samill.missionary_backend.missionary.missionary.enums.MissionaryRegion;
+import com.samill.missionary_backend.missionary.staff.entity.MissionaryStaff;
 import jakarta.persistence.AttributeOverride;
 import jakarta.persistence.AttributeOverrides;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
@@ -48,6 +53,9 @@ public class Missionary extends BaseEntity {
     @Embedded
     private Period period;
 
+    @Enumerated(value = STRING)
+    private MissionaryRegion region;
+
     @Embedded
     @AttributeOverrides({
         @AttributeOverride(name = "name", column = @Column(name = "pastor_name")),
@@ -64,8 +72,16 @@ public class Missionary extends BaseEntity {
 
     private OffsetDateTime deletedAt;
 
+    @Builder.Default
+    @OneToMany(mappedBy = "missionary")
+    private List<MissionaryStaff> missionaryStaffs = new ArrayList<>();
+
     public boolean isParticipationPeriod(OffsetDateTime date) {
         return detail.isParticipationPeriod(date);
+    }
+
+    public void changeRegion(MissionaryRegion region) {
+        this.region = region;
     }
 
 

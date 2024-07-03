@@ -1,4 +1,4 @@
-package com.samill.missionary_backend.missionary.staff.entity;
+package com.samill.missionary_backend.missionary.staff.enums;
 
 import com.samill.missionary_backend.common.enums.EnumModel;
 

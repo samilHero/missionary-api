@@ -1,6 +1,6 @@
 package com.samill.missionary_backend.missionary.dto;
 
-import com.samill.missionary_backend.missionary.staff.entity.MissionaryStaffRole;
+import com.samill.missionary_backend.missionary.staff.enums.MissionaryStaffRole;
 import lombok.NonNull;
 
 public record AppointMissionaryStaffsCommandStaff(
