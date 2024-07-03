@@ -5,7 +5,7 @@ import static com.samill.missionary_backend.gateway.endPoint.UserGatewayManageme
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 
-import com.samill.missionary_backend.common.AbstractControllerTest;
+import com.samill.missionary_backend.common.AbstractControllerTestsBase;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -17,7 +17,7 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 @WithMockUser(username = "hanbyul.jung")
-public class ApiResponseTests extends AbstractControllerTest {
+public class ApiResponseTests extends AbstractControllerTestsBase {
 
     @Test
     @DisplayName("get user test")

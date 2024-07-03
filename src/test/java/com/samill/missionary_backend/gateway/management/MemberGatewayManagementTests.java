@@ -4,7 +4,7 @@ import static com.samill.missionary_backend.gateway.endPoint.UserGatewayManageme
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
-import com.samill.missionary_backend.common.AbstractControllerTest;
+import com.samill.missionary_backend.common.AbstractControllerTestsBase;
 import com.samill.missionary_backend.gateway.dto.CreateUserRequest;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
@@ -14,7 +14,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.transaction.annotation.Transactional;
 
-class MemberGatewayManagementTests extends AbstractControllerTest {
+class MemberGatewayManagementTests extends AbstractControllerTestsBase {
 
     @Test
     @DisplayName("user sign up test")
