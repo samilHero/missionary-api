@@ -2,20 +2,24 @@ package com.samill.missionary_backend.missionary.missionary.service;
 
 import com.samill.missionary_backend.church.dto.CreateMissionaryCommandResult;
 import com.samill.missionary_backend.missionary.dto.CreateMissionaryCommand;
+import com.samill.missionary_backend.missionary.dto.GetMissionariesByRegionQuery;
 import com.samill.missionary_backend.missionary.dto.GetMissionaryIdsQuery;
 import com.samill.missionary_backend.missionary.dto.UpdateMissionaryCommand;
+import com.samill.missionary_backend.missionary.enums.MissionaryRegionType;
 import com.samill.missionary_backend.missionary.exception.MissionaryException;
+import com.samill.missionary_backend.missionary.mapper.MissionaryMapper;
 import com.samill.missionary_backend.missionary.missionary.entity.Missionary;
-import com.samill.missionary_backend.missionary.missionary.enums.MissionaryCategory;
 import com.samill.missionary_backend.missionary.missionary.exception.NotFoundMissionaryException;
-import com.samill.missionary_backend.missionary.missionary.mapper.MissionaryMapper;
 import com.samill.missionary_backend.missionary.missionary.repository.MissionaryRepository;
 import java.time.OffsetDateTime;
+import java.util.AbstractMap.SimpleEntry;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -96,25 +100,38 @@ public class MissionaryService {
             .toList();
     }
 
-    public boolean checkParticipate(@NonNull String missionaryId, @NonNull Integer participantCount) throws MissionaryException {
-//        missionaryRepository.findById(missionaryId)
-//            .orElseThrow(NotFoundMissionaryException::new).che
-//
-//        return missionary.canParticipate(participantCount);
-
-        return true;
-    }
-
     public boolean isParticipationPeriod(@NonNull String missionaryId) throws MissionaryException {
         return missionaryRepository.findById(missionaryId)
             .orElseThrow(NotFoundMissionaryException::new).isParticipationPeriod(OffsetDateTime.now());
     }
 
-    public Map<MissionaryCategory, List<Missionary>> getMissionariesByCategory(String userId) {
-        final var missionaries = missionaryRepository.findAllByMissionaryStaffs_UserIdAndPeriod_EndDateGreaterThanEqual(userId, OffsetDateTime.now());
 
-        return missionaries.stream()
-            .collect(Collectors.groupingBy(missionary -> missionary.getRegion().getMissionaryCategory()));
+    public @NonNull Map<MissionaryRegionType, List<Missionary>> getRegionTypeMissionariesMap() {
+        final var missionaries = missionaryRepository.findLatestMissionariesByRegion();
+
+        return groupMissionariesByRegionType(missionaries);
     }
 
+    public @NonNull Map<MissionaryRegionType, List<Missionary>> getRegionTypeMissionariesMap(@NonNull String userId) {
+        final var missionaries = missionaryRepository.findLatestMissionariesByRegion(userId);
+
+        return groupMissionariesByRegionType(missionaries);
+    }
+
+    private @NonNull Map<MissionaryRegionType, List<Missionary>> groupMissionariesByRegionType(List<Missionary> missionaries) {
+        return Arrays.stream(MissionaryRegionType.values()).map(
+            regionType -> new SimpleEntry<MissionaryRegionType, List<Missionary>>(
+                regionType,
+                missionaries.stream().filter(
+                    missionary -> missionary.getSameRegionType(regionType)
+                ).toList()
+            )
+        ).collect(Collectors.toMap(SimpleEntry::getKey, SimpleEntry::getValue));
+    }
+
+
+    public @NonNull Page<Missionary> getMissionariesByRegion(@NonNull GetMissionariesByRegionQuery getMissionariesByRegionQuery) {
+        return null;
+//        return missionaryRepository.findByRegion_IdOrderByPeriod_EndDateDesc(getMissionariesByRegionQuery.regionId(), );
+    }
 }

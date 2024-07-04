@@ -1,6 +1,6 @@
 package com.samill.missionary_backend.missionary.dto;
 
-import com.samill.missionary_backend.missionary.board.enums.MissionaryBoardType;
+import com.samill.missionary_backend.missionary.enums.MissionaryBoardType;
 import lombok.NonNull;
 
 public record GetMissionaryBoardsQuery(

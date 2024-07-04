@@ -1,20 +1,14 @@
 package com.samill.missionary_backend.missionary.dto;
 
-import com.samill.missionary_backend.missionary.region.entity.MissionaryRegion;
 import java.time.OffsetDateTime;
 import lombok.NonNull;
 
-public record GetMissionaryGroupsQueryResultMissionary(
+public record GetMissionariesByRegionQueryResultMissionary(
     @NonNull String id,
-
-    @NonNull MissionaryRegion region,
-
     @NonNull String name,
-
+    @NonNull String pastorName,
     @NonNull OffsetDateTime startDate,
-
     @NonNull OffsetDateTime endDate
 ) {
-
 
 }

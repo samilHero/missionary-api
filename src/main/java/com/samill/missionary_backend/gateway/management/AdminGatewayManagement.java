@@ -108,4 +108,15 @@ public class AdminGatewayManagement {
     public void updateParticipationPaid(List<String> ids) {
         missionaryExternalService.updateParticipationPaid(ids);
     }
+
+//    @GetMapping(AdminGatewayManagementEndPoint.GET_STAFF_USERS_V1)
+//    public @NonNull GetMissionaryStaffsResult getMissionaryStaffs(
+//        @NonNull @PathVariable String missionaryId,
+//        @ModelAttribute GetMissionaryStaffsRequest request
+//    ) {
+////        missionaryExternalService.getMissionaryStaffs();
+//        return new GetMissionaryStaffsResult();
+//    }
+
+
 }

@@ -1,16 +1,15 @@
-package com.samill.missionary_backend.missionary.missionary.enums;
+package com.samill.missionary_backend.missionary.enums;
 
 import com.samill.missionary_backend.common.enums.EnumModel;
 
-public enum MissionaryCategory implements EnumModel {
-    DOMESTIC("국내선교"),
-
-    FOREIGN("해외선교"),
+public enum MissionaryStaffRole implements EnumModel {
+    LEADER("준장"),
+    MEMBER("팀원"),
     ;
 
     private final String value;
 
-    MissionaryCategory(String value) {
+    MissionaryStaffRole(String value) {
         this.value = value;
     }
 

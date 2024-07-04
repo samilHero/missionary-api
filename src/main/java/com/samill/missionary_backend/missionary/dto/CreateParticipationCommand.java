@@ -1,7 +1,11 @@
 package com.samill.missionary_backend.missionary.dto;
 
 import com.samill.missionary_backend.member.dto.GetUserDto;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Builder
 @Getter
@@ -9,6 +13,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CreateParticipationCommand {
+
     private String missionaryId;
     private String memberId;
     private String name;

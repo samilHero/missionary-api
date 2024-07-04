@@ -1,7 +1,7 @@
 package com.samill.missionary_backend.missionary.board.entity;
 
 import com.samill.missionary_backend.common.entity.BaseEntity;
-import com.samill.missionary_backend.missionary.board.enums.MissionaryBoardType;
+import com.samill.missionary_backend.missionary.enums.MissionaryBoardType;
 import com.samill.missionary_backend.missionary.missionary.entity.Missionary;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
