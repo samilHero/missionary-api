@@ -20,7 +20,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.epages.restdocs.apispec.ResourceSnippetParameters;
 import com.epages.restdocs.apispec.ResourceSnippetParametersBuilder;
 import com.epages.restdocs.apispec.Schema;
-import com.samill.missionary_backend.common.AbstractControllerTest;
+import com.samill.missionary_backend.common.AbstractControllerTestsBase;
 import com.samill.missionary_backend.gateway.dto.CreateUserRequest;
 import com.samill.missionary_backend.gateway.dto.LoginUserRequest;
 import com.samill.missionary_backend.gateway.endPoint.UserGatewayManagementEndPoint;
@@ -41,7 +41,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.transaction.annotation.Transactional;
 
 
-class UserGatewayManagementTests extends AbstractControllerTest {
+class UserGatewayManagementTests extends AbstractControllerTestsBase {
 
     @Test
     @DisplayName("user sign up test")

@@ -8,7 +8,7 @@ import com.samill.missionary_backend.church.dto.CreateChurchCommand;
 import com.samill.missionary_backend.church.dto.GetChurchQueryResult;
 import com.samill.missionary_backend.church.dto.GetChurchesQueryResult;
 import com.samill.missionary_backend.church.dto.UpdateChurchCommand;
-import com.samill.missionary_backend.common.AbstractSpringBootTests;
+import com.samill.missionary_backend.common.AbstractSpringBootTestsBase;
 import com.samill.missionary_backend.common.enums.ResponseCode;
 import com.samill.missionary_backend.common.exception.CommonException;
 import java.util.ArrayList;
@@ -26,7 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @WithMockUser(username = "dongwook.yeom")
 @ExtendWith(MockitoExtension.class)
-class ChurchServiceTests extends AbstractSpringBootTests {
+class ChurchServiceTestsBase extends AbstractSpringBootTestsBase {
 
     @Autowired
     private ChurchService churchService;

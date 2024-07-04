@@ -20,7 +20,7 @@ import com.samill.missionary_backend.church.dto.CreateChurchCommandResult;
 import com.samill.missionary_backend.church.dto.GetChurchQueryResult;
 import com.samill.missionary_backend.church.dto.GetChurchesQueryResult;
 import com.samill.missionary_backend.church.dto.GetChurchesQueryResultChurch;
-import com.samill.missionary_backend.common.AbstractControllerTest;
+import com.samill.missionary_backend.common.AbstractControllerTestsBase;
 import com.samill.missionary_backend.gateway.dto.CreateAdminRequest;
 import com.samill.missionary_backend.gateway.dto.CreateChurchRequest;
 import com.samill.missionary_backend.gateway.dto.LoginUserRequest;
@@ -47,7 +47,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @ExtendWith(MockitoExtension.class)
 @WithMockUser(username = "dongwook.yeom")
-class AdminGatewayManagementTests extends AbstractControllerTest {
+class AdminGatewayManagementTests extends AbstractControllerTestsBase {
 
     @MockBean
     private ChurchExternalService churchExternalService;
