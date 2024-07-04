@@ -2,22 +2,26 @@ package com.samill.missionary_backend.missionary.board.module;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.when;
 
 import com.samill.missionary_backend.common.AbstractSpringBootTestsBase;
 import com.samill.missionary_backend.common.exception.CommonException;
-import com.samill.missionary_backend.missionary.board.enums.MissionaryBoardType;
 import com.samill.missionary_backend.missionary.board.exception.AccessDeniedMissionaryBoardException;
 import com.samill.missionary_backend.missionary.dto.CreateMissionaryBoardCommand;
 import com.samill.missionary_backend.missionary.dto.GetMissionaryBoardsQuery;
 import com.samill.missionary_backend.missionary.dto.UpdateMissionaryBoardCommand;
+import com.samill.missionary_backend.missionary.enums.MissionaryBoardType;
+import com.samill.missionary_backend.missionary.participation.service.ParticipationService;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
-class MissionaryBoardUserModuleTestsBase extends AbstractSpringBootTestsBase {
+class MissionaryBoardUserModuleTests extends AbstractSpringBootTestsBase {
 
     private final String missionaryId = "c50bd2bb-69af-4560-a220-cd2fdf409336";
     private final String nonExistMissionaryId = "c50bd2bb-69af-4560-a220-cd2fdf409337";
@@ -28,11 +32,14 @@ class MissionaryBoardUserModuleTestsBase extends AbstractSpringBootTestsBase {
 
     @Autowired
     private MissionaryBoardModuleMapFactory missionaryBoardModuleMapFactory;
-    private MissionaryBoardUserModule missionaryBoardModule;
+    private MissionaryBoardModule missionaryBoardModule;
+
+    @MockBean
+    private ParticipationService participationService;
 
     @BeforeEach
     void setUp() {
-        missionaryBoardModule = (MissionaryBoardUserModule) missionaryBoardModuleMapFactory.getMissionaryBoardModule(
+        missionaryBoardModule = missionaryBoardModuleMapFactory.getMissionaryBoardModule(
             MissionaryBoardUserModule.class
         );
     }
@@ -40,6 +47,7 @@ class MissionaryBoardUserModuleTestsBase extends AbstractSpringBootTestsBase {
 
     @Test
     void 참가_선교_게시글_조회() throws CommonException {
+        when(participationService.isParticipating(anyString(), anyString())).thenReturn(true);
         final var missionaryBoard = missionaryBoardModule.getMissionaryBoard(memberId, missionaryBoardId);
 
         assertThat(missionaryBoard).isNotNull();
@@ -55,6 +63,7 @@ class MissionaryBoardUserModuleTestsBase extends AbstractSpringBootTestsBase {
 
     @Test
     void 참가_선교_게시글_목록_조회() throws CommonException {
+        when(participationService.isParticipating(anyString(), anyString())).thenReturn(true);
         final var missionaryBoards = missionaryBoardModule.getMissionaryBoards(
             memberId,
             new GetMissionaryBoardsQuery(

@@ -5,10 +5,10 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
 import com.samill.missionary_backend.common.AbstractSpringBootTestsBase;
 import com.samill.missionary_backend.common.exception.CommonException;
-import com.samill.missionary_backend.missionary.board.enums.MissionaryBoardType;
 import com.samill.missionary_backend.missionary.dto.CreateMissionaryBoardCommand;
 import com.samill.missionary_backend.missionary.dto.GetMissionaryBoardsQuery;
 import com.samill.missionary_backend.missionary.dto.UpdateMissionaryBoardCommand;
+import com.samill.missionary_backend.missionary.enums.MissionaryBoardType;
 import com.samill.missionary_backend.missionary.exception.MissionaryException;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;

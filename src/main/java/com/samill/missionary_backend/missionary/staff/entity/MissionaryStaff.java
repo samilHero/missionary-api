@@ -1,8 +1,8 @@
 package com.samill.missionary_backend.missionary.staff.entity;
 
 import com.samill.missionary_backend.common.entity.BaseEntity;
+import com.samill.missionary_backend.missionary.enums.MissionaryStaffRole;
 import com.samill.missionary_backend.missionary.missionary.entity.Missionary;
-import com.samill.missionary_backend.missionary.staff.enums.MissionaryStaffRole;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;

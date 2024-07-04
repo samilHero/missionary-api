@@ -18,19 +18,29 @@ public class AdminGatewayManagementEndPoint {
 
     public static final String CREATE_ADMIN_URI = BASE_URL + "/admin";
 
-    public static final String GET_MISSIONARY = BASE_URL + "/missionaries/{missionaryId}";
+    public static final String GET_MISSIONARY = BASE_URL + "/v1/missionaries/{missionaryId}";
 
-    public static final String GET_MISSIONARIES = BASE_URL + "/missionaries";
+    public static final String GET_MISSIONARIES = BASE_URL + "/v1/missionaries";
 
-    public static final String CREATE_MISSIONARY = BASE_URL + "/missionaries";
+    public static final String GET_MISSIONARY_REGIONS = BASE_URL + "/v1/missionaries/regions";
 
-    public static final String UPDATE_MISSIONARY = BASE_URL + "/missionaries/{missionaryId}";
+    public static final String CREATE_MISSIONARY = BASE_URL + "/v1/missionaries";
 
-    public static final String DELETE_MISSIONARY = BASE_URL + "/missionaries/{missionaryId}";
+    public static final String UPDATE_MISSIONARY = BASE_URL + "/v1/missionaries/{missionaryId}";
+
+    public static final String DELETE_MISSIONARY = BASE_URL + "/v1/missionaries/{missionaryId}";
 
     public static final String GET_PARTICIPATIONS = BASE_URL + "/participations/{missionaryId}";
 
     public static final String GET_PARTICIPATION = BASE_URL + "/participation/{participationId}";
 
     public static final String UPDATE_PARTICIPATION_APPROVE = BASE_URL + "/participation/approve";
+
+    public static final String GET_STAFF_USERS_V1 = BASE_URL + "/v1/staffs/{missionaryId}/users";
+
+    public static final String POST_STAFF_V1 = BASE_URL + "/v1/staffs/{missionaryId}";
+
+    public static final String DELETE_STAFF_V1 = BASE_URL + "/v1/staffs/{missionaryId}";
+
+
 }

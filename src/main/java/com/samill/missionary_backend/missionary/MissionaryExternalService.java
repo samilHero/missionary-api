@@ -11,12 +11,14 @@ import com.samill.missionary_backend.missionary.dto.CreateTeamCommand;
 import com.samill.missionary_backend.missionary.dto.DeleteMissionaryBoardCommand;
 import com.samill.missionary_backend.missionary.dto.DeleteParticipationCommand;
 import com.samill.missionary_backend.missionary.dto.DisappointMissionaryStaffsCommand;
+import com.samill.missionary_backend.missionary.dto.GetMissionariesByRegionQuery;
+import com.samill.missionary_backend.missionary.dto.GetMissionariesByRegionQueryResult;
 import com.samill.missionary_backend.missionary.dto.GetMissionaryBoardsQuery;
 import com.samill.missionary_backend.missionary.dto.GetMissionaryBoardsQueryResult;
-import com.samill.missionary_backend.missionary.dto.GetMissionaryGroupsQueryResult;
 import com.samill.missionary_backend.missionary.dto.GetMissionaryIdsQuery;
 import com.samill.missionary_backend.missionary.dto.GetMissionaryQuery;
 import com.samill.missionary_backend.missionary.dto.GetMissionaryQueryResult;
+import com.samill.missionary_backend.missionary.dto.GetMissionaryRegionsQueryResult;
 import com.samill.missionary_backend.missionary.dto.GetMissionaryStaffsQuery;
 import com.samill.missionary_backend.missionary.dto.GetParticipationQueryResult;
 import com.samill.missionary_backend.missionary.dto.GetParticipationsDownloadQuery;
@@ -110,7 +112,7 @@ public interface MissionaryExternalService {
     List<String[]> downloadParticipationListCsv(String missionaryId,
         GetParticipationsDownloadQuery getParticipationsDownloadQuery);
 
- void appointMissionaryStaffs(
+    void appointMissionaryStaffs(
         @NonNull String memberId,
         @NonNull AppointMissionaryStaffsCommand appointMissionaryStaffsCommand
     ) throws CommonException;
@@ -122,6 +124,8 @@ public interface MissionaryExternalService {
 
     void getMissionaryStaffs(@NonNull GetMissionaryStaffsQuery getMissionaryStaffsQuery) throws CommonException;
 
-    GetMissionaryGroupsQueryResult getMissionaryGroups(@NonNull String memberId) throws CommonException;
+    @NonNull GetMissionaryRegionsQueryResult getMissionaryRegions();
+
+    @NonNull GetMissionariesByRegionQueryResult getMissionariesByRegion(@NonNull GetMissionariesByRegionQuery query);
 
 }
