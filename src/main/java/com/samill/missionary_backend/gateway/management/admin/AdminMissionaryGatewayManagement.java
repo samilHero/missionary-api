@@ -5,7 +5,7 @@ import com.samill.missionary_backend.gateway.dto.GetAdminMissionariesResult;
 import com.samill.missionary_backend.gateway.dto.GetAdminMissionaryResult;
 import com.samill.missionary_backend.gateway.dto.GetMissionaryRegionsResult;
 import com.samill.missionary_backend.gateway.endPoint.AdminGatewayManagementEndPoint;
-import com.samill.missionary_backend.gateway.mapper.AdminMissionaryGatewayMapper;
+import com.samill.missionary_backend.gateway.mapper.admin.AdminMissionaryGatewayMapper;
 import com.samill.missionary_backend.missionary.MissionaryExternalService;
 import com.samill.missionary_backend.missionary.dto.GetMissionariesByRegionQuery;
 import com.samill.missionary_backend.missionary.dto.GetMissionaryQuery;
@@ -34,20 +34,19 @@ public class AdminMissionaryGatewayManagement {
 
     @GetMapping(AdminGatewayManagementEndPoint.GET_MISSIONARIES)
     public @NonNull GetAdminMissionariesResult getMissionaries(
-        @RequestParam("region_id") String regionId,
-        @RequestParam("page_size") Integer pageSize,
-        @RequestParam("page_number") Integer pageNumber
+        @RequestParam("region_id") @NonNull String regionId,
+        @RequestParam(value = "page_size", required = false) Integer pageSize,
+        @RequestParam(value = "page_number", required = false) Integer pageNumber
     ) {
-
-        missionaryExternalService.getMissionariesByRegion(
-            new GetMissionariesByRegionQuery(
-                regionId,
-                pageSize,
-                pageNumber
+        return AdminMissionaryGatewayMapper.INSTANCE.getMissionariesByRegionQueryResultToGetAdminMissionariesResult(
+            missionaryExternalService.getMissionariesByRegion(
+                new GetMissionariesByRegionQuery(
+                    regionId,
+                    pageSize,
+                    pageNumber
+                )
             )
         );
-
-        return new GetAdminMissionariesResult();
     }
 
     @GetMapping(AdminGatewayManagementEndPoint.GET_MISSIONARY)

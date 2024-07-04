@@ -2,6 +2,8 @@ package com.samill.missionary_backend.missionary.mapper;
 
 import com.samill.missionary_backend.missionary.dto.CreateMissionaryCommand;
 import com.samill.missionary_backend.missionary.dto.CreateMissionaryCommandPoster;
+import com.samill.missionary_backend.missionary.dto.GetMissionariesByRegionQueryResult;
+import com.samill.missionary_backend.missionary.dto.GetMissionariesByRegionQueryResultMissionary;
 import com.samill.missionary_backend.missionary.dto.GetMissionaryGroupsQueryResult;
 import com.samill.missionary_backend.missionary.dto.GetMissionaryGroupsQueryResultMissionary;
 import com.samill.missionary_backend.missionary.dto.GetMissionaryQueryResult;
@@ -22,6 +24,7 @@ import org.mapstruct.Mappings;
 import org.mapstruct.Named;
 import org.mapstruct.ReportingPolicy;
 import org.mapstruct.factory.Mappers;
+import org.springframework.data.domain.Page;
 
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface MissionaryMapper {
@@ -78,6 +81,28 @@ public interface MissionaryMapper {
             regionToResultRegion.apply(MissionaryRegionType.ABROAD)
         );
     }
+
+
+    default @NonNull GetMissionariesByRegionQueryResult toGetMissionariesByRegionQueryResult(
+        @NonNull Page<Missionary> missionaryPage
+    ) {
+        final Function<Missionary, GetMissionariesByRegionQueryResultMissionary> toGetMissionaryQueryResult =
+            (@NonNull Missionary missionary) -> new GetMissionariesByRegionQueryResultMissionary(
+                missionary.getId(),
+                missionary.getName(),
+                missionary.getPastor().getName(),
+                missionary.getPeriod().getStartDate(),
+                missionary.getPeriod().getEndDate()
+            );
+
+        return new GetMissionariesByRegionQueryResult(
+            missionaryPage.stream().map(toGetMissionaryQueryResult).toList(),
+            Long.valueOf(missionaryPage.getTotalElements()).intValue(),
+            missionaryPage.getTotalPages(),
+            missionaryPage.getNumber() + 1
+        );
+    }
+
 
 }
 

@@ -20,6 +20,7 @@ import java.util.stream.Collectors;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -131,7 +132,12 @@ public class MissionaryService {
 
 
     public @NonNull Page<Missionary> getMissionariesByRegion(@NonNull GetMissionariesByRegionQuery getMissionariesByRegionQuery) {
-        return null;
-//        return missionaryRepository.findByRegion_IdOrderByPeriod_EndDateDesc(getMissionariesByRegionQuery.regionId(), );
+
+        final var pageable = PageRequest.of(
+            getMissionariesByRegionQuery.pageNumber - 1,
+            getMissionariesByRegionQuery.pageSize
+        );
+
+        return missionaryRepository.findByRegion_IdOrderByPeriod_EndDateDesc(getMissionariesByRegionQuery.regionId, pageable);
     }
 }

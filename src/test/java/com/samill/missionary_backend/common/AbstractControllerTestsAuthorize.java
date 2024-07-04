@@ -31,8 +31,7 @@ public interface AbstractControllerTestsAuthorize {
         @NonNull String url,
         @NonNull String loginId,
         @NonNull String password
-    )
-        throws Exception {
+    ) throws Exception {
         final var request = LoginAdminRequest.builder()
             .loginId(loginId)
             .password(password)
