@@ -1,14 +1,26 @@
 package com.samill.missionary_backend.missionary.missionary.service;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
 import com.samill.missionary_backend.configs.DateTimeProviderConfig;
 import com.samill.missionary_backend.configs.JpaConfig;
+import com.samill.missionary_backend.missionary.dto.GetMissionariesByRegionQuery;
+import com.samill.missionary_backend.missionary.missionary.entity.Missionary;
 import com.samill.missionary_backend.missionary.missionary.repository.MissionaryRepository;
+import java.util.List;
+import java.util.UUID;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
@@ -23,65 +35,38 @@ class MissionaryServiceTests {
 
 
     @Test
-    void 선교_목록_그룹_조회() {
-//        // Given
-//        final var missionaries = List.of(
-//            Missionary.builder()
-//                .id(UUID.randomUUID().toString())
-//                .region(MissionaryRegion.ARMY)
-//                .name("군선교1")
-//                .build(),
-//            Missionary.builder()
-//                .id(UUID.randomUUID().toString())
-//                .region(MissionaryRegion.ARMY)
-//                .name("군선교2")
-//                .build(),
-//            Missionary.builder()
-//                .id(UUID.randomUUID().toString())
-//                .region(MissionaryRegion.SEOUL)
-//                .name("서울선교1")
-//                .build(),
-//            Missionary.builder()
-//                .id(UUID.randomUUID().toString())
-//                .region(MissionaryRegion.SEOUL)
-//                .name("서울선교2")
-//                .build(),
-//            Missionary.builder()
-//                .id(UUID.randomUUID().toString())
-//                .region(MissionaryRegion.JEJU)
-//                .name("제주선교1")
-//                .build(),
-//            Missionary.builder()
-//                .id(UUID.randomUUID().toString())
-//                .region(MissionaryRegion.JEJU)
-//                .name("제주선교2")
-//                .build()
-//        );
-//
-//        when(
-//            missionaryRepository.findAllByMissionaryStaffs_UserIdAndPeriod_EndDateGreaterThanEqual(
-//                anyString(),
-//                any(OffsetDateTime.class)
-//            )
-//        ).thenReturn(missionaries);
-//
-//        // When
-//        final var categoryMissionariesMap = missionaryService.getMissionariesByCategory("userId");
-//
-//        // Then
-//        System.out.println(categoryMissionariesMap);
-//        for(MissionaryRegion region : MissionaryRegion.values()) {
-//            System.out.println(region);
-//            System.out.println(categoryMissionariesMap.get(region));
-//        }
+    void 지역_선교_목록_조회() {
+        final var missionaries = List.of(
+            Missionary.builder()
+                .id(UUID.randomUUID().toString())
+                .name("선교1")
+                .build(),
+            Missionary.builder()
+                .id(UUID.randomUUID().toString())
+                .name("선교2")
+                .build()
 
-//        [categoryMissionariesMap.values().forEach(]
-//        System.out::println
-//        );
-//        categoryMissionariesMap.forEach((key, value) -> {
-//            System.out.println(key);
-//            value.forEach(missionary -> System.out.println(missionary.getName()));
-//        });
+        );
+
+        final var missionaryPage = mock((PageImpl.class));
+        when(missionaryPage.getSize()).thenReturn(10);
+        when(missionaryPage.getTotalElements()).thenReturn(2L);
+        when(missionaryPage.getTotalPages()).thenReturn(1);
+        when(missionaryPage.getNumber()).thenReturn(0);
+        when(missionaryPage.getContent()).thenReturn(missionaries);
+
+        when(missionaryRepository.findByRegion_IdOrderByPeriod_EndDateDesc(anyString(), any(Pageable.class)))
+            .thenReturn(missionaryPage);
+
+        final var result = missionaryService.getMissionariesByRegion(
+            new GetMissionariesByRegionQuery("region_id", null, null)
+        );
+
+        assertThat(result.getContent()).isEqualTo(missionaries);
+        assertThat(result.getTotalElements()).isEqualTo(missionaryPage.getTotalElements());
+        assertThat(result.getTotalPages()).isEqualTo(missionaryPage.getTotalPages());
+        assertThat(result.getNumber()).isEqualTo(missionaryPage.getNumber());
+        assertThat(result.getSize()).isEqualTo(missionaryPage.getSize());
     }
 
 

@@ -13,4 +13,5 @@ public interface MissionaryRepository extends JpaRepository<Missionary, String>,
     List<Missionary> findAllByDetail_ParticipationPeriod_EndDateLessThanEqual(@NonNull OffsetDateTime date);
 
     Page<Missionary> findByRegion_IdOrderByPeriod_EndDateDesc(@NonNull String regionId, Pageable pageable);
+    
 }

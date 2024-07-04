@@ -317,7 +317,7 @@ class MissionaryManagement implements MissionaryExternalService {
     public void getMissionaryStaffs(@NonNull GetMissionaryStaffsQuery getMissionaryStaffsQuery) throws CommonException {
 //        missionaryStaffService.getMissionaryStaffs(getMissionaryStaffsQuery);
     }
-    
+
     @Override
     public @NonNull GetMissionaryRegionsQueryResult getMissionaryRegions() {
         return MissionaryMapper.INSTANCE.missionaryRegionTypeMissionaryRegionsToGetMissionaryRegionsQueryResult(
@@ -326,9 +326,10 @@ class MissionaryManagement implements MissionaryExternalService {
     }
 
     @Override
-    public @NonNull GetMissionariesByRegionQueryResult getMissionariesByRegion(@NonNull GetMissionariesByRegionQuery query) {
-
-        return null;
+    public @NonNull GetMissionariesByRegionQueryResult getMissionariesByRegion(@NonNull GetMissionariesByRegionQuery getMissionariesByRegionQuery) {
+        return MissionaryMapper.INSTANCE.toGetMissionariesByRegionQueryResult(
+            missionaryService.getMissionariesByRegion(getMissionariesByRegionQuery)
+        );
     }
 
     private void validateParticipationPeriod(String missionaryId) throws CommonException {

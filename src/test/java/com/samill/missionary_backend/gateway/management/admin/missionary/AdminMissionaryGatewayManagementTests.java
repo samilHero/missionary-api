@@ -1,13 +1,16 @@
 package com.samill.missionary_backend.gateway.management.admin.missionary;
 
 import static com.epages.restdocs.apispec.MockMvcRestDocumentationWrapper.document;
+import static com.epages.restdocs.apispec.ResourceDocumentation.parameterWithName;
 import static com.epages.restdocs.apispec.ResourceDocumentation.resource;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.payload.PayloadDocumentation.subsectionWithPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.epages.restdocs.apispec.ResourceSnippetParametersBuilder;
 import com.epages.restdocs.apispec.Schema;
+import com.epages.restdocs.apispec.SimpleType;
 import com.samill.missionary_backend.common.AbstractControllerTestsBase;
 import com.samill.missionary_backend.gateway.endPoint.AdminGatewayManagementEndPoint;
 import org.junit.jupiter.api.Test;
@@ -25,7 +28,7 @@ import org.springframework.transaction.annotation.Transactional;
 class AdminMissionaryGatewayManagementTests extends AbstractControllerTestsBase {
 
     @Test
-    void 어드민_카테고리별_선교_지역_목록_조회() throws Exception {
+    void 어드민_선교_지역_타입별_선교_지역_목록_조회() throws Exception {
         mockMvc.perform(
                 RestDocumentationRequestBuilders.get(AdminGatewayManagementEndPoint.GET_MISSIONARY_REGIONS)
                     .accept(MediaType.APPLICATION_JSON)
@@ -44,12 +47,55 @@ class AdminMissionaryGatewayManagementTests extends AbstractControllerTestsBase 
                             .responseFields(
                                 fieldWithPath("statusCode").type(JsonFieldType.NUMBER).description("결과 코드"),
                                 fieldWithPath("message").type(JsonFieldType.STRING).description("결과 메시지"),
-                                fieldWithPath("data.domestic").type(JsonFieldType.ARRAY).description("국내 선교 지역 목록"),
+                                subsectionWithPath("data.domestic").type(JsonFieldType.ARRAY).description("국내 선교 지역 목록"),
                                 fieldWithPath("data.domestic.[].id").type(JsonFieldType.STRING).description("선교 지역 키"),
                                 fieldWithPath("data.domestic.[].name").type(JsonFieldType.STRING).description("선교 지역 이름"),
                                 fieldWithPath("data.abroad").type(JsonFieldType.ARRAY).description("국외 선교 지역 목록"),
                                 fieldWithPath("data.abroad.[].id").type(JsonFieldType.STRING).description("선교 지역 키"),
                                 fieldWithPath("data.abroad.[].name").type(JsonFieldType.STRING).description("선교 지역 이름")
+                            )
+                            .build()
+                    )
+                )
+            )
+            .andExpect(status().isOk());
+    }
+
+    @Test
+    void 어드민_선교_지역내_선교_목록_조회() throws Exception {
+        mockMvc.perform(
+                RestDocumentationRequestBuilders.get(AdminGatewayManagementEndPoint.GET_MISSIONARIES)
+                    .accept(MediaType.APPLICATION_JSON)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .header("Authorization", getAuthorizationAdminOfHeader())
+                    .queryParam("region_id", "0b6a5e32-dc34-4a34-8393-0e5ce6e44b0a")
+            )
+            .andDo(print())
+            .andDo(
+                document(
+                    snippetPath,
+                    resource(
+                        new ResourceSnippetParametersBuilder()
+                            .tag("ADMIN_MISSIONARY")
+                            .description("선교지역 목록 조회")
+                            .queryParameters(
+                                parameterWithName("region_id").type(SimpleType.STRING).description("선교 지역 ID"),
+                                parameterWithName("page_number").type(SimpleType.NUMBER).description("페이지 번호").optional(),
+                                parameterWithName("page_size").type(SimpleType.NUMBER).description("페이지 크기").optional()
+                            )
+                            .responseSchema(Schema.schema("GetAdminMissionariesResponse"))
+                            .responseFields(
+                                fieldWithPath("statusCode").type(JsonFieldType.NUMBER).description("결과 코드"),
+                                fieldWithPath("message").type(JsonFieldType.STRING).description("결과 메시지"),
+                                subsectionWithPath("data.missionaries").type(JsonFieldType.ARRAY).description("선교 목록"),
+                                fieldWithPath("data.missionaries.[].id").type(JsonFieldType.STRING).description("선교 ID"),
+                                fieldWithPath("data.missionaries.[].name").type(JsonFieldType.STRING).description("선교 이름"),
+                                fieldWithPath("data.missionaries.[].pastorName").type(JsonFieldType.STRING).description("담당 목사 이름"),
+                                fieldWithPath("data.missionaries.[].startDate").type(JsonFieldType.STRING).description("선교 시작 날짜"),
+                                fieldWithPath("data.missionaries.[].endDate").type(JsonFieldType.STRING).description("선교 종료 날짜"),
+                                fieldWithPath("data.totalCount").type(JsonFieldType.NUMBER).description("선교 목록 총 개수"),
+                                fieldWithPath("data.totalPages").type(JsonFieldType.NUMBER).description("선교 목록 총 페이지 수"),
+                                fieldWithPath("data.currentPage").type(JsonFieldType.NUMBER).description("현재 페이지 번호")
                             )
                             .build()
                     )

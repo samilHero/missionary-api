@@ -17,7 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
-class MissionaryBoardAdminModuleTestsBase extends AbstractSpringBootTestsBase {
+class MissionaryBoardAdminModuleTests extends AbstractSpringBootTestsBase {
 
     private final String missionaryId = "c50bd2bb-69af-4560-a220-cd2fdf409336";
     private final String nonExistMissionaryId = "c50bd2bb-69af-4560-a220-cd2fdf409337";
