@@ -1,6 +1,8 @@
 package com.samill.missionary_backend.gateway.management.admin;
 
 import com.samill.missionary_backend.common.exception.CommonException;
+import com.samill.missionary_backend.gateway.dto.CreateMissionaryRequest;
+import com.samill.missionary_backend.gateway.dto.CreateMissionaryResult;
 import com.samill.missionary_backend.gateway.dto.GetAdminMissionariesResult;
 import com.samill.missionary_backend.gateway.dto.GetAdminMissionaryResult;
 import com.samill.missionary_backend.gateway.dto.GetMissionaryRegionsResult;
@@ -9,11 +11,14 @@ import com.samill.missionary_backend.gateway.mapper.admin.AdminMissionaryGateway
 import com.samill.missionary_backend.missionary.MissionaryExternalService;
 import com.samill.missionary_backend.missionary.dto.GetMissionariesByRegionQuery;
 import com.samill.missionary_backend.missionary.dto.GetMissionaryQuery;
+import jakarta.validation.Valid;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -34,9 +39,9 @@ public class AdminMissionaryGatewayManagement {
 
     @GetMapping(AdminGatewayManagementEndPoint.GET_MISSIONARIES)
     public @NonNull GetAdminMissionariesResult getMissionaries(
-        @RequestParam("region_id") @NonNull String regionId,
-        @RequestParam(value = "page_size", required = false) Integer pageSize,
-        @RequestParam(value = "page_number", required = false) Integer pageNumber
+        @RequestParam("regionId") @NonNull String regionId,
+        @RequestParam(value = "pageSize", required = false, defaultValue = "10") int pageSize,
+        @RequestParam(value = "pageNumber", required = false, defaultValue = "1") int pageNumber
     ) {
         return AdminMissionaryGatewayMapper.INSTANCE.getMissionariesByRegionQueryResultToGetAdminMissionariesResult(
             missionaryExternalService.getMissionariesByRegion(
@@ -54,5 +59,15 @@ public class AdminMissionaryGatewayManagement {
         missionaryExternalService.getMissionary(new GetMissionaryQuery(missionaryId));
 
         return new GetAdminMissionaryResult();
+    }
+
+    @PostMapping(AdminGatewayManagementEndPoint.CREATE_MISSIONARY)
+    public @NonNull CreateMissionaryResult createMissionary(@Valid @NonNull @RequestBody CreateMissionaryRequest createMissionaryRequest)
+        throws CommonException {
+        return AdminMissionaryGatewayMapper.INSTANCE.toCreateMissionaryResult(
+            missionaryExternalService.createMissionary(
+                AdminMissionaryGatewayMapper.INSTANCE.toCreateMissionaryCommand(createMissionaryRequest)
+            )
+        );
     }
 }

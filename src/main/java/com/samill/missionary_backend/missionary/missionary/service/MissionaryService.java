@@ -29,14 +29,9 @@ public class MissionaryService {
 
     private final MissionaryRepository missionaryRepository;
 
-    public CreateMissionaryCommandResult createMissionary(@NonNull CreateMissionaryCommand createMissionaryCommand)
-        throws MissionaryException {
-
-        final Missionary missionary = missionaryRepository.save(
-            MissionaryMapper.INSTANCE.createMissionaryCommandToMissionary(createMissionaryCommand)
-        );
-
-        return new CreateMissionaryCommandResult(missionary.getId());
+    public CreateMissionaryCommandResult createMissionary(@NonNull CreateMissionaryCommand createMissionaryCommand) {
+        final var missionary = MissionaryMapper.INSTANCE.toMissionary(createMissionaryCommand);
+        return new CreateMissionaryCommandResult(missionaryRepository.save(missionary).getId());
     }
 
     public void updateMissionary(@NonNull String missionaryId, @NonNull UpdateMissionaryCommand updateMissionaryCommand) throws MissionaryException {
@@ -60,7 +55,7 @@ public class MissionaryService {
 //        missionary.changeWorkPeriod(
 //            Period.builder()
 //                .startDate(updateMissionaryCommand.startDate())
-//                .endDate(updateMissionaryCommand.workEndDate())
+//                .endDate(updateMissionaryCommand.endDate())
 //                .build()
 //        );
 //
