@@ -21,12 +21,14 @@ import com.samill.missionary_backend.missionary.dto.CreateTeamCommand;
 import com.samill.missionary_backend.missionary.dto.DeleteMissionaryBoardCommand;
 import com.samill.missionary_backend.missionary.dto.DeleteParticipationCommand;
 import com.samill.missionary_backend.missionary.dto.DisappointMissionaryStaffsCommand;
+import com.samill.missionary_backend.missionary.dto.GetMissionariesByRegionQuery;
+import com.samill.missionary_backend.missionary.dto.GetMissionariesByRegionQueryResult;
 import com.samill.missionary_backend.missionary.dto.GetMissionaryBoardsQuery;
 import com.samill.missionary_backend.missionary.dto.GetMissionaryBoardsQueryResult;
-import com.samill.missionary_backend.missionary.dto.GetMissionaryGroupsQueryResult;
 import com.samill.missionary_backend.missionary.dto.GetMissionaryIdsQuery;
 import com.samill.missionary_backend.missionary.dto.GetMissionaryQuery;
 import com.samill.missionary_backend.missionary.dto.GetMissionaryQueryResult;
+import com.samill.missionary_backend.missionary.dto.GetMissionaryRegionsQueryResult;
 import com.samill.missionary_backend.missionary.dto.GetMissionaryStaffsQuery;
 import com.samill.missionary_backend.missionary.dto.GetParticipationQueryResult;
 import com.samill.missionary_backend.missionary.dto.GetParticipationsDownloadQuery;
@@ -40,11 +42,12 @@ import com.samill.missionary_backend.missionary.dto.UpdateTeamCommand;
 import com.samill.missionary_backend.missionary.dto.UpdateTeamMemberCommand;
 import com.samill.missionary_backend.missionary.exception.MissionaryException;
 import com.samill.missionary_backend.missionary.mapper.MissionaryBoardMapper;
-import com.samill.missionary_backend.missionary.missionary.mapper.MissionaryMapper;
+import com.samill.missionary_backend.missionary.mapper.MissionaryMapper;
 import com.samill.missionary_backend.missionary.missionary.service.MissionaryService;
 import com.samill.missionary_backend.missionary.participation.entity.Participation;
 import com.samill.missionary_backend.missionary.participation.mapper.ParticipationMapper;
 import com.samill.missionary_backend.missionary.participation.service.ParticipationService;
+import com.samill.missionary_backend.missionary.region.service.MissionaryRegionService;
 import com.samill.missionary_backend.missionary.staff.service.MissionaryStaffService;
 import com.samill.missionary_backend.missionary.team.entity.Team;
 import com.samill.missionary_backend.missionary.team.entity.TeamMember;
@@ -70,6 +73,7 @@ class MissionaryManagement implements MissionaryExternalService {
     private final MissionaryBoardModuleMapFactory missionaryBoardModuleMapFactory;
     private final ParticipationService participationService;
     private final TeamService teamService;
+    private final MissionaryRegionService missionaryRegionService;
 
     @Override
     @Transactional
@@ -284,7 +288,7 @@ class MissionaryManagement implements MissionaryExternalService {
         return listStrings;
     }
 
- @Override
+    @Override
     @Transactional
     public void appointMissionaryStaffs(
         @NonNull String memberId,
@@ -318,11 +322,17 @@ class MissionaryManagement implements MissionaryExternalService {
     }
 
     @Override
-    public GetMissionaryGroupsQueryResult getMissionaryGroups(@NonNull String memberId) throws CommonException {
-        return MissionaryMapper.INSTANCE.categoryMissionaryMapToGetMissionaryGroupsQueryResult(
-            missionaryService.getMissionariesByCategory(memberExternalService.getUserByMemberId(memberId).id())
+    public @NonNull GetMissionaryRegionsQueryResult getMissionaryRegions() {
+        return MissionaryMapper.INSTANCE.missionaryRegionTypeMissionaryRegionsToGetMissionaryRegionsQueryResult(
+            missionaryRegionService.getMissionaryRegionTypeMissionaryRegionsMap()
         );
+    }
 
+    @Override
+    public @NonNull GetMissionariesByRegionQueryResult getMissionariesByRegion(@NonNull GetMissionariesByRegionQuery getMissionariesByRegionQuery) {
+        return MissionaryMapper.INSTANCE.toGetMissionariesByRegionQueryResult(
+            missionaryService.getMissionariesByRegion(getMissionariesByRegionQuery)
+        );
     }
 
     private void validateParticipationPeriod(String missionaryId) throws CommonException {

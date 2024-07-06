@@ -138,4 +138,14 @@ public class AdminGatewayManagement {
 
         writer.close();
     }
+
+//    @GetMapping(AdminGatewayManagementEndPoint.GET_STAFF_USERS_V1)
+//    public @NonNull GetMissionaryStaffsResult getMissionaryStaffs(
+//        @NonNull @PathVariable String missionaryId,
+//        @ModelAttribute GetMissionaryStaffsRequest request
+//    ) {
+////        missionaryExternalService.getMissionaryStaffs();
+//        return new GetMissionaryStaffsResult();
+//    }
+
 }

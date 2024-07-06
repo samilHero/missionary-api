@@ -7,11 +7,16 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.Embedded;
 import java.time.OffsetDateTime;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Embeddable
 @Getter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class MissionaryDetail {
 
     @Embedded
@@ -42,5 +47,15 @@ public class MissionaryDetail {
         return participationPeriod.inPeriod(date);
     }
 
-
+    @Override
+    public String toString() {
+        return "MissionaryDetail{" +
+            "participationPeriod=" + participationPeriod +
+            ", price=" + price +
+            ", description='" + description + '\'' +
+            ", maximumParticipantCount=" + maximumParticipantCount +
+            ", currentParticipantCount=" + currentParticipantCount +
+            ", bankAccount=" + bankAccount +
+            '}';
+    }
 }

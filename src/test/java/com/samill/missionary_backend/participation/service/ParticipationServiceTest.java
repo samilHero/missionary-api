@@ -3,7 +3,7 @@ package com.samill.missionary_backend.participation.service;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.samill.missionary_backend.common.AbstractSpringBootTests;
+import com.samill.missionary_backend.common.AbstractSpringBootTestsBase;
 import com.samill.missionary_backend.common.exception.CommonException;
 import com.samill.missionary_backend.missionary.dto.CreateParticipationCommand;
 import com.samill.missionary_backend.missionary.dto.DeleteParticipationCommand;
@@ -12,13 +12,11 @@ import com.samill.missionary_backend.missionary.dto.GetParticipationsQuery;
 import com.samill.missionary_backend.missionary.participation.entity.Participation;
 import com.samill.missionary_backend.missionary.participation.mapper.ParticipationMapper;
 import com.samill.missionary_backend.missionary.participation.repository.ParticipationRepository;
-
+import com.samill.missionary_backend.missionary.participation.service.ParticipationService;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-
-import com.samill.missionary_backend.missionary.participation.service.ParticipationService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 //@ContextConfiguration(classes = MissionaryBackendApplication.class)
-class ParticipationServiceTest extends AbstractSpringBootTests {
+class ParticipationServiceTest extends AbstractSpringBootTestsBase {
 
     @Autowired
     private ParticipationService participationService;
@@ -95,7 +93,6 @@ class ParticipationServiceTest extends AbstractSpringBootTests {
         Participation participation =
             participationRepository.save(ParticipationMapper.INSTANCE.createParticipationCommandToEntity(createParticipationDto));
 
-
         DeleteParticipationCommand deleteParticipationCommand = DeleteParticipationCommand.builder()
             .missionaryId(missionaryId)
             .userId("kdf1")
@@ -116,15 +113,15 @@ class ParticipationServiceTest extends AbstractSpringBootTests {
         String missionaryId = UUID.randomUUID().toString();
         for (int i = 0; i < 10; i++) {
             CreateParticipationCommand createParticipationDto = CreateParticipationCommand.builder()
-                    .missionaryId(missionaryId)
-                    .applyFee(10000)
-                    .identificationNumber("980232-1112220")
-                    .memberId("UUIDD1")
-                    .birthDate("19940616")
-                    .userId("kdf1")
-                    .name("홍길동")
-                    .isOwnCar(false)
-                    .build();
+                .missionaryId(missionaryId)
+                .applyFee(10000)
+                .identificationNumber("980232-1112220")
+                .memberId("UUIDD1")
+                .birthDate("19940616")
+                .userId("kdf1")
+                .name("홍길동")
+                .isOwnCar(false)
+                .build();
 
             participationRepository.save(ParticipationMapper.INSTANCE.createParticipationCommandToEntity(createParticipationDto));
         }
@@ -134,7 +131,8 @@ class ParticipationServiceTest extends AbstractSpringBootTests {
             .build();
         PageRequest pageRequest = PageRequest.of(0, 3);
 
-        Page<GetParticipationQueryResult> participationQueryResults = participationService.getParticipations(missionaryId, getParticipationsQuery, pageRequest);
+        Page<GetParticipationQueryResult> participationQueryResults = participationService.getParticipations(missionaryId, getParticipationsQuery,
+            pageRequest);
 
         //then
         assertEquals(3, participationQueryResults.getSize());
@@ -148,17 +146,18 @@ class ParticipationServiceTest extends AbstractSpringBootTests {
         String missionaryId = UUID.randomUUID().toString();
         for (int i = 0; i < 10; i++) {
             CreateParticipationCommand createParticipationDto = CreateParticipationCommand.builder()
-                    .missionaryId(missionaryId)
-                    .applyFee(10000)
-                    .identificationNumber("980232-1112220")
-                    .memberId("UUIDD1")
-                    .birthDate("19940616")
-                    .userId("kdf1")
-                    .name("홍길동")
-                    .isOwnCar(false)
-                    .build();
+                .missionaryId(missionaryId)
+                .applyFee(10000)
+                .identificationNumber("980232-1112220")
+                .memberId("UUIDD1")
+                .birthDate("19940616")
+                .userId("kdf1")
+                .name("홍길동")
+                .isOwnCar(false)
+                .build();
 
-            Participation participation = participationRepository.save(ParticipationMapper.INSTANCE.createParticipationCommandToEntity(createParticipationDto));
+            Participation participation = participationRepository.save(
+                ParticipationMapper.INSTANCE.createParticipationCommandToEntity(createParticipationDto));
             ids.add(participation.getId());
         }
 

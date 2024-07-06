@@ -1,6 +1,6 @@
 package com.samill.missionary_backend.missionary.dto;
 
-import com.samill.missionary_backend.missionary.missionary.enums.MissionaryRegion;
+import com.samill.missionary_backend.missionary.region.entity.MissionaryRegion;
 import java.time.OffsetDateTime;
 import lombok.NonNull;
 

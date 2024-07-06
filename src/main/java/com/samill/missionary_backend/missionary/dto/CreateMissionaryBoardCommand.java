@@ -1,12 +1,12 @@
 package com.samill.missionary_backend.missionary.dto;
 
-import com.samill.missionary_backend.missionary.board.enums.MissionaryBoardType;
+import com.samill.missionary_backend.missionary.enums.MissionaryBoardType;
 import java.util.List;
 import lombok.NonNull;
 
 
 public record CreateMissionaryBoardCommand(
-    
+
     @NonNull
     String missionaryId,
     @NonNull

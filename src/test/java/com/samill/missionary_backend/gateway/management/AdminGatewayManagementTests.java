@@ -1,6 +1,7 @@
 package com.samill.missionary_backend.gateway.management;
 
 import static com.epages.restdocs.apispec.MockMvcRestDocumentationWrapper.document;
+import static com.epages.restdocs.apispec.ResourceDocumentation.parameterWithName;
 import static com.epages.restdocs.apispec.ResourceDocumentation.resource;
 import static com.samill.missionary_backend.gateway.endPoint.AdminGatewayManagementEndPoint.ADMIN_LOGIN_URI;
 import static com.samill.missionary_backend.gateway.endPoint.AdminGatewayManagementEndPoint.CREATE_ADMIN_URI;
@@ -13,7 +14,6 @@ import static org.springframework.restdocs.operation.preprocess.Preprocessors.pr
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
-import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -26,7 +26,7 @@ import com.samill.missionary_backend.church.dto.CreateChurchCommandResult;
 import com.samill.missionary_backend.church.dto.GetChurchQueryResult;
 import com.samill.missionary_backend.church.dto.GetChurchesQueryResult;
 import com.samill.missionary_backend.church.dto.GetChurchesQueryResultChurch;
-import com.samill.missionary_backend.common.AbstractControllerTest;
+import com.samill.missionary_backend.common.AbstractControllerTestsBase;
 import com.samill.missionary_backend.gateway.dto.CreateAdminRequest;
 import com.samill.missionary_backend.gateway.dto.CreateChurchRequest;
 import com.samill.missionary_backend.gateway.dto.LoginUserRequest;
@@ -53,7 +53,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @ExtendWith(MockitoExtension.class)
 @WithMockUser(username = "dongwook.yeom")
-class AdminGatewayManagementTests extends AbstractControllerTest {
+class AdminGatewayManagementTests extends AbstractControllerTestsBase {
 
     @MockBean
     private ChurchExternalService churchExternalService;
@@ -63,7 +63,6 @@ class AdminGatewayManagementTests extends AbstractControllerTest {
 
     @Test
     @DisplayName("create admin test")
-    @Transactional
     public void createAdminTest() {
         var request = CreateAdminRequest.builder()
             .name("admin_test")
@@ -87,7 +86,6 @@ class AdminGatewayManagementTests extends AbstractControllerTest {
 
     @Test
     @DisplayName("admin login test")
-    @Transactional
     public void adminLoginTest() {
         var request = LoginUserRequest.builder()
             .loginId("admin_test")
@@ -121,6 +119,7 @@ class AdminGatewayManagementTests extends AbstractControllerTest {
     @Test
     void getChurchTest() throws Exception {
         final String churchId = UUID.randomUUID().toString();
+
         when(churchExternalService.getChurch(churchId))
             .thenReturn(
                 new GetChurchQueryResult(
@@ -143,22 +142,22 @@ class AdminGatewayManagementTests extends AbstractControllerTest {
             .andDo(print())
             .andDo(
                 document(snippetPath,
-
-                    new ResourceSnippetParametersBuilder()
-                        .tag("ADMIN_CHURCH")
-                        .description("교회 상세 조회 API")
-                        .pathParameters(
-                            parameterWithName("churchId").description("교회 고유 번호")
-                        )
-                        .responseFields(
-                            fieldWithPath("statusCode").type(JsonFieldType.NUMBER).description("결과 코드"),
-                            fieldWithPath("message").type(JsonFieldType.STRING).description("결과 메시지"),
-                            fieldWithPath("data.id").type(JsonFieldType.STRING).description("교회 고유 번호"),
-                            fieldWithPath("data.name").type(JsonFieldType.STRING).description("교회 이름"),
-                            fieldWithPath("data.pastorName").type(JsonFieldType.STRING).description("담임 목사 이름"),
-                            fieldWithPath("data.pastorPhone").type(JsonFieldType.STRING).description("담임 목사 연락처"),
-                            fieldWithPath("data.address").type(JsonFieldType.STRING).description("교회 주소")
-                        )
+                    resource(
+                        new ResourceSnippetParametersBuilder()
+                            .tag("ADMIN_CHURCH")
+                            .description("교회 상세 조회 API")
+                            .pathParameters(parameterWithName("churchId").description("교회 고유 번호"))
+                            .responseSchema(Schema.schema("GetChurchResponse"))
+                            .responseFields(
+                                fieldWithPath("statusCode").type(JsonFieldType.NUMBER).description("결과 코드"),
+                                fieldWithPath("message").type(JsonFieldType.STRING).description("결과 메시지"),
+                                fieldWithPath("data.id").type(JsonFieldType.STRING).description("교회 고유 번호"),
+                                fieldWithPath("data.name").type(JsonFieldType.STRING).description("교회 이름"),
+                                fieldWithPath("data.pastorName").type(JsonFieldType.STRING).description("담임 목사 이름"),
+                                fieldWithPath("data.pastorPhone").type(JsonFieldType.STRING).description("담임 목사 연락처"),
+                                fieldWithPath("data.address").type(JsonFieldType.STRING).description("교회 주소")
+                            ).build()
+                    )
 
                 )
             )
@@ -191,16 +190,19 @@ class AdminGatewayManagementTests extends AbstractControllerTest {
             .andDo(
                 document(
                     snippetPath,
-                    new ResourceSnippetParametersBuilder()
-                        .tag("ADMIN_CHURCH")
-                        .description("교회 정보 목록 조회 API")
-                        .responseFields(
-                            fieldWithPath("statusCode").type(JsonFieldType.NUMBER).description("결과 코드"),
-                            fieldWithPath("message").type(JsonFieldType.STRING).description("결과 메시지"),
-                            fieldWithPath("data.churches.[].id").type(JsonFieldType.STRING).description("교회 고유 번호"),
-                            fieldWithPath("data.churches.[].name").type(JsonFieldType.STRING).description("교회 이름"),
-                            fieldWithPath("data.hasNext").type(JsonFieldType.BOOLEAN).description("다음 페이지 존재 여부")
-                        )
+                    resource(
+                        new ResourceSnippetParametersBuilder()
+                            .tag("ADMIN_CHURCH")
+                            .description("교회 정보 목록 조회 API")
+                            .responseSchema(Schema.schema("GetChurchesResponse"))
+                            .responseFields(
+                                fieldWithPath("statusCode").type(JsonFieldType.NUMBER).description("결과 코드"),
+                                fieldWithPath("message").type(JsonFieldType.STRING).description("결과 메시지"),
+                                fieldWithPath("data.churches.[].id").type(JsonFieldType.STRING).description("교회 고유 번호"),
+                                fieldWithPath("data.churches.[].name").type(JsonFieldType.STRING).description("교회 이름"),
+                                fieldWithPath("data.hasNext").type(JsonFieldType.BOOLEAN).description("다음 페이지 존재 여부")
+                            ).build()
+                    )
 
                 )
             )
@@ -233,21 +235,27 @@ class AdminGatewayManagementTests extends AbstractControllerTest {
             .andDo(
                 document(
                     snippetPath,
-                    new ResourceSnippetParametersBuilder()
-                        .tag("ADMIN_CHURCH")
-                        .description("교회 생성 API")
-                        .requestFields(
-                            fieldWithPath("name").description("교회 이름"),
-                            fieldWithPath("pastorName").description("목사 이름"),
-                            fieldWithPath("pastorPhone").description("목사 연락처"),
-                            fieldWithPath("addressBasic").description("교회 주소"),
-                            fieldWithPath("addressDetail").description("교회 상세 주소")
-                        )
-                        .responseFields(
-                            fieldWithPath("statusCode").type(JsonFieldType.NUMBER).description("결과 코드"),
-                            fieldWithPath("message").type(JsonFieldType.STRING).description("결과 메시지"),
-                            fieldWithPath("data.churchId").type(JsonFieldType.STRING).description("교회 고유 번호")
-                        )
+                    preprocessRequest(prettyPrint()),
+                    preprocessResponse(prettyPrint()),
+                    resource(
+                        new ResourceSnippetParametersBuilder()
+                            .tag("ADMIN_CHURCH")
+                            .description("교회 생성 API")
+                            .requestSchema(Schema.schema("CreateChurchRequest"))
+                            .requestFields(
+                                fieldWithPath("name").description("교회 이름"),
+                                fieldWithPath("pastorName").description("목사 이름"),
+                                fieldWithPath("pastorPhone").description("목사 연락처"),
+                                fieldWithPath("addressBasic").description("교회 주소"),
+                                fieldWithPath("addressDetail").description("교회 상세 주소")
+                            )
+                            .responseSchema(Schema.schema("CreateChurchResponse"))
+                            .responseFields(
+                                fieldWithPath("statusCode").type(JsonFieldType.NUMBER).description("결과 코드"),
+                                fieldWithPath("message").type(JsonFieldType.STRING).description("결과 메시지"),
+                                fieldWithPath("data.churchId").type(JsonFieldType.STRING).description("교회 고유 번호")
+                            ).build()
+                    )
 
                 )
             )
@@ -280,25 +288,27 @@ class AdminGatewayManagementTests extends AbstractControllerTest {
             .andDo(
                 document(
                     snippetPath,
-                    new ResourceSnippetParametersBuilder()
-                        .tag("ADMIN_CHURCH")
-                        .description("교회 수정 API")
-                        .pathParameters(
-                            parameterWithName("churchId").description("교회 고유 번호")
-                        )
-                        .requestFields(
-                            fieldWithPath("name").description("교회 이름"),
-                            fieldWithPath("pastorName").description("목사 이름"),
-                            fieldWithPath("pastorPhone").description("목사 연락처"),
-                            fieldWithPath("addressBasic").description("교회 주소"),
-                            fieldWithPath("addressDetail").description("교회 상세 주소")
-                        )
-                        .responseFields(
-                            fieldWithPath("statusCode").type(JsonFieldType.NUMBER).description("결과 코드"),
-                            fieldWithPath("message").type(JsonFieldType.STRING).description("결과 메시지"),
-                            fieldWithPath("data").type(JsonFieldType.NULL).description("결과")
-                        )
-                )
+                    resource(
+                        new ResourceSnippetParametersBuilder()
+                            .tag("ADMIN_CHURCH")
+                            .description("교회 수정 API")
+                            .pathParameters(
+                                parameterWithName("churchId").description("교회 고유 번호")
+                            )
+                            .requestSchema(Schema.schema("UpdateChurchRequest"))
+                            .requestFields(
+                                fieldWithPath("name").description("교회 이름"),
+                                fieldWithPath("pastorName").description("목사 이름"),
+                                fieldWithPath("pastorPhone").description("목사 연락처"),
+                                fieldWithPath("addressBasic").description("교회 주소"),
+                                fieldWithPath("addressDetail").description("교회 상세 주소")
+                            )
+                            .responseFields(
+                                fieldWithPath("statusCode").type(JsonFieldType.NUMBER).description("결과 코드"),
+                                fieldWithPath("message").type(JsonFieldType.STRING).description("결과 메시지"),
+                                fieldWithPath("data").type(JsonFieldType.NULL).description("결과")
+                            ).build()
+                    ))
 
             )
             .andExpect(status().isOk());
@@ -319,26 +329,28 @@ class AdminGatewayManagementTests extends AbstractControllerTest {
             )
             .andDo(print())
             .andDo(
-                document(snippetPath,
-
-                    new ResourceSnippetParametersBuilder()
-                        .tag("ADMIN_CHURCH")
-                        .description("교회 삭제 API")
-                        .pathParameters(
-                            parameterWithName("churchId").description("교회 고유 번호")
-                        )
-                        .responseFields(
-                            fieldWithPath("statusCode").type(JsonFieldType.NUMBER).description("결과 코드"),
-                            fieldWithPath("message").type(JsonFieldType.STRING).description("결과 메시지"),
-                            fieldWithPath("data").type(JsonFieldType.NULL).description("결과")
-                        )
+                document(
+                    snippetPath,
+                    resource(
+                        new ResourceSnippetParametersBuilder()
+                            .tag("ADMIN_CHURCH")
+                            .description("교회 삭제 API")
+                            .pathParameters(
+                                parameterWithName("churchId").description("교회 고유 번호")
+                            )
+                            .responseSchema(Schema.schema("DeleteChurchResponse"))
+                            .responseFields(
+                                fieldWithPath("statusCode").type(JsonFieldType.NUMBER).description("결과 코드"),
+                                fieldWithPath("message").type(JsonFieldType.STRING).description("결과 메시지"),
+                                fieldWithPath("data").type(JsonFieldType.NULL).description("결과")
+                            ).build()
+                    )
                 )
             )
             .andExpect(status().isOk());
     }
 
     @Test
-    @Transactional
     void getParticipationsTest() throws Exception {
         final String missionaryId = UUID.randomUUID().toString();
         when(missionaryExternalService.getParticipations(anyString(), any(), any()))
@@ -445,7 +457,6 @@ class AdminGatewayManagementTests extends AbstractControllerTest {
     }
 
     @Test
-    @Transactional
     void getParticipationTest() throws Exception {
         final String participationId = UUID.randomUUID().toString();
         when(missionaryExternalService.getParticipation(participationId))
@@ -509,7 +520,6 @@ class AdminGatewayManagementTests extends AbstractControllerTest {
     }
 
     @Test
-    @Transactional
     void updateParticipationPaid() throws Exception {
         mockMvc.perform(
                 RestDocumentationRequestBuilders.put(
@@ -540,7 +550,7 @@ class AdminGatewayManagementTests extends AbstractControllerTest {
             )
             .andExpect(status().isOk());
     }
-
+  
     @Test
     @Transactional
     void getParticipationsCsvTest() throws Exception {
@@ -583,3 +593,5 @@ class AdminGatewayManagementTests extends AbstractControllerTest {
         
     }
 }
+
+

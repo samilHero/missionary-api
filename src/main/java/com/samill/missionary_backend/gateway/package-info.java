@@ -14,6 +14,7 @@
         "church::dto",
         "missionary",
         "missionary::dto",
+        "missionary::enums"
     }
 )
 package com.samill.missionary_backend.gateway;

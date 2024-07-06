@@ -3,13 +3,13 @@ package com.samill.missionary_backend.missionary.board.module;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
-import com.samill.missionary_backend.common.AbstractSpringBootTests;
+import com.samill.missionary_backend.common.AbstractSpringBootTestsBase;
 import com.samill.missionary_backend.common.exception.CommonException;
-import com.samill.missionary_backend.missionary.board.enums.MissionaryBoardType;
 import com.samill.missionary_backend.missionary.dto.CreateMissionaryBoardCommand;
 import com.samill.missionary_backend.missionary.dto.DeleteMissionaryBoardCommand;
 import com.samill.missionary_backend.missionary.dto.GetMissionaryBoardsQuery;
 import com.samill.missionary_backend.missionary.dto.UpdateMissionaryBoardCommand;
+import com.samill.missionary_backend.missionary.enums.MissionaryBoardType;
 import com.samill.missionary_backend.missionary.exception.MissionaryException;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
@@ -18,7 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
-class MissionaryBoardStaffModuleTests extends AbstractSpringBootTests {
+class MissionaryBoardStaffModuleTests extends AbstractSpringBootTestsBase {
 
     private final String missionaryId = "c50bd2bb-69af-4560-a220-cd2fdf409336";
     private final String nonExistMissionaryId = "c50bd2bb-69af-4560-a220-cd2fdf409337";
@@ -30,6 +30,7 @@ class MissionaryBoardStaffModuleTests extends AbstractSpringBootTests {
     @Autowired
     private MissionaryBoardModuleMapFactory missionaryBoardModuleMapFactory;
     private MissionaryBoardModule missionaryBoardModule;
+
 
     @BeforeEach
     void setUp() {

@@ -20,7 +20,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.epages.restdocs.apispec.ResourceSnippetParameters;
 import com.epages.restdocs.apispec.ResourceSnippetParametersBuilder;
 import com.epages.restdocs.apispec.Schema;
-import com.samill.missionary_backend.common.AbstractControllerTest;
+import com.samill.missionary_backend.common.AbstractControllerTestsBase;
 import com.samill.missionary_backend.gateway.dto.CreateUserRequest;
 import com.samill.missionary_backend.gateway.dto.LoginUserRequest;
 import com.samill.missionary_backend.gateway.endPoint.UserGatewayManagementEndPoint;
@@ -41,7 +41,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.transaction.annotation.Transactional;
 
 
-class UserGatewayManagementTests extends AbstractControllerTest {
+class UserGatewayManagementTests extends AbstractControllerTestsBase {
 
     @Test
     @DisplayName("user sign up test")
@@ -200,11 +200,11 @@ class UserGatewayManagementTests extends AbstractControllerTest {
                             .tag("USER_MISSIONARY")
                             .description("선교 목록 조회 API")
                             .requestSchema(Schema.schema("GetUserMissionariesRequest"))
-                            .responseSchema(Schema.schema("GetUserMissionariesResponse"))
                             .queryParameters(
                                 parameterWithName("cursor").optional().description("커서"),
                                 parameterWithName("pageSize").optional().description("목록 조회 개수")
                             )
+                            .responseSchema(Schema.schema("GetUserMissionariesResponse"))
                             .responseFields(
                                 fieldWithPath("statusCode").type(JsonFieldType.NUMBER).description("결과 코드"),
                                 fieldWithPath("message").type(JsonFieldType.STRING).description("결과 메시지"),
