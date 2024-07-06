@@ -12,19 +12,14 @@ import com.epages.restdocs.apispec.ResourceSnippetParametersBuilder;
 import com.epages.restdocs.apispec.Schema;
 import com.epages.restdocs.apispec.SimpleType;
 import com.samill.missionary_backend.common.AbstractControllerTestsBase;
+import com.samill.missionary_backend.gateway.dto.CreateMissionaryRequest;
 import com.samill.missionary_backend.gateway.endPoint.AdminGatewayManagementEndPoint;
+import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.restdocs.payload.JsonFieldType;
-import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.transaction.annotation.Transactional;
 
-@ExtendWith(MockitoExtension.class)
-@WithMockUser(username = "dongwook.yeom")
-@Transactional
 class AdminMissionaryGatewayManagementTests extends AbstractControllerTestsBase {
 
     @Test
@@ -62,13 +57,13 @@ class AdminMissionaryGatewayManagementTests extends AbstractControllerTestsBase 
     }
 
     @Test
-    void 어드민_선교_지역내_선교_목록_조회() throws Exception {
+    void 어드민_선교_지역에_해당하는_선교_목록_조회() throws Exception {
         mockMvc.perform(
                 RestDocumentationRequestBuilders.get(AdminGatewayManagementEndPoint.GET_MISSIONARIES)
                     .accept(MediaType.APPLICATION_JSON)
                     .contentType(MediaType.APPLICATION_JSON)
                     .header("Authorization", getAuthorizationAdminOfHeader())
-                    .queryParam("region_id", "0b6a5e32-dc34-4a34-8393-0e5ce6e44b0a")
+                    .queryParam("regionId", "0b6a5e32-dc34-4a34-8393-0e5ce6e44b0a")
             )
             .andDo(print())
             .andDo(
@@ -79,9 +74,9 @@ class AdminMissionaryGatewayManagementTests extends AbstractControllerTestsBase 
                             .tag("ADMIN_MISSIONARY")
                             .description("선교지역 목록 조회")
                             .queryParameters(
-                                parameterWithName("region_id").type(SimpleType.STRING).description("선교 지역 ID"),
-                                parameterWithName("page_number").type(SimpleType.NUMBER).description("페이지 번호").optional(),
-                                parameterWithName("page_size").type(SimpleType.NUMBER).description("페이지 크기").optional()
+                                parameterWithName("regionId").type(SimpleType.STRING).description("선교 지역 ID"),
+                                parameterWithName("pageNumber").type(SimpleType.NUMBER).description("페이지 번호").optional().defaultValue(1),
+                                parameterWithName("pageSize").type(SimpleType.NUMBER).description("페이지 크기").optional().defaultValue(10)
                             )
                             .responseSchema(Schema.schema("GetAdminMissionariesResponse"))
                             .responseFields(
@@ -96,6 +91,54 @@ class AdminMissionaryGatewayManagementTests extends AbstractControllerTestsBase 
                                 fieldWithPath("data.totalCount").type(JsonFieldType.NUMBER).description("선교 목록 총 개수"),
                                 fieldWithPath("data.totalPages").type(JsonFieldType.NUMBER).description("선교 목록 총 페이지 수"),
                                 fieldWithPath("data.currentPage").type(JsonFieldType.NUMBER).description("현재 페이지 번호")
+                            )
+                            .build()
+                    )
+                )
+            )
+            .andExpect(status().isOk());
+    }
+
+    @Test
+    void 어드민_선교_생성() throws Exception {
+        mockMvc.perform(
+                RestDocumentationRequestBuilders.post(AdminGatewayManagementEndPoint.CREATE_MISSIONARY)
+                    .accept(MediaType.APPLICATION_JSON)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .header("Authorization", getAuthorizationAdminOfHeader())
+                    .content(
+                        jacksonObjectMapper.writeValueAsString(
+                            new CreateMissionaryRequest(
+                                "0b6a5e32-dc34-4a34-8393-0e5ce6e44b0a",
+                                "군선교 3차",
+                                OffsetDateTime.now(),
+                                OffsetDateTime.now().plusMonths(1),
+                                "홍길동"
+                            )
+                        )
+                    )
+            )
+            .andDo(print())
+            .andDo(
+                document(
+                    snippetPath,
+                    resource(
+                        new ResourceSnippetParametersBuilder()
+                            .tag("ADMIN_MISSIONARY")
+                            .description("선교 생성")
+                            .requestSchema(Schema.schema("CreateMissionaryRequest"))
+                            .requestFields(
+                                fieldWithPath("missionaryRegionId").type(JsonFieldType.STRING).description("선교 지역 ID"),
+                                fieldWithPath("name").type(JsonFieldType.STRING).description("선교 이름"),
+                                fieldWithPath("startDate").type(JsonFieldType.STRING).description("선교 시작 날짜"),
+                                fieldWithPath("endDate").type(JsonFieldType.STRING).description("선교 종료 날짜"),
+                                fieldWithPath("pastorName").type(JsonFieldType.STRING).description("담당 목사 이름")
+                            )
+                            .responseSchema(Schema.schema("CreateMissionaryResponse"))
+                            .responseFields(
+                                fieldWithPath("statusCode").type(JsonFieldType.NUMBER).description("결과 코드"),
+                                fieldWithPath("message").type(JsonFieldType.STRING).description("결과 메시지"),
+                                fieldWithPath("data.id").type(JsonFieldType.STRING).description("생성된 선교 ID")
                             )
                             .build()
                     )

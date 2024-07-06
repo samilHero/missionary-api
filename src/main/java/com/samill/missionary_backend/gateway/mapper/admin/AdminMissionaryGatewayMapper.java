@@ -1,9 +1,13 @@
 package com.samill.missionary_backend.gateway.mapper.admin;
 
+import com.samill.missionary_backend.church.dto.CreateMissionaryCommandResult;
+import com.samill.missionary_backend.gateway.dto.CreateMissionaryRequest;
+import com.samill.missionary_backend.gateway.dto.CreateMissionaryResult;
 import com.samill.missionary_backend.gateway.dto.GetAdminMissionariesResult;
 import com.samill.missionary_backend.gateway.dto.GetAdminMissionariesResultMissionary;
 import com.samill.missionary_backend.gateway.dto.GetMissionaryRegionsResult;
 import com.samill.missionary_backend.gateway.dto.GetMissionaryRegionsResultRegion;
+import com.samill.missionary_backend.missionary.dto.CreateMissionaryCommand;
 import com.samill.missionary_backend.missionary.dto.GetMissionariesByRegionQueryResult;
 import com.samill.missionary_backend.missionary.dto.GetMissionariesByRegionQueryResultMissionary;
 import com.samill.missionary_backend.missionary.dto.GetMissionaryRegionsQueryResult;
@@ -12,6 +16,7 @@ import java.util.List;
 import java.util.function.Function;
 import lombok.NonNull;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
 @Mapper
@@ -58,6 +63,11 @@ public interface AdminMissionaryGatewayMapper {
             getMissionariesByRegionQueryResult.currentPage()
         );
     }
+
+    @Mapping(target = "regionId", source = "missionaryRegionId")
+    @NonNull CreateMissionaryCommand toCreateMissionaryCommand(@NonNull CreateMissionaryRequest createMissionaryRequest);
+
+    @NonNull CreateMissionaryResult toCreateMissionaryResult(@NonNull CreateMissionaryCommandResult createMissionaryCommandResult);
 
 
 }

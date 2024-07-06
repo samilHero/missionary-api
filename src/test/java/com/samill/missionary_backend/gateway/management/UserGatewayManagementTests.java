@@ -200,11 +200,11 @@ class UserGatewayManagementTests extends AbstractControllerTestsBase {
                             .tag("USER_MISSIONARY")
                             .description("선교 목록 조회 API")
                             .requestSchema(Schema.schema("GetUserMissionariesRequest"))
-                            .responseSchema(Schema.schema("GetUserMissionariesResponse"))
                             .queryParameters(
                                 parameterWithName("cursor").optional().description("커서"),
                                 parameterWithName("pageSize").optional().description("목록 조회 개수")
                             )
+                            .responseSchema(Schema.schema("GetUserMissionariesResponse"))
                             .responseFields(
                                 fieldWithPath("statusCode").type(JsonFieldType.NUMBER).description("결과 코드"),
                                 fieldWithPath("message").type(JsonFieldType.STRING).description("결과 메시지"),

@@ -34,9 +34,8 @@ public interface MissionaryMapper {
 
     @Mappings({
         @Mapping(target = "pastor.name", source = "pastorName"),
-        @Mapping(target = "pastor.phone", source = "pastorPhone"),
     })
-    Missionary createMissionaryCommandToMissionary(CreateMissionaryCommand updateMissionaryCommand);
+    Missionary toMissionary(CreateMissionaryCommand updateMissionaryCommand);
 
 
     @Named("createMissionaryCommandPosterToMissionaryPoster")
@@ -98,7 +97,7 @@ public interface MissionaryMapper {
         return new GetMissionariesByRegionQueryResult(
             missionaryPage.stream().map(toGetMissionaryQueryResult).toList(),
             Long.valueOf(missionaryPage.getTotalElements()).intValue(),
-            missionaryPage.getTotalPages(),
+            missionaryPage.getTotalPages() + 1,
             missionaryPage.getNumber() + 1
         );
     }

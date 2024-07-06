@@ -19,6 +19,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +40,11 @@ import org.hibernate.annotations.SQLRestriction;
 @AllArgsConstructor
 @SQLDelete(sql = "UPDATE missionary SET deleted_at = current_timestamp WHERE id = ?")
 @SQLRestriction(value = "deleted_at is NULL")
-@Table(name = "missionary")
+@Table(name = "missionary",
+    uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"missionary_id", "user_id"})
+    }
+)
 public class Missionary extends BaseEntity {
 
 
@@ -62,7 +67,7 @@ public class Missionary extends BaseEntity {
     @Embedded
     @AttributeOverrides({
         @AttributeOverride(name = "name", column = @Column(name = "pastor_name")),
-        @AttributeOverride(name = "phoneNumber", column = @Column(name = "pastor_phone_number")),
+        @AttributeOverride(name = "phone", column = @Column(name = "pastor_phone")),
     })
     private Pastor pastor;
 
