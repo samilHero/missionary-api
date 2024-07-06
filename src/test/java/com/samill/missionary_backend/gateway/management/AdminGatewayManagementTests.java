@@ -18,6 +18,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.epages.restdocs.apispec.ResourceSnippetParameters;
 import com.epages.restdocs.apispec.ResourceSnippetParametersBuilder;
 import com.epages.restdocs.apispec.Schema;
 import com.samill.missionary_backend.church.ChurchExternalService;
@@ -363,6 +364,8 @@ class AdminGatewayManagementTests extends AbstractControllerTestsBase {
                             "홍길동",
                             "UUID1",
                             "19940616",
+                            "삼일교회",
+                            "최지영",
                             30000,
                             true,
                             "940626-2012345",
@@ -376,6 +379,8 @@ class AdminGatewayManagementTests extends AbstractControllerTestsBase {
                             "김길동",
                             "UUID1",
                             "19940616",
+                            "삼일교회",
+                            "최지영",
                             30000,
                             true,
                             "940626-2012345",
@@ -398,34 +403,55 @@ class AdminGatewayManagementTests extends AbstractControllerTestsBase {
             )
             .andExpect(status().isOk())
             .andDo(
-                document(snippetPath,
-                    new ResourceSnippetParametersBuilder()
-                        .tag("ADMIN_PARTICIPATION")
-                        .description("신청자 목록 조회 API")
-                        .queryParameters(
-                            parameterWithName("name").description("신청자 이름"),
-                            parameterWithName("isPaid").description("선교비 입금여부"),
-                            parameterWithName("fromDate").description("신청일 시작"),
-                            parameterWithName("fromDate").description("신청일 종료"),
-                            parameterWithName("pageSize").description("조회할 페이지 단위"),
-                            parameterWithName("pageNumber").description("현재 페이지")
-                        )
-                        .responseFields(
-                            fieldWithPath("statusCode").type(JsonFieldType.NUMBER).description("결과 코드"),
-                            fieldWithPath("message").type(JsonFieldType.STRING).description("결과 메시지"),
-                            fieldWithPath("data.content[].id").type(JsonFieldType.STRING).description("신청내역 ID"),
-                            fieldWithPath("data.content[].missionaryId").type(JsonFieldType.STRING).description("선교 ID"),
-                            fieldWithPath("data.content[].userId").type(JsonFieldType.STRING).description("신청자 ID"),
-                            fieldWithPath("data.content[].name").type(JsonFieldType.STRING).description("신청자 이름"),
-                            fieldWithPath("data.content[].memberId").type(JsonFieldType.STRING).description("신청자 멤버 ID"),
-                            fieldWithPath("data.content[].applyFee").type(JsonFieldType.NUMBER).description("선교입금액"),
-                            fieldWithPath("data.content[].isPaid").type(JsonFieldType.BOOLEAN).description("입금여부"),
-                            fieldWithPath("data.content[].identificationNumber").type(JsonFieldType.STRING).description("주민등록번호"),
-                            fieldWithPath("data.content[].isOwnCar").type(JsonFieldType.BOOLEAN).description("자차여부"),
-                            fieldWithPath("data.content[].createdAt").type(JsonFieldType.STRING).description("신청일시"),
-                            fieldWithPath("data.totalPages").type(JsonFieldType.NUMBER).description("총 페이지 수"),
-                            fieldWithPath("data.size").type(JsonFieldType.NUMBER).description("총 갯수")
-                        )
+                document(
+                    snippetPath,
+                    preprocessRequest(prettyPrint()),
+                    preprocessResponse(prettyPrint()),
+                    resource(
+                        ResourceSnippetParameters.builder()
+                            .tag("ADMIN_PARTICIPATION")
+                            .description("신청자 목록 조회 API")
+                            .requestSchema(Schema.schema("GetParticipationsRequest"))
+                            .responseSchema(Schema.schema("GetParticipationResult"))
+                            .queryParameters(
+                                parameterWithName("name").description("신청자 이름"),
+                                parameterWithName("isPaid").description("선교비 입금여부"),
+                                parameterWithName("fromDate").description("신청일 시작"),
+                                parameterWithName("endDate").description("신청일 종료"),
+                                parameterWithName("pageSize").description("조회할 페이지 단위"),
+                                parameterWithName("pageNumber").description("현재 페이지")
+                            )
+                            .responseFields(
+                                fieldWithPath("statusCode").type(JsonFieldType.NUMBER).description("결과 코드"),
+                                fieldWithPath("message").type(JsonFieldType.STRING).description("결과 메시지"),
+                                fieldWithPath("data.content[].id").type(JsonFieldType.STRING).description("신청내역 ID"),
+                                fieldWithPath("data.content[].missionaryId").type(JsonFieldType.STRING).description("선교 ID"),
+                                fieldWithPath("data.content[].userId").type(JsonFieldType.STRING).description("신청자 ID"),
+                                fieldWithPath("data.content[].name").type(JsonFieldType.STRING).description("신청자 이름"),
+                                fieldWithPath("data.content[].memberId").type(JsonFieldType.STRING).description("신청자 멤버 ID"),
+                                fieldWithPath("data.content[].birthDate").type(JsonFieldType.STRING).description("신청자 생년월일"),
+                                fieldWithPath("data.content[].churchName").type(JsonFieldType.STRING).description("연계교회"),
+                                fieldWithPath("data.content[].leaderName").type(JsonFieldType.STRING).description("팀장"),
+                                fieldWithPath("data.content[].applyFee").type(JsonFieldType.NUMBER).description("선교입금액"),
+                                fieldWithPath("data.content[].isPaid").type(JsonFieldType.BOOLEAN).description("입금여부"),
+                                fieldWithPath("data.content[].identificationNumber").type(JsonFieldType.STRING).description("주민등록번호"),
+                                fieldWithPath("data.content[].isOwnCar").type(JsonFieldType.BOOLEAN).description("자차여부"),
+                                fieldWithPath("data.content[].createdAt").type(JsonFieldType.STRING).description("신청일시"),
+                                fieldWithPath("data.pageable").type(JsonFieldType.STRING).description("pageable"),
+                                fieldWithPath("data.last").type(JsonFieldType.BOOLEAN).description("마지막 여부"),
+                                fieldWithPath("data.totalElements").type(JsonFieldType.NUMBER).description("DB의 전체 데이터 갯수"),
+                                fieldWithPath("data.totalPages").type(JsonFieldType.NUMBER).description("총 페이지 수"),
+                                fieldWithPath("data.first").type(JsonFieldType.BOOLEAN).description("첫번째페이지 여부"),
+                                fieldWithPath("data.size").type(JsonFieldType.NUMBER).description("페이지 당 나타낼 수 있는 갯수"),
+                                fieldWithPath("data.sort.empty").type(JsonFieldType.BOOLEAN).description("Sorting"),
+                                fieldWithPath("data.sort.unsorted").type(JsonFieldType.BOOLEAN).description("Sorting"),
+                                fieldWithPath("data.sort.sorted").type(JsonFieldType.BOOLEAN).description("Sorting"),
+                                fieldWithPath("data.number").type(JsonFieldType.NUMBER).description("현재페이지의 번호"),
+                                fieldWithPath("data.empty").type(JsonFieldType.BOOLEAN).description("리스트가 비어있는지 여부"),
+                                fieldWithPath("data.numberOfElements").type(JsonFieldType.NUMBER).description("실제 데이터의 갯수")
+                            ).build()
+                    )
+
                 )
             );
     }
@@ -442,6 +468,8 @@ class AdminGatewayManagementTests extends AbstractControllerTestsBase {
                     "홍길동",
                     "UUID-1",
                     "19940616",
+                    "삼일교회",
+                    "최지영",
                     30000,
                     true,
                     "940555-2012345",
@@ -458,26 +486,35 @@ class AdminGatewayManagementTests extends AbstractControllerTestsBase {
             .andExpect(status().isOk())
             .andDo(
                 document(snippetPath,
-                    new ResourceSnippetParametersBuilder()
-                        .tag("ADMIN_PARTICIPATION")
-                        .description("신청자 상세 조회 API")
-                        .pathParameters(
-                            parameterWithName("participationId").description("신청내역 ID")
-                        )
-                        .responseFields(
-                            fieldWithPath("statusCode").type(JsonFieldType.NUMBER).description("결과 코드"),
-                            fieldWithPath("message").type(JsonFieldType.STRING).description("결과 메시지"),
-                            fieldWithPath("data.id").type(JsonFieldType.STRING).description("신청내역 ID"),
-                            fieldWithPath("data.missionaryId").type(JsonFieldType.STRING).description("선교 ID"),
-                            fieldWithPath("data.userId").type(JsonFieldType.STRING).description("신청자 ID"),
-                            fieldWithPath("data.name").type(JsonFieldType.STRING).description("신청자 이름"),
-                            fieldWithPath("data.memberId").type(JsonFieldType.STRING).description("신청자 멤버 ID"),
-                            fieldWithPath("data.applyFee").type(JsonFieldType.NUMBER).description("선교입금액"),
-                            fieldWithPath("data.isPaid").type(JsonFieldType.BOOLEAN).description("입금여부"),
-                            fieldWithPath("data.identificationNumber").type(JsonFieldType.STRING).description("주민등록번호"),
-                            fieldWithPath("data.isOwnCar").type(JsonFieldType.BOOLEAN).description("자차여부"),
-                            fieldWithPath("data.createdAt").description("신청일시")
-                        )
+                    preprocessRequest(prettyPrint()),
+                    preprocessResponse(prettyPrint()),
+                    resource(
+                        ResourceSnippetParameters.builder()
+                            .tag("ADMIN_PARTICIPATION")
+                            .description("신청자 상세 조회 API")
+                            .responseSchema(Schema.schema("GetParticipationResult"))
+                            .pathParameters(
+                                parameterWithName("participationId").description("신청내역 ID")
+                            )
+                            .responseFields(
+                                fieldWithPath("statusCode").type(JsonFieldType.NUMBER).description("결과 코드"),
+                                fieldWithPath("message").type(JsonFieldType.STRING).description("결과 메시지"),
+                                fieldWithPath("data.id").type(JsonFieldType.STRING).description("신청내역 ID"),
+                                fieldWithPath("data.missionaryId").type(JsonFieldType.STRING).description("선교 ID"),
+                                fieldWithPath("data.userId").type(JsonFieldType.STRING).description("신청자 ID"),
+                                fieldWithPath("data.name").type(JsonFieldType.STRING).description("신청자 이름"),
+                                fieldWithPath("data.memberId").type(JsonFieldType.STRING).description("신청자 멤버 ID"),
+                                fieldWithPath("data.birthDate").type(JsonFieldType.STRING).description("신청자 생년월일"),
+                                fieldWithPath("data.applyFee").type(JsonFieldType.NUMBER).description("선교입금액"),
+                                fieldWithPath("data.churchName").type(JsonFieldType.STRING).description("연계교회"),
+                                fieldWithPath("data.leaderName").type(JsonFieldType.STRING).description("팀장"),
+                                fieldWithPath("data.isPaid").type(JsonFieldType.BOOLEAN).description("입금여부"),
+                                fieldWithPath("data.identificationNumber").type(JsonFieldType.STRING).description("주민등록번호"),
+                                fieldWithPath("data.isOwnCar").type(JsonFieldType.BOOLEAN).description("자차여부"),
+                                fieldWithPath("data.createdAt").description("신청일시")
+                            ).build()
+                    )
+
                 )
             );
     }
@@ -489,7 +526,7 @@ class AdminGatewayManagementTests extends AbstractControllerTestsBase {
                         AdminGatewayManagementEndPoint.UPDATE_PARTICIPATION_APPROVE
                     )
                     .content(
-                        List.of("UUID1", "UUID2").toString()
+                        List.of("ParticipationId1", "ParticipationId2").toString()
                     )
                     .contentType(MediaType.APPLICATION_JSON)
                     .header("Authorization", getAuthorizationAdminOfHeader())
@@ -513,8 +550,48 @@ class AdminGatewayManagementTests extends AbstractControllerTestsBase {
             )
             .andExpect(status().isOk());
     }
+  
+    @Test
+    @Transactional
+    void getParticipationsCsvTest() throws Exception {
+        final String missionaryId = UUID.randomUUID().toString();
+        mockMvc.perform(
+                RestDocumentationRequestBuilders.get(AdminGatewayManagementEndPoint.GET_DOWNLOAD_PARTICIPATION_LIST, missionaryId)
+                    .param("name", "")
+                    .param("fromDate", "")
+                    .param("endDate", "")
+                    .param("isPaid", "")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .header("Authorization", getAuthorizationAdminOfHeader())
+            )
+            .andExpect(status().isOk())
+            .andDo(
+                document(
+                    snippetPath,
+                    preprocessRequest(prettyPrint()),
+                    preprocessResponse(prettyPrint()),
+                    resource(
+                        ResourceSnippetParameters.builder()
+                            .tag("ADMIN_PARTICIPATION")
+                            .description("신청자 목록 다운로드 API")
+                            .requestSchema(Schema.schema("GetParticipationsDownloadRequest"))
+                            .queryParameters(
+                                parameterWithName("name").description("신청자 이름"),
+                                parameterWithName("isPaid").description("선교비 입금여부"),
+                                parameterWithName("fromDate").description("신청일 시작"),
+                                parameterWithName("endDate").description("신청일 종료")
+                            ).build()
+                    )
 
+                )
+            );
+    }
 
+    @Test
+    @Transactional
+    void updateParticipationTeam() {
+        
+    }
 }
 
 
