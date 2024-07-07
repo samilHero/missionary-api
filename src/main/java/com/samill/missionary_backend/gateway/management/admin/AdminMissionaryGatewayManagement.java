@@ -3,6 +3,8 @@ package com.samill.missionary_backend.gateway.management.admin;
 import com.samill.missionary_backend.common.exception.CommonException;
 import com.samill.missionary_backend.gateway.dto.CreateMissionaryRequest;
 import com.samill.missionary_backend.gateway.dto.CreateMissionaryResult;
+import com.samill.missionary_backend.gateway.dto.CreateMissionaryStaffsRequest;
+import com.samill.missionary_backend.gateway.dto.CreateMissionaryStaffsResult;
 import com.samill.missionary_backend.gateway.dto.GetAdminMissionariesResult;
 import com.samill.missionary_backend.gateway.dto.GetAdminMissionaryResult;
 import com.samill.missionary_backend.gateway.dto.GetMissionaryRegionsResult;
@@ -55,7 +57,9 @@ public class AdminMissionaryGatewayManagement {
     }
 
     @GetMapping(AdminGatewayManagementEndPoint.GET_MISSIONARY)
-    public @NonNull GetAdminMissionaryResult getMissionary(@NonNull @PathVariable("missionaryId") String missionaryId) throws CommonException {
+    public @NonNull GetAdminMissionaryResult getMissionary(
+        @NonNull @PathVariable("missionaryId") String missionaryId
+    ) throws CommonException {
         missionaryExternalService.getMissionary(new GetMissionaryQuery(missionaryId));
 
         return new GetAdminMissionaryResult();
@@ -66,8 +70,27 @@ public class AdminMissionaryGatewayManagement {
         throws CommonException {
         return AdminMissionaryGatewayMapper.INSTANCE.toCreateMissionaryResult(
             missionaryExternalService.createMissionary(
+                // TODO: Implement MemberContext
+                "89b1516a-d3c4-4da6-9262-20c0ec305a69",
                 AdminMissionaryGatewayMapper.INSTANCE.toCreateMissionaryCommand(createMissionaryRequest)
             )
         );
+    }
+
+    @PostMapping(AdminGatewayManagementEndPoint.CREATE_MISSIONARY_STAFF)
+    public @NonNull CreateMissionaryStaffsResult createMissionaryStaffs(
+        @NonNull @PathVariable String missionaryId,
+        @NonNull @RequestBody CreateMissionaryStaffsRequest request
+    ) throws CommonException {
+        return AdminMissionaryGatewayMapper.INSTANCE.toCreateMissionaryStaffsResult(
+            missionaryExternalService.appointMissionaryStaffs(
+                "89b1516a-d3c4-4da6-9262-20c0ec305a69",
+                AdminMissionaryGatewayMapper.INSTANCE.toAppointMissionaryStaffsCommand(
+                    missionaryId,
+                    request
+                )
+            )
+        );
+
     }
 }

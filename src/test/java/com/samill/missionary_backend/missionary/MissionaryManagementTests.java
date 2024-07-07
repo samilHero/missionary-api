@@ -4,10 +4,10 @@ package com.samill.missionary_backend.missionary;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.samill.missionary_backend.common.AbstractSpringBootTestsBase;
+import com.samill.missionary_backend.common.exception.CommonException;
 import com.samill.missionary_backend.missionary.dto.CreateMissionaryCommand;
 import com.samill.missionary_backend.missionary.dto.GetMissionariesByRegionQuery;
 import com.samill.missionary_backend.missionary.dto.GetMissionaryRegionsQueryResultRegion;
-import com.samill.missionary_backend.missionary.exception.MissionaryException;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Test;
 
@@ -57,7 +57,7 @@ public class MissionaryManagementTests extends AbstractSpringBootTestsBase {
     }
 
     @Test
-    void 선교_생성() throws MissionaryException {
+    void 선교_생성() throws CommonException {
         final var regionIds = missionaryExternalService.getMissionaryRegions()
             .regions()
             .stream()
@@ -66,6 +66,7 @@ public class MissionaryManagementTests extends AbstractSpringBootTestsBase {
 
         for (final var regionId : regionIds) {
             final var result = missionaryExternalService.createMissionary(
+                "89b1516a-d3c4-4da6-9262-20c0ec305a69",
                 new CreateMissionaryCommand(
                     regionId,
                     "선교",
@@ -78,6 +79,27 @@ public class MissionaryManagementTests extends AbstractSpringBootTestsBase {
             assertThat(result).isNotNull();
             assertThat(result.id()).isNotNull();
         }
+    }
 
+    @Test
+    void 선교_준비팀_임명() throws CommonException {
+//        final var memberExternalService = mock(MemberExternalService.class);
+//        final var missionaryStaffService = new MissionaryStaffService(
+//        );
+//
+//        new MissionaryManagement(
+//            null,
+//            missionaryStaffService,
+//            memberExternalService,
+//            null,
+//            null,
+//            null,
+//            null,
+//            null,
+//            );
+
+//        final var Missionar
+
+//        missionaryExternalService.appointMissionaryStaffs();
     }
 }

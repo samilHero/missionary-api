@@ -3,10 +3,18 @@ package com.samill.missionary_backend.gateway.mapper.admin;
 import com.samill.missionary_backend.church.dto.CreateMissionaryCommandResult;
 import com.samill.missionary_backend.gateway.dto.CreateMissionaryRequest;
 import com.samill.missionary_backend.gateway.dto.CreateMissionaryResult;
+import com.samill.missionary_backend.gateway.dto.CreateMissionaryStaffsRequest;
+import com.samill.missionary_backend.gateway.dto.CreateMissionaryStaffsRequestStaff;
+import com.samill.missionary_backend.gateway.dto.CreateMissionaryStaffsResult;
+import com.samill.missionary_backend.gateway.dto.CreateMissionaryStaffsResultStaff;
 import com.samill.missionary_backend.gateway.dto.GetAdminMissionariesResult;
 import com.samill.missionary_backend.gateway.dto.GetAdminMissionariesResultMissionary;
 import com.samill.missionary_backend.gateway.dto.GetMissionaryRegionsResult;
 import com.samill.missionary_backend.gateway.dto.GetMissionaryRegionsResultRegion;
+import com.samill.missionary_backend.missionary.dto.AppointMissionaryStaffsCommand;
+import com.samill.missionary_backend.missionary.dto.AppointMissionaryStaffsCommandResult;
+import com.samill.missionary_backend.missionary.dto.AppointMissionaryStaffsCommandResultStaff;
+import com.samill.missionary_backend.missionary.dto.AppointMissionaryStaffsCommandStaff;
 import com.samill.missionary_backend.missionary.dto.CreateMissionaryCommand;
 import com.samill.missionary_backend.missionary.dto.GetMissionariesByRegionQueryResult;
 import com.samill.missionary_backend.missionary.dto.GetMissionariesByRegionQueryResultMissionary;
@@ -69,7 +77,41 @@ public interface AdminMissionaryGatewayMapper {
 
     @NonNull CreateMissionaryResult toCreateMissionaryResult(@NonNull CreateMissionaryCommandResult createMissionaryCommandResult);
 
+    default @NonNull AppointMissionaryStaffsCommand toAppointMissionaryStaffsCommand(
+        @NonNull String missionaryId,
+        @NonNull CreateMissionaryStaffsRequest createMissionaryStaffsRequest
+    ) {
 
+        final Function<CreateMissionaryStaffsRequestStaff, AppointMissionaryStaffsCommandStaff> staffToCommandStaff =
+            (CreateMissionaryStaffsRequestStaff staff) -> new AppointMissionaryStaffsCommandStaff(
+                staff.userId(),
+                staff.role()
+            );
+
+        return new AppointMissionaryStaffsCommand(
+            missionaryId,
+            createMissionaryStaffsRequest.staffs().stream()
+                .map(staffToCommandStaff)
+                .toList()
+        );
+    }
+
+    default @NonNull CreateMissionaryStaffsResult toCreateMissionaryStaffsResult(
+        @NonNull AppointMissionaryStaffsCommandResult appointMissionaryStaffsCommand) {
+
+        final Function<@NonNull AppointMissionaryStaffsCommandResultStaff, @NonNull CreateMissionaryStaffsResultStaff>
+            toCreateMissionaryStaffsResultStaff = (AppointMissionaryStaffsCommandResultStaff staff) -> new CreateMissionaryStaffsResultStaff(
+            staff.id(),
+            staff.userId(),
+            staff.role()
+        );
+
+        return new CreateMissionaryStaffsResult(
+            appointMissionaryStaffsCommand.missionaryStaffs().stream()
+                .map(toCreateMissionaryStaffsResultStaff)
+                .toList()
+        );
+    }
 }
 
 

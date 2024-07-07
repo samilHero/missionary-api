@@ -35,14 +35,14 @@ public class AdminGatewayManagementEndPoint {
     public static final String GET_PARTICIPATION = BASE_URL + "/participation/{participationId}";
 
     public static final String UPDATE_PARTICIPATION_APPROVE = BASE_URL + "/participation/approve";
-  
+
     public static final String GET_DOWNLOAD_PARTICIPATION_LIST = BASE_URL + "/participation/download/{missionaryId}";
 
     public static final String UPDATE_TEAM_MEMBER = BASE_URL + "/team/{teamId}/members";
-  
+
     public static final String GET_STAFF_USERS_V1 = BASE_URL + "/v1/staffs/{missionaryId}/users";
 
-    public static final String POST_STAFF_V1 = BASE_URL + "/v1/staffs/{missionaryId}";
+    public static final String CREATE_MISSIONARY_STAFF = BASE_URL + "/v1/staffs/{missionaryId}";
 
     public static final String DELETE_STAFF_V1 = BASE_URL + "/v1/staffs/{missionaryId}";
 

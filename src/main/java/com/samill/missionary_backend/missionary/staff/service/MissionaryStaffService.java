@@ -21,13 +21,13 @@ public class MissionaryStaffService {
         return missionaryStaffRepository.findByMissionary_IdAndUserId(missionaryId, userId).isPresent();
     }
 
-    public void appointMissionaryStaffs(
+    public @NonNull List<MissionaryStaff> appointMissionaryStaffs(
         @NonNull Missionary missionary,
         @NonNull List<AppointMissionaryStaffsCommandStaff> staffs
     ) {
-        missionaryStaffRepository.saveAll(
+        return missionaryStaffRepository.saveAll(
             staffs.stream()
-                .map((staff) -> MissionaryStaffMapper.INSTANCE.appointMissionaryStaffToMissionaryStaff(missionary, staff))
+                .map((staff) -> MissionaryStaffMapper.INSTANCE.toMissionaryStaff(missionary, staff))
                 .toList()
         );
     }

@@ -29,4 +29,8 @@ public enum ServiceType implements EnumModel {
     public String getRoot() {
         return root;
     }
+
+    public boolean isNotAdmin() {
+        return this != ADMIN_SERVICE;
+    }
 }

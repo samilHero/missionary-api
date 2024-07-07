@@ -1,5 +1,12 @@
 package com.samill.missionary_backend.missionary.dto;
 
-public record AppointMissionaryStaffsCommandResult() {
+
+import java.util.List;
+import lombok.NonNull;
+
+public record AppointMissionaryStaffsCommandResult(
+    @NonNull List<AppointMissionaryStaffsCommandResultStaff> missionaryStaffs
+) {
+
 
 }

@@ -6,6 +6,7 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
 import com.samill.missionary_backend.configs.DateTimeProviderConfig;
@@ -18,6 +19,7 @@ import com.samill.missionary_backend.missionary.staff.entity.MissionaryStaff;
 import com.samill.missionary_backend.missionary.staff.repository.MissionaryStaffRepository;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -57,23 +59,35 @@ class MissionaryStaffServiceTests {
     void 선교_스태프_임명() {
         /// Given
         final var missionary = Missionary.builder()
-            .id("db6d5fb0-2b68-47cd-ba6d-653276c23efb")
             .name("선교")
             .build();
 
         final var userId = "8ff1051f-085c-42ee-bacc-06656c9bf8db";
 
-        when(missionaryStaffRepository.findAllByUserId(anyString())).thenReturn(
-            List.of(MissionaryStaff.builder().missionary(missionary).userId(userId).build())
-        );
+        final var missionaryStaff = MissionaryStaff.builder()
+            .missionary(missionary)
+            .userId(userId)
+            .build();
 
-        missionaryStaffService.appointMissionaryStaffs(
+        final var savedMissionaryStaff = MissionaryStaff.builder()
+            .id(UUID.randomUUID().toString())
+            .missionary(missionary)
+            .userId(userId)
+            .build();
+
+        when(missionaryStaffRepository.saveAll(List.of(missionaryStaff))).thenReturn(List.of(savedMissionaryStaff));
+
+        // When
+        final var missionaryStaffs = missionaryStaffService.appointMissionaryStaffs(
             missionary,
-            List.of(new AppointMissionaryStaffsCommandStaff(userId, MissionaryStaffRole.MEMBER))
+            List.of(new AppointMissionaryStaffsCommandStaff(userId, MissionaryStaffRole.MEMBER.getKey()))
         );
 
-        assertThat(missionaryStaffService.getMissionaryStaffsByUserId(userId))
-            .anyMatch(missionaryStaff -> missionaryStaff.getUserId().equals(userId));
+        // Then
+        assertThat(missionaryStaffs).contains(savedMissionaryStaff);
+        assertThat(missionaryStaffs).hasSize(1);
+        verify(missionaryStaffRepository, times(1)).saveAll(List.of(missionaryStaff));
+        verifyNoMoreInteractions(missionaryStaffRepository);
     }
 
     @Test
