@@ -49,13 +49,14 @@ spring:
     username: ${MQ_USERNAME}
     password: ${MQ_PASSWORD}
     ssl:
-      enabled: true
+      enabled: false
 
   # redis
   data:
     redis:
       host: ${REDIS_HOST}
       port: ${REDIS_PORT}
+      password: ${REDIS_PASSWORD}
 
 # RabbitMQ queue, exchange, routing-key 정보
 rabbitmq:
