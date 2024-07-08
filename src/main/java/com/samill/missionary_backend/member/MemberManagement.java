@@ -127,8 +127,7 @@ public class MemberManagement implements MemberExternalService {
 
     @Override
     public @NonNull List<GetUserDto> getUsersByIds(@NonNull List<String> userIds) {
-        /// TODO: 구현 부탁
-        return List.of();
+        return userService.getUsersByUserIds(userIds);
     }
 
     @Transactional(readOnly = true)

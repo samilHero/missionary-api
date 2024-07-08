@@ -40,4 +40,5 @@ public interface MemberExternalService {
     @NonNull GetMemberServiceTypeDto getMemberServiceType(String memberId) throws MemberException;
 
     Boolean isExistedUserByLoginId(String userId);
+
 }
