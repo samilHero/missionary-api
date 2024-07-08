@@ -1,5 +1,6 @@
 package com.samill.missionary_backend.common;
 
+import com.samill.missionary_backend.member.MemberExternalService;
 import com.samill.missionary_backend.missionary.MissionaryExternalService;
 import com.samill.missionary_backend.missionary.participation.repository.ParticipationRepository;
 import com.samill.missionary_backend.missionary.participation.service.ParticipationService;
@@ -13,6 +14,10 @@ public abstract class AbstractSpringBootTestsBase {
 
     @Autowired
     protected MissionaryExternalService missionaryExternalService;
+
+    @Autowired
+    protected MemberExternalService memberExternalService;
+
 
     @Autowired
     protected ParticipationService participationService;
