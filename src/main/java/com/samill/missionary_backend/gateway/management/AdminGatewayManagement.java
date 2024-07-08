@@ -15,7 +15,6 @@ import com.samill.missionary_backend.gateway.dto.LoginAdminResult;
 import com.samill.missionary_backend.gateway.dto.Participation.GetParticipationResult;
 import com.samill.missionary_backend.gateway.dto.UpdateChurchRequest;
 import com.samill.missionary_backend.gateway.endPoint.AdminGatewayManagementEndPoint;
-import com.samill.missionary_backend.gateway.endPoint.StaffGatewayManagementEndPoint;
 import com.samill.missionary_backend.gateway.mapper.AdminGatewayMapper;
 import com.samill.missionary_backend.gateway.mapper.ChurchGatewayMapper;
 import com.samill.missionary_backend.gateway.mapper.ParticipationGatewayMapper;

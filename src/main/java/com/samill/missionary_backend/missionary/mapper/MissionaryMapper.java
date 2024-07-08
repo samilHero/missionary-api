@@ -1,5 +1,7 @@
 package com.samill.missionary_backend.missionary.mapper;
 
+import com.samill.missionary_backend.missionary.dto.AppointMissionaryStaffsCommandResult;
+import com.samill.missionary_backend.missionary.dto.AppointMissionaryStaffsCommandResultStaff;
 import com.samill.missionary_backend.missionary.dto.CreateMissionaryCommand;
 import com.samill.missionary_backend.missionary.dto.CreateMissionaryCommandPoster;
 import com.samill.missionary_backend.missionary.dto.GetMissionariesByRegionQueryResult;
@@ -13,6 +15,7 @@ import com.samill.missionary_backend.missionary.enums.MissionaryRegionType;
 import com.samill.missionary_backend.missionary.missionary.entity.Missionary;
 import com.samill.missionary_backend.missionary.missionary.entity.MissionaryPoster;
 import com.samill.missionary_backend.missionary.region.entity.MissionaryRegion;
+import com.samill.missionary_backend.missionary.staff.entity.MissionaryStaff;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -95,10 +98,24 @@ public interface MissionaryMapper {
             );
 
         return new GetMissionariesByRegionQueryResult(
-            missionaryPage.stream().map(toGetMissionaryQueryResult).toList(),
+            missionaryPage.getContent().stream().map(toGetMissionaryQueryResult).toList(),
             Long.valueOf(missionaryPage.getTotalElements()).intValue(),
             missionaryPage.getTotalPages() + 1,
             missionaryPage.getNumber() + 1
+        );
+    }
+
+
+    default AppointMissionaryStaffsCommandResult toAppointMissionaryStaffsCommandResult(List<MissionaryStaff> missionaryStaff) {
+        final Function<MissionaryStaff, AppointMissionaryStaffsCommandResultStaff> toAppointMissionaryStaffsCommandResultStaff =
+            staff -> new AppointMissionaryStaffsCommandResultStaff(
+                staff.getId(),
+                staff.getUserId(),
+                staff.getRole().getKey()
+            );
+
+        return new AppointMissionaryStaffsCommandResult(
+            missionaryStaff.stream().map(toAppointMissionaryStaffsCommandResultStaff).toList()
         );
     }
 

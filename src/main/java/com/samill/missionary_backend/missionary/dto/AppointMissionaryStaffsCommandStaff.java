@@ -3,19 +3,23 @@ package com.samill.missionary_backend.missionary.dto;
 import com.samill.missionary_backend.missionary.enums.MissionaryStaffRole;
 import lombok.NonNull;
 
-public record AppointMissionaryStaffsCommandStaff(
-    @NonNull
-    String userId,
-    MissionaryStaffRole role
-) {
+public class AppointMissionaryStaffsCommandStaff {
 
+    private final @NonNull String userId;
 
-    @Override
-    public MissionaryStaffRole role() {
-        if (role == null) {
-            return MissionaryStaffRole.MEMBER;
-        }
+    private final @NonNull String role;
 
-        return role;
+    public AppointMissionaryStaffsCommandStaff(@NonNull String userId, @NonNull String role) {
+        this.userId = userId;
+        this.role = role;
     }
+
+    public String userId() {
+        return userId;
+    }
+
+    public MissionaryStaffRole role() {
+        return MissionaryStaffRole.valueOf(role.toUpperCase());
+    }
+
 }

@@ -3,6 +3,7 @@ package com.samill.missionary_backend.missionary;
 import com.samill.missionary_backend.church.dto.CreateMissionaryCommandResult;
 import com.samill.missionary_backend.common.exception.CommonException;
 import com.samill.missionary_backend.missionary.dto.AppointMissionaryStaffsCommand;
+import com.samill.missionary_backend.missionary.dto.AppointMissionaryStaffsCommandResult;
 import com.samill.missionary_backend.missionary.dto.CreateMissionaryBoardCommand;
 import com.samill.missionary_backend.missionary.dto.CreateMissionaryBoardCommandResult;
 import com.samill.missionary_backend.missionary.dto.CreateMissionaryCommand;
@@ -40,8 +41,10 @@ public interface MissionaryExternalService {
 
     @NonNull CreateMissionaryCommandResult createMissionary(
         @NonNull
+        String memberId,
+        @NonNull
         CreateMissionaryCommand createMissionaryCommand
-    ) throws MissionaryException;
+    ) throws CommonException;
 
     void updateMissionary(
         @NonNull
@@ -112,7 +115,7 @@ public interface MissionaryExternalService {
     List<String[]> downloadParticipationListCsv(String missionaryId,
         GetParticipationsDownloadQuery getParticipationsDownloadQuery);
 
-    void appointMissionaryStaffs(
+    @NonNull AppointMissionaryStaffsCommandResult appointMissionaryStaffs(
         @NonNull String memberId,
         @NonNull AppointMissionaryStaffsCommand appointMissionaryStaffsCommand
     ) throws CommonException;
@@ -120,7 +123,7 @@ public interface MissionaryExternalService {
     void disappointMissionaryStaffs(
         @NonNull String memberId,
         @NonNull DisappointMissionaryStaffsCommand disappointMissionaryStaffsCommand
-    ) throws MissionaryException;
+    ) throws CommonException;
 
     void getMissionaryStaffs(@NonNull GetMissionaryStaffsQuery getMissionaryStaffsQuery) throws CommonException;
 

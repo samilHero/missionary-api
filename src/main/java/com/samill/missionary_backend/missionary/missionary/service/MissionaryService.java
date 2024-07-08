@@ -1,6 +1,5 @@
 package com.samill.missionary_backend.missionary.missionary.service;
 
-import com.samill.missionary_backend.church.dto.CreateMissionaryCommandResult;
 import com.samill.missionary_backend.missionary.dto.CreateMissionaryCommand;
 import com.samill.missionary_backend.missionary.dto.GetMissionariesByRegionQuery;
 import com.samill.missionary_backend.missionary.dto.GetMissionaryIdsQuery;
@@ -29,9 +28,9 @@ public class MissionaryService {
 
     private final MissionaryRepository missionaryRepository;
 
-    public CreateMissionaryCommandResult createMissionary(@NonNull CreateMissionaryCommand createMissionaryCommand) {
+    public @NonNull String createMissionary(@NonNull CreateMissionaryCommand createMissionaryCommand) {
         final var missionary = MissionaryMapper.INSTANCE.toMissionary(createMissionaryCommand);
-        return new CreateMissionaryCommandResult(missionaryRepository.save(missionary).getId());
+        return missionaryRepository.save(missionary).getId();
     }
 
     public void updateMissionary(@NonNull String missionaryId, @NonNull UpdateMissionaryCommand updateMissionaryCommand) throws MissionaryException {

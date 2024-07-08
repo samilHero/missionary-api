@@ -22,14 +22,15 @@ public enum ResponseCode implements EnumModel {
 
     ACCESS_DENIED_MISSIONARY_BOARD(931, "게시판에 접근 권한이 없습니다."),
 
+    ACCESS_DENIED_MISSIONARY_STAFF(999, "준비팀 접근 권한이 없습니다."),
+
     NOT_FOUND_MISSIONARY_STAFF(999, "존재 하지 않는 스태프입니다."),
 
     PARTICIPATION_MAXIMUM_EXCEEDED(1101, "선교신청 가능한 정원이 가득찼습니다."),
     PARTICIPATION_ALREADY_PARTICIPATED(1101, "선교에 이미 신청되었습니다."),
     PARTICIPATION_NOT_ENROLLED(1102, "선교에 신청되어 있지 않습니다."),
     PARTICIPATION_NOT_FOUND(1104, "존재하지 않는 신청내역입니다."),
-    TEAM_NOT_FOUND(1201, "존재하지 않는 팀입니다.")
-    ;
+    TEAM_NOT_FOUND(1201, "존재하지 않는 팀입니다.");
 
     private final Integer code;
     private final String message;

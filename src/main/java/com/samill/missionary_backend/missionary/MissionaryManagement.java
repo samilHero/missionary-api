@@ -12,6 +12,7 @@ import com.samill.missionary_backend.missionary.board.module.MissionaryBoardStaf
 import com.samill.missionary_backend.missionary.board.module.MissionaryBoardUserModule;
 import com.samill.missionary_backend.missionary.board.service.MissionaryBoardService;
 import com.samill.missionary_backend.missionary.dto.AppointMissionaryStaffsCommand;
+import com.samill.missionary_backend.missionary.dto.AppointMissionaryStaffsCommandResult;
 import com.samill.missionary_backend.missionary.dto.AppointMissionaryStaffsCommandStaff;
 import com.samill.missionary_backend.missionary.dto.CreateMissionaryBoardCommand;
 import com.samill.missionary_backend.missionary.dto.CreateMissionaryBoardCommandResult;
@@ -48,6 +49,7 @@ import com.samill.missionary_backend.missionary.participation.entity.Participati
 import com.samill.missionary_backend.missionary.participation.mapper.ParticipationMapper;
 import com.samill.missionary_backend.missionary.participation.service.ParticipationService;
 import com.samill.missionary_backend.missionary.region.service.MissionaryRegionService;
+import com.samill.missionary_backend.missionary.staff.exception.AccessDeniedMissionaryStaffException;
 import com.samill.missionary_backend.missionary.staff.service.MissionaryStaffService;
 import com.samill.missionary_backend.missionary.team.entity.Team;
 import com.samill.missionary_backend.missionary.team.entity.TeamMember;
@@ -77,9 +79,15 @@ class MissionaryManagement implements MissionaryExternalService {
 
     @Override
     @Transactional
-    public @NonNull CreateMissionaryCommandResult createMissionary(@NonNull CreateMissionaryCommand createMissionaryCommand)
-        throws MissionaryException {
-        return missionaryService.createMissionary(createMissionaryCommand);
+    public @NonNull CreateMissionaryCommandResult createMissionary(
+        @NonNull String memberId,
+        @NonNull CreateMissionaryCommand createMissionaryCommand
+    ) throws CommonException {
+        if (memberExternalService.getMemberServiceType(memberId).serviceType().isNotAdmin()) {
+            throw new AccessDeniedMissionaryStaffException();
+        }
+
+        return new CreateMissionaryCommandResult(missionaryService.createMissionary(createMissionaryCommand));
     }
 
     @Override
@@ -290,26 +298,43 @@ class MissionaryManagement implements MissionaryExternalService {
 
     @Override
     @Transactional
-    public void appointMissionaryStaffs(
+    public @NonNull AppointMissionaryStaffsCommandResult appointMissionaryStaffs(
         @NonNull String memberId,
         @NonNull AppointMissionaryStaffsCommand appointMissionaryStaffsCommand
     ) throws CommonException {
+        if (memberExternalService.getMemberServiceType(memberId).serviceType().isNotAdmin()) {
+            throw new AccessDeniedMissionaryStaffException();
+        }
 
         final var missionary = missionaryService.getMissionary(appointMissionaryStaffsCommand.missionaryId());
 
         /// TODO: 제거된 회원을 스태프에 임명하려고할 때 어떻게 해야하는가?.
-        memberExternalService.getUsersByIds(appointMissionaryStaffsCommand.staffs().stream()
+        final var getUsersResult = memberExternalService.getUsersByIds(appointMissionaryStaffsCommand.staffs().stream()
             .map(AppointMissionaryStaffsCommandStaff::userId)
             .toList()
         );
 
-        missionaryStaffService.appointMissionaryStaffs(missionary, appointMissionaryStaffsCommand.staffs());
+        return MissionaryMapper.INSTANCE.toAppointMissionaryStaffsCommandResult(
+            missionaryStaffService.appointMissionaryStaffs(
+                missionary,
+                appointMissionaryStaffsCommand.staffs()
+                    .stream()
+                    .filter(staff -> getUsersResult.stream().anyMatch(user -> user.id().equals(staff.userId())))
+                    .toList()
+            )
+        );
+
     }
 
     @Override
     @Transactional
     public void disappointMissionaryStaffs(@NonNull String memberId, @NonNull DisappointMissionaryStaffsCommand disappointMissionaryStaffsCommand)
-        throws MissionaryException {
+        throws CommonException {
+
+        if (memberExternalService.getMemberServiceType(memberId).serviceType().isNotAdmin()) {
+            throw new AccessDeniedMissionaryStaffException();
+        }
+
         missionaryStaffService.disappointMissionaryStaffs(
             disappointMissionaryStaffsCommand.missionaryId(),
             disappointMissionaryStaffsCommand.userIds()

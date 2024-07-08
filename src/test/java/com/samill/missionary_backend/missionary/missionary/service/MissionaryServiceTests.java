@@ -114,10 +114,10 @@ class MissionaryServiceTests {
             .thenReturn(missionary);
 
         // WHEN
-        final var createMissionaryCommandResult = missionaryService.createMissionary(createMissionaryCommand);
+        final var missionaryId = missionaryService.createMissionary(createMissionaryCommand);
 
         // THEN
-        assertThat(createMissionaryCommandResult.id()).isEqualTo(missionary.getId());
+        assertThat(missionaryId).isEqualTo(missionary.getId());
         verify(missionaryRepository).save(missionary);
         verifyNoMoreInteractions(missionaryRepository);
     }

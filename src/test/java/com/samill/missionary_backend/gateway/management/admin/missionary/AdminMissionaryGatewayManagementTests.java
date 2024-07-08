@@ -12,9 +12,13 @@ import com.epages.restdocs.apispec.ResourceSnippetParametersBuilder;
 import com.epages.restdocs.apispec.Schema;
 import com.epages.restdocs.apispec.SimpleType;
 import com.samill.missionary_backend.common.AbstractControllerTestsBase;
+import com.samill.missionary_backend.gateway.dto.AppointMissionaryStaffsRequest;
+import com.samill.missionary_backend.gateway.dto.AppointMissionaryStaffsRequestStaff;
 import com.samill.missionary_backend.gateway.dto.CreateMissionaryRequest;
+import com.samill.missionary_backend.gateway.dto.DisappointMissionaryStaffsRequest;
 import com.samill.missionary_backend.gateway.endPoint.AdminGatewayManagementEndPoint;
 import java.time.OffsetDateTime;
+import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
@@ -147,6 +151,104 @@ class AdminMissionaryGatewayManagementTests extends AbstractControllerTestsBase 
             .andExpect(status().isOk());
     }
 
+    @Test
+    void 선교_준비팀_임명() throws Exception {
+        mockMvc.perform(
+                RestDocumentationRequestBuilders.post(
+                        AdminGatewayManagementEndPoint.APPOINT_MISSIONARY_STAFF,
+                        "db6d5fb0-2b68-47cd-ba6d-653276c23efb"
+                    )
+                    .accept(MediaType.APPLICATION_JSON)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .header("Authorization", getAuthorizationAdminOfHeader())
+                    .content(
+                        jacksonObjectMapper.writeValueAsString(
+                            new AppointMissionaryStaffsRequest(
+                                List.of(
+                                    new AppointMissionaryStaffsRequestStaff(
+                                        "8ff1051f-085c-42ee-bacc-06656c9bf8db",
+                                        "MEMBER"
+                                    )
+                                )
+                            )
+                        )
+                    )
+            )
+            .andDo(print())
+            .andDo(
+                document(
+                    snippetPath,
+                    resource(
+                        new ResourceSnippetParametersBuilder()
+                            .tag("ADMIN_MISSIONARY")
+                            .description("선교 준비팀 임명")
+                            .requestSchema(Schema.schema("AppointMissionaryStaffsRequest"))
+                            .requestFields(
+                                subsectionWithPath("staffs").type(JsonFieldType.ARRAY).description("선교 준비팀 목록"),
+                                fieldWithPath("staffs.[].userId").type(JsonFieldType.STRING).description("사용자 ID"),
+                                fieldWithPath("staffs.[].role").type(JsonFieldType.STRING).description("역할 (MEMBER, LEADER)")
+                            )
+                            .responseSchema(Schema.schema("AppointMissionaryStaffsResponse"))
+                            .responseFields(
+                                fieldWithPath("statusCode").type(JsonFieldType.NUMBER).description("결과 코드"),
+                                fieldWithPath("message").type(JsonFieldType.STRING).description("결과 메시지"),
+                                subsectionWithPath("data.staffs").type(JsonFieldType.ARRAY).description("선교 준비팀 목록"),
+                                fieldWithPath("data.staffs.[].id").type(JsonFieldType.STRING).description("준비팀 ID"),
+                                fieldWithPath("data.staffs.[].userId").type(JsonFieldType.STRING).description("사용자 ID"),
+                                fieldWithPath("data.staffs.[].role").type(JsonFieldType.STRING).description("역할 (MEMBER, LEADER)")
+                            )
+                            .build()
+                    )
+                )
+            )
+            .andExpect(status().isOk());
+
+    }
+
+    @Test
+    void 선교_준비팀_해임() throws Exception {
+        mockMvc.perform(
+                RestDocumentationRequestBuilders.delete(
+                        AdminGatewayManagementEndPoint.DISAPPOINT_MISSIONARY_STAFF,
+                        "db6d5fb0-2b68-47cd-ba6d-653276c23efb"
+                    )
+                    .accept(MediaType.APPLICATION_JSON)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .header("Authorization", getAuthorizationAdminOfHeader())
+                    .content(
+                        jacksonObjectMapper.writeValueAsString(
+                            new DisappointMissionaryStaffsRequest(
+                                List.of(
+                                    "8ff1051f-085c-42ee-bacc-06656c9bf8db"
+                                )
+                            )
+                        )
+                    )
+            )
+            .andDo(print())
+            .andDo(
+                document(
+                    snippetPath,
+                    resource(
+                        new ResourceSnippetParametersBuilder()
+                            .tag("ADMIN_MISSIONARY")
+                            .description("선교 준비팀 해임")
+                            .requestSchema(Schema.schema("AppointMissionaryStaffsRequest"))
+                            .requestFields(
+                                subsectionWithPath("userIds").type(JsonFieldType.ARRAY).description("선교 준비팀 목록")
+                            )
+                            .responseSchema(Schema.schema("AppointMissionaryStaffsResponse"))
+                            .responseFields(
+                                fieldWithPath("statusCode").type(JsonFieldType.NUMBER).description("결과 코드"),
+                                fieldWithPath("message").type(JsonFieldType.STRING).description("결과 메시지"),
+                                fieldWithPath("data").type(JsonFieldType.NULL).description("결과")
+                            )
+                            .build()
+                    )
+                )
+            )
+            .andExpect(status().isOk());
+    }
 //    @Test
 //    @Transactional
 //    void 어드민_카테고리별_선교_조회() throws Exception {
