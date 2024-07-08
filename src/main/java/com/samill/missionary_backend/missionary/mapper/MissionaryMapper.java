@@ -98,7 +98,7 @@ public interface MissionaryMapper {
             );
 
         return new GetMissionariesByRegionQueryResult(
-            missionaryPage.stream().map(toGetMissionaryQueryResult).toList(),
+            missionaryPage.getContent().stream().map(toGetMissionaryQueryResult).toList(),
             Long.valueOf(missionaryPage.getTotalElements()).intValue(),
             missionaryPage.getTotalPages() + 1,
             missionaryPage.getNumber() + 1

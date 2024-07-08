@@ -1,10 +1,11 @@
 package com.samill.missionary_backend.gateway.management.admin;
 
 import com.samill.missionary_backend.common.exception.CommonException;
+import com.samill.missionary_backend.gateway.dto.AppointMissionaryStaffsRequest;
+import com.samill.missionary_backend.gateway.dto.AppointMissionaryStaffsResult;
 import com.samill.missionary_backend.gateway.dto.CreateMissionaryRequest;
 import com.samill.missionary_backend.gateway.dto.CreateMissionaryResult;
-import com.samill.missionary_backend.gateway.dto.CreateMissionaryStaffsRequest;
-import com.samill.missionary_backend.gateway.dto.CreateMissionaryStaffsResult;
+import com.samill.missionary_backend.gateway.dto.DisappointMissionaryStaffsRequest;
 import com.samill.missionary_backend.gateway.dto.GetAdminMissionariesResult;
 import com.samill.missionary_backend.gateway.dto.GetAdminMissionaryResult;
 import com.samill.missionary_backend.gateway.dto.GetMissionaryRegionsResult;
@@ -17,6 +18,7 @@ import jakarta.validation.Valid;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -77,10 +79,10 @@ public class AdminMissionaryGatewayManagement {
         );
     }
 
-    @PostMapping(AdminGatewayManagementEndPoint.CREATE_MISSIONARY_STAFF)
-    public @NonNull CreateMissionaryStaffsResult createMissionaryStaffs(
+    @PostMapping(AdminGatewayManagementEndPoint.APPOINT_MISSIONARY_STAFF)
+    public @NonNull AppointMissionaryStaffsResult appointMissionaryStaffs(
         @NonNull @PathVariable String missionaryId,
-        @NonNull @RequestBody CreateMissionaryStaffsRequest request
+        @NonNull @RequestBody AppointMissionaryStaffsRequest request
     ) throws CommonException {
         return AdminMissionaryGatewayMapper.INSTANCE.toCreateMissionaryStaffsResult(
             missionaryExternalService.appointMissionaryStaffs(
@@ -91,6 +93,19 @@ public class AdminMissionaryGatewayManagement {
                 )
             )
         );
+    }
 
+    @DeleteMapping(AdminGatewayManagementEndPoint.DISAPPOINT_MISSIONARY_STAFF)
+    public void disappointMissionaryStaffs(
+        @NonNull @PathVariable String missionaryId,
+        @NonNull @RequestBody DisappointMissionaryStaffsRequest request
+    ) throws CommonException {
+        missionaryExternalService.disappointMissionaryStaffs(
+            "89b1516a-d3c4-4da6-9262-20c0ec305a69",
+            AdminMissionaryGatewayMapper.INSTANCE.toDisappointMissionaryStaffsCommand(
+                missionaryId,
+                request
+            )
+        );
     }
 }

@@ -2,7 +2,6 @@ package com.samill.missionary_backend.missionary.staff.service;
 
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -94,16 +93,16 @@ class MissionaryStaffServiceTests {
     void 선교_스태프_해임() throws MissionaryException {
         /// Given
         final var missionaryId = "db6d5fb0-2b68-47cd-ba6d-653276c23efb";
-        final var userId = "8ff1051f-085c-42ee-bacc-06656c9bf8db";
-        when(missionaryStaffRepository.existsByMissionary_IdAndUserId(anyString(), anyString())).thenReturn(true);
+        final var userIds = List.of("8ff1051f-085c-42ee-bacc-06656c9bf8db");
 
         /// When
         missionaryStaffService.disappointMissionaryStaffs(
             missionaryId,
-            List.of(userId)
+            userIds
         );
 
         /// Then
-        verify(missionaryStaffRepository, times(1)).deleteAllByMissionary_IdAndUserIdIn(missionaryId, List.of(userId));
+        verify(missionaryStaffRepository, times(1)).deleteAllByMissionary_IdAndUserIdIn(missionaryId, userIds);
+        verifyNoMoreInteractions(missionaryStaffRepository);
     }
 }

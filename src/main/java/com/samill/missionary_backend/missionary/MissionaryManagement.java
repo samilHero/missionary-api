@@ -87,7 +87,7 @@ class MissionaryManagement implements MissionaryExternalService {
             throw new AccessDeniedMissionaryStaffException();
         }
 
-        return missionaryService.createMissionary(createMissionaryCommand);
+        return new CreateMissionaryCommandResult(missionaryService.createMissionary(createMissionaryCommand));
     }
 
     @Override
@@ -329,7 +329,12 @@ class MissionaryManagement implements MissionaryExternalService {
     @Override
     @Transactional
     public void disappointMissionaryStaffs(@NonNull String memberId, @NonNull DisappointMissionaryStaffsCommand disappointMissionaryStaffsCommand)
-        throws MissionaryException {
+        throws CommonException {
+
+        if (memberExternalService.getMemberServiceType(memberId).serviceType().isNotAdmin()) {
+            throw new AccessDeniedMissionaryStaffException();
+        }
+
         missionaryStaffService.disappointMissionaryStaffs(
             disappointMissionaryStaffsCommand.missionaryId(),
             disappointMissionaryStaffsCommand.userIds()

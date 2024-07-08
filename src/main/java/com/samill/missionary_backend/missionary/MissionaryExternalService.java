@@ -123,7 +123,7 @@ public interface MissionaryExternalService {
     void disappointMissionaryStaffs(
         @NonNull String memberId,
         @NonNull DisappointMissionaryStaffsCommand disappointMissionaryStaffsCommand
-    ) throws MissionaryException;
+    ) throws CommonException;
 
     void getMissionaryStaffs(@NonNull GetMissionaryStaffsQuery getMissionaryStaffsQuery) throws CommonException;
 

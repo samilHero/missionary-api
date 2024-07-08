@@ -42,8 +42,8 @@ public class AdminGatewayManagementEndPoint {
 
     public static final String GET_STAFF_USERS_V1 = BASE_URL + "/v1/staffs/{missionaryId}/users";
 
-    public static final String CREATE_MISSIONARY_STAFF = BASE_URL + "/v1/staffs/{missionaryId}";
+    public static final String APPOINT_MISSIONARY_STAFF = BASE_URL + "/v1/staffs/{missionaryId}";
 
-    public static final String DELETE_STAFF_V1 = BASE_URL + "/v1/staffs/{missionaryId}";
+    public static final String DISAPPOINT_MISSIONARY_STAFF = BASE_URL + "/v1/staffs/{missionaryId}";
 
 }

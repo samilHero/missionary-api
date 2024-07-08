@@ -1,12 +1,13 @@
 package com.samill.missionary_backend.gateway.mapper.admin;
 
 import com.samill.missionary_backend.church.dto.CreateMissionaryCommandResult;
+import com.samill.missionary_backend.gateway.dto.AppointMissionaryStaffsRequest;
+import com.samill.missionary_backend.gateway.dto.AppointMissionaryStaffsRequestStaff;
+import com.samill.missionary_backend.gateway.dto.AppointMissionaryStaffsResult;
 import com.samill.missionary_backend.gateway.dto.CreateMissionaryRequest;
 import com.samill.missionary_backend.gateway.dto.CreateMissionaryResult;
-import com.samill.missionary_backend.gateway.dto.CreateMissionaryStaffsRequest;
-import com.samill.missionary_backend.gateway.dto.CreateMissionaryStaffsRequestStaff;
-import com.samill.missionary_backend.gateway.dto.CreateMissionaryStaffsResult;
 import com.samill.missionary_backend.gateway.dto.CreateMissionaryStaffsResultStaff;
+import com.samill.missionary_backend.gateway.dto.DisappointMissionaryStaffsRequest;
 import com.samill.missionary_backend.gateway.dto.GetAdminMissionariesResult;
 import com.samill.missionary_backend.gateway.dto.GetAdminMissionariesResultMissionary;
 import com.samill.missionary_backend.gateway.dto.GetMissionaryRegionsResult;
@@ -16,6 +17,7 @@ import com.samill.missionary_backend.missionary.dto.AppointMissionaryStaffsComma
 import com.samill.missionary_backend.missionary.dto.AppointMissionaryStaffsCommandResultStaff;
 import com.samill.missionary_backend.missionary.dto.AppointMissionaryStaffsCommandStaff;
 import com.samill.missionary_backend.missionary.dto.CreateMissionaryCommand;
+import com.samill.missionary_backend.missionary.dto.DisappointMissionaryStaffsCommand;
 import com.samill.missionary_backend.missionary.dto.GetMissionariesByRegionQueryResult;
 import com.samill.missionary_backend.missionary.dto.GetMissionariesByRegionQueryResultMissionary;
 import com.samill.missionary_backend.missionary.dto.GetMissionaryRegionsQueryResult;
@@ -79,24 +81,24 @@ public interface AdminMissionaryGatewayMapper {
 
     default @NonNull AppointMissionaryStaffsCommand toAppointMissionaryStaffsCommand(
         @NonNull String missionaryId,
-        @NonNull CreateMissionaryStaffsRequest createMissionaryStaffsRequest
+        @NonNull AppointMissionaryStaffsRequest appointMissionaryStaffsRequest
     ) {
 
-        final Function<CreateMissionaryStaffsRequestStaff, AppointMissionaryStaffsCommandStaff> staffToCommandStaff =
-            (CreateMissionaryStaffsRequestStaff staff) -> new AppointMissionaryStaffsCommandStaff(
+        final Function<AppointMissionaryStaffsRequestStaff, AppointMissionaryStaffsCommandStaff> staffToCommandStaff =
+            (AppointMissionaryStaffsRequestStaff staff) -> new AppointMissionaryStaffsCommandStaff(
                 staff.userId(),
                 staff.role()
             );
 
         return new AppointMissionaryStaffsCommand(
             missionaryId,
-            createMissionaryStaffsRequest.staffs().stream()
+            appointMissionaryStaffsRequest.staffs().stream()
                 .map(staffToCommandStaff)
                 .toList()
         );
     }
 
-    default @NonNull CreateMissionaryStaffsResult toCreateMissionaryStaffsResult(
+    default @NonNull AppointMissionaryStaffsResult toCreateMissionaryStaffsResult(
         @NonNull AppointMissionaryStaffsCommandResult appointMissionaryStaffsCommand) {
 
         final Function<@NonNull AppointMissionaryStaffsCommandResultStaff, @NonNull CreateMissionaryStaffsResultStaff>
@@ -106,12 +108,17 @@ public interface AdminMissionaryGatewayMapper {
             staff.role()
         );
 
-        return new CreateMissionaryStaffsResult(
+        return new AppointMissionaryStaffsResult(
             appointMissionaryStaffsCommand.missionaryStaffs().stream()
                 .map(toCreateMissionaryStaffsResultStaff)
                 .toList()
         );
     }
+
+    @NonNull DisappointMissionaryStaffsCommand toDisappointMissionaryStaffsCommand(
+        @NonNull String missionaryId,
+        @NonNull DisappointMissionaryStaffsRequest disappointMissionaryStaffsRequest
+    );
 }
 
 

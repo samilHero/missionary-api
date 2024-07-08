@@ -3,7 +3,7 @@ package com.samill.missionary_backend.gateway.dto;
 import jakarta.validation.constraints.NotBlank;
 import lombok.NonNull;
 
-public record CreateMissionaryStaffsRequestStaff(
+public record AppointMissionaryStaffsRequestStaff(
     @NotBlank
     @NonNull
     String userId,
