@@ -11,15 +11,12 @@ import com.samill.missionary_backend.missionary.dto.GetParticipationQueryResult;
 import com.samill.missionary_backend.missionary.dto.GetParticipationsQuery;
 import com.samill.missionary_backend.missionary.participation.entity.Participation;
 import com.samill.missionary_backend.missionary.participation.mapper.ParticipationMapper;
-import com.samill.missionary_backend.missionary.participation.repository.ParticipationRepository;
-import com.samill.missionary_backend.missionary.participation.service.ParticipationService;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,11 +24,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 //@ContextConfiguration(classes = MissionaryBackendApplication.class)
 class ParticipationServiceTest extends AbstractSpringBootTestsBase {
-
-    @Autowired
-    private ParticipationService participationService;
-    @Autowired
-    private ParticipationRepository participationRepository;
 
 //    @AfterEach
 //    void tearDown() {
