@@ -19,7 +19,6 @@ class ParticipationMessageServiceTest extends AbstractSpringBootTestsBase {
     private RabbitMqProducer rabbitMqProducer;
 
     @Test
-    @Disabled // 임시
     @DisplayName("메시지를 보내면 리스너에서 응답을 받는다.")
     void 메시지_보내기() {
         //given

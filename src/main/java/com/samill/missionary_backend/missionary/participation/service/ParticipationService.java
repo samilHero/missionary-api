@@ -1,7 +1,7 @@
 package com.samill.missionary_backend.missionary.participation.service;
 
 import com.samill.missionary_backend.common.exception.CommonException;
-import com.samill.missionary_backend.missionary.dto.CreateParticipationCommand;
+import com.samill.missionary_backend.missionary.dto.CreateParticipationServiceCommand;
 import com.samill.missionary_backend.missionary.dto.DeleteParticipationCommand;
 import com.samill.missionary_backend.missionary.dto.GetParticipationQueryResult;
 import com.samill.missionary_backend.missionary.dto.GetParticipationsDownloadQuery;
@@ -15,7 +15,7 @@ import org.springframework.data.domain.Pageable;
 
 public interface ParticipationService {
 
-    void createParticipation(CreateParticipationCommand createParticipationDto, int maxCount) throws CommonException;
+    void createParticipation(CreateParticipationServiceCommand createParticipationDto) throws CommonException;
 
     void deleteParticipation(String participationId, DeleteParticipationCommand deleteParticipationCommand) throws CommonException;
 
