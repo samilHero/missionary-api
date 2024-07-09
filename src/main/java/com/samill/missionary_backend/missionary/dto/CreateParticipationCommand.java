@@ -1,15 +1,12 @@
 package com.samill.missionary_backend.missionary.dto;
 
-import com.samill.missionary_backend.member.dto.GetUserDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Builder
 @Getter
-@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class CreateParticipationCommand {
@@ -23,8 +20,4 @@ public class CreateParticipationCommand {
     private Integer applyFee;
     private Boolean isOwnCar;
 
-    public void updateUserInfo(GetUserDto getUserDto) {
-        this.name = getUserDto.name();
-        this.birthDate = getUserDto.birthDate();
-    }
 }

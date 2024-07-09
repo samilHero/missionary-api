@@ -18,6 +18,7 @@ import com.samill.missionary_backend.missionary.dto.CreateMissionaryBoardCommand
 import com.samill.missionary_backend.missionary.dto.CreateMissionaryBoardCommandResult;
 import com.samill.missionary_backend.missionary.dto.CreateMissionaryCommand;
 import com.samill.missionary_backend.missionary.dto.CreateParticipationCommand;
+import com.samill.missionary_backend.missionary.dto.CreateParticipationServiceCommand;
 import com.samill.missionary_backend.missionary.dto.CreateTeamCommand;
 import com.samill.missionary_backend.missionary.dto.DeleteMissionaryBoardCommand;
 import com.samill.missionary_backend.missionary.dto.DeleteParticipationCommand;
@@ -240,8 +241,11 @@ class MissionaryManagement implements MissionaryExternalService {
         validateParticipationPeriod(createParticipationCommand.getMissionaryId());
         int maxUserCount = getMissionaryMaxCount(createParticipationCommand.getMissionaryId());
         GetUserDto user = memberExternalService.getUserById(createParticipationCommand.getUserId());
-        updateCommandWithFeeAndUserInfo(createParticipationCommand, user);
-        participationService.createParticipation(createParticipationCommand, maxUserCount);
+        CreateParticipationServiceCommand createParticipationServiceCommand =
+            new CreateParticipationServiceCommand(createParticipationCommand, maxUserCount, getApplyFee(createParticipationCommand.getMissionaryId()),
+                user);
+
+        participationService.createParticipation(createParticipationServiceCommand);
     }
 
 
@@ -383,10 +387,6 @@ class MissionaryManagement implements MissionaryExternalService {
         }
     }
 
-    private void updateCommandWithFeeAndUserInfo(CreateParticipationCommand createParticipationCommand, GetUserDto user) throws Exception {
-        createParticipationCommand.setApplyFee(getApplyFee(createParticipationCommand.getMissionaryId()));
-        createParticipationCommand.updateUserInfo(user);
-    }
 
     private int getMissionaryMaxCount(String missionaryId) throws CommonException {
         return missionaryService.getMissionary(missionaryId).getDetail().getMaximumParticipantCount();
