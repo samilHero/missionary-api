@@ -8,6 +8,7 @@ import com.samill.missionary_backend.member.dto.CreateUserCommand;
 import com.samill.missionary_backend.member.dto.GetUserDto;
 import com.samill.missionary_backend.member.dto.LoginUserQuery;
 import com.samill.missionary_backend.member.dto.LoginUserQueryResult;
+import java.util.List;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
@@ -23,6 +24,8 @@ public interface UserGatewayMapper {
     LoginUserResult loginUserQueryResultToLoginUserResult(LoginUserQueryResult loginUserQueryResult);
 
     GetUserResult getUserDtoToGetUserResult(GetUserDto getUserDto);
+
+    List<GetUserResult> getUserDtosToGetUserResults(List<GetUserDto> getUserDto);
 
 }
 

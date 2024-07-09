@@ -6,6 +6,7 @@ import static com.epages.restdocs.apispec.ResourceDocumentation.resource;
 import static com.samill.missionary_backend.gateway.endPoint.UserGatewayManagementEndPoint.CREATE_USER_URI;
 import static com.samill.missionary_backend.gateway.endPoint.UserGatewayManagementEndPoint.GET_IS_EXISTED_USER_ID_URI;
 import static com.samill.missionary_backend.gateway.endPoint.UserGatewayManagementEndPoint.GET_MISSIONARIES;
+import static com.samill.missionary_backend.gateway.endPoint.UserGatewayManagementEndPoint.GET_USERS_NAME_URI;
 import static com.samill.missionary_backend.gateway.endPoint.UserGatewayManagementEndPoint.GET_USER_URI;
 import static com.samill.missionary_backend.gateway.endPoint.UserGatewayManagementEndPoint.USER_LOGIN_URI;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessRequest;
@@ -22,6 +23,7 @@ import com.epages.restdocs.apispec.ResourceSnippetParametersBuilder;
 import com.epages.restdocs.apispec.Schema;
 import com.samill.missionary_backend.common.AbstractControllerTestsBase;
 import com.samill.missionary_backend.gateway.dto.CreateUserRequest;
+import com.samill.missionary_backend.gateway.dto.GetUsersRequest;
 import com.samill.missionary_backend.gateway.dto.LoginUserRequest;
 import com.samill.missionary_backend.gateway.endPoint.UserGatewayManagementEndPoint;
 import com.samill.missionary_backend.missionary.dto.CreateParticipationCommand;
@@ -176,6 +178,37 @@ class UserGatewayManagementTests extends AbstractControllerTestsBase {
             .andExpect(MockMvcResultMatchers.status().isOk());
     }
 
+    @Test
+    @DisplayName("get users test")
+    @Transactional
+    public void getUsersTest() throws Exception {
+        var request = GetUsersRequest.builder()
+            .name("염")
+            .build();
+
+        mockMvc.perform(RestDocumentationRequestBuilders.post(GET_USERS_NAME_URI)
+                .contentType(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, getAuthorizationUserOfHeader())
+                .content(jacksonObjectMapper.writeValueAsString(request)))
+            .andDo(print())
+            .andDo(
+                document(snippetPath,
+                    "멤버 리스트 조회하는 API",
+                    responseFields(
+                        fieldWithPath("statusCode").type(JsonFieldType.NUMBER).description("결과코드"),
+                        fieldWithPath("message").type(JsonFieldType.STRING).description("결과 메시지"),
+                        fieldWithPath("data[].id").type(JsonFieldType.STRING).description("user 아이디"),
+                        fieldWithPath("data[].loginId").type(JsonFieldType.STRING).description("로그인 id"),
+                        fieldWithPath("data[].name").type(JsonFieldType.STRING).description("성명"),
+                        fieldWithPath("data[].birthDate").type(JsonFieldType.STRING).description("생년 월일"),
+                        fieldWithPath("data[].gender").type(JsonFieldType.STRING).description("성별"),
+                        fieldWithPath("data[].email").type(JsonFieldType.STRING).description("이메일"),
+                        fieldWithPath("data[].isBaptized").type(JsonFieldType.BOOLEAN).description("세례 여부"),
+                        fieldWithPath("data[].baptizedAt").type(JsonFieldType.STRING).description("세례 일시")
+                    )
+                ))
+            .andExpect(MockMvcResultMatchers.status().isOk());
+    }
 
     @Test
     @Transactional

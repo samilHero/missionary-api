@@ -5,6 +5,7 @@ import static com.samill.missionary_backend.gateway.endPoint.UserGatewayManageme
 import static com.samill.missionary_backend.gateway.endPoint.UserGatewayManagementEndPoint.DELETE_PARTICIPATION;
 import static com.samill.missionary_backend.gateway.endPoint.UserGatewayManagementEndPoint.GET_IS_EXISTED_USER_ID_URI;
 import static com.samill.missionary_backend.gateway.endPoint.UserGatewayManagementEndPoint.GET_MISSIONARIES;
+import static com.samill.missionary_backend.gateway.endPoint.UserGatewayManagementEndPoint.GET_USERS_NAME_URI;
 import static com.samill.missionary_backend.gateway.endPoint.UserGatewayManagementEndPoint.GET_USER_URI;
 import static com.samill.missionary_backend.gateway.endPoint.UserGatewayManagementEndPoint.UPDATE_PARTICIPATION;
 import static com.samill.missionary_backend.gateway.endPoint.UserGatewayManagementEndPoint.USER_LOGIN_URI;
@@ -16,6 +17,7 @@ import com.samill.missionary_backend.gateway.dto.GetUserMissionariesRequest;
 import com.samill.missionary_backend.gateway.dto.GetUserMissionariesResult;
 import com.samill.missionary_backend.gateway.dto.GetUserMissionariesResultMissionary;
 import com.samill.missionary_backend.gateway.dto.GetUserResult;
+import com.samill.missionary_backend.gateway.dto.GetUsersRequest;
 import com.samill.missionary_backend.gateway.dto.LoginUserRequest;
 import com.samill.missionary_backend.gateway.dto.LoginUserResult;
 import com.samill.missionary_backend.gateway.dto.Participation.CreateParticipationRequest;
@@ -57,6 +59,13 @@ public class UserGatewayManagement {
     public GetUserResult getUser(MemberContext memberContext) throws Exception {
         return UserGatewayMapper.INSTANCE.getUserDtoToGetUserResult(
             memberManagement.getUserById(memberContext.getId())
+        );
+    }
+
+    @PostMapping(GET_USERS_NAME_URI)
+    public List<GetUserResult> getUsersByName(@Valid @RequestBody GetUsersRequest request) throws Exception {
+        return UserGatewayMapper.INSTANCE.getUserDtosToGetUserResults(
+            memberManagement.getUsersByName(request.getName())
         );
     }
 

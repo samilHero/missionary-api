@@ -15,12 +15,12 @@ import static org.mockito.Mockito.when;
 
 import com.samill.missionary_backend.common.entity.Pastor;
 import com.samill.missionary_backend.common.entity.Period;
+import com.samill.missionary_backend.common.enums.ServiceType;
 import com.samill.missionary_backend.common.exception.CommonException;
 import com.samill.missionary_backend.member.MemberExternalService;
 import com.samill.missionary_backend.member.dto.GetMemberServiceTypeDto;
 import com.samill.missionary_backend.member.dto.GetUserDto;
 import com.samill.missionary_backend.member.exception.MemberException;
-import com.samill.missionary_backend.member.member.enums.ServiceType;
 import com.samill.missionary_backend.missionary.dto.AppointMissionaryStaffsCommand;
 import com.samill.missionary_backend.missionary.dto.AppointMissionaryStaffsCommandStaff;
 import com.samill.missionary_backend.missionary.dto.CreateMissionaryCommand;
@@ -381,7 +381,7 @@ class MissionaryMockManagementTests {
         final var missionaryId = "missionaryId";
 
         when(memberExternalService.getMemberServiceType(memberId)).thenReturn(
-            new GetMemberServiceTypeDto(ServiceType.ADMIN_SERVICE)
+            new GetMemberServiceTypeDto(memberId, ServiceType.ADMIN_SERVICE)
         );
 
         // When

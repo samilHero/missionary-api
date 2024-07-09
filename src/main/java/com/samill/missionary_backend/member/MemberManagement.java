@@ -136,6 +136,11 @@ public class MemberManagement implements MemberExternalService {
         return userService.getUsersByUserIds(userIds);
     }
 
+    @Override
+    public @NonNull List<GetUserDto> getUsersByName(@NonNull String name) {
+        return userService.getUsersByName(name);
+    }
+
     @Transactional(readOnly = true)
     public GetAdminDto getAdminByMemberId(@NonNull String memberId) throws Exception {
         return adminService.getAdminByMemberId(memberId);

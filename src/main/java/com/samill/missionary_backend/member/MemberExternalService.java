@@ -37,6 +37,8 @@ public interface MemberExternalService {
 
     @NonNull List<GetUserDto> getUsersByIds(@NonNull List<String> userIds);
 
+    @NonNull List<GetUserDto> getUsersByName(@NonNull String name);
+
     @NonNull GetMemberServiceTypeDto getMemberServiceType(String memberId) throws MemberException;
 
     Boolean isExistedUserByLoginId(String userId);
