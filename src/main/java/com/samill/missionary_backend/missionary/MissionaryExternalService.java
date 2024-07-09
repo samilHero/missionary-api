@@ -27,6 +27,7 @@ import com.samill.missionary_backend.missionary.dto.GetParticipationsQuery;
 import com.samill.missionary_backend.missionary.dto.GetTeamQueryResult;
 import com.samill.missionary_backend.missionary.dto.UpdateMissionaryBoardCommand;
 import com.samill.missionary_backend.missionary.dto.UpdateMissionaryCommand;
+import com.samill.missionary_backend.missionary.dto.UpdateMissionaryDetailCommand;
 import com.samill.missionary_backend.missionary.dto.UpdateParticipationCommand;
 import com.samill.missionary_backend.missionary.dto.UpdateTeamCommand;
 import com.samill.missionary_backend.missionary.dto.UpdateTeamMemberCommand;
@@ -46,11 +47,11 @@ public interface MissionaryExternalService {
         CreateMissionaryCommand createMissionaryCommand
     ) throws CommonException;
 
-    void updateMissionary(
+    void updateMissionaryDetail(
         @NonNull
         String missionaryId,
         @NonNull
-        UpdateMissionaryCommand updateMissionaryCommand
+        UpdateMissionaryDetailCommand updateMissionaryDetailCommand
     ) throws MissionaryException;
 
     void deleteMissionary(@NonNull String missionaryId) throws MissionaryException;
@@ -131,4 +132,9 @@ public interface MissionaryExternalService {
 
     @NonNull GetMissionariesByRegionQueryResult getMissionariesByRegion(@NonNull GetMissionariesByRegionQuery query);
 
+    void updateMissionary(
+        @NonNull String memberId,
+        @NonNull String missionaryId,
+        @NonNull UpdateMissionaryCommand updateMissionaryCommand
+    ) throws CommonException;
 }

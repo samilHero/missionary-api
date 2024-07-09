@@ -38,12 +38,14 @@ import com.samill.missionary_backend.missionary.dto.GetTeamQueryResult;
 import com.samill.missionary_backend.missionary.dto.ParticipationExcelType;
 import com.samill.missionary_backend.missionary.dto.UpdateMissionaryBoardCommand;
 import com.samill.missionary_backend.missionary.dto.UpdateMissionaryCommand;
+import com.samill.missionary_backend.missionary.dto.UpdateMissionaryDetailCommand;
 import com.samill.missionary_backend.missionary.dto.UpdateParticipationCommand;
 import com.samill.missionary_backend.missionary.dto.UpdateTeamCommand;
 import com.samill.missionary_backend.missionary.dto.UpdateTeamMemberCommand;
 import com.samill.missionary_backend.missionary.exception.MissionaryException;
 import com.samill.missionary_backend.missionary.mapper.MissionaryBoardMapper;
 import com.samill.missionary_backend.missionary.mapper.MissionaryMapper;
+import com.samill.missionary_backend.missionary.missionary.exception.AccessDeniedMissionaryException;
 import com.samill.missionary_backend.missionary.missionary.service.MissionaryService;
 import com.samill.missionary_backend.missionary.participation.entity.Participation;
 import com.samill.missionary_backend.missionary.participation.mapper.ParticipationMapper;
@@ -84,16 +86,18 @@ class MissionaryManagement implements MissionaryExternalService {
         @NonNull CreateMissionaryCommand createMissionaryCommand
     ) throws CommonException {
         if (memberExternalService.getMemberServiceType(memberId).serviceType().isNotAdmin()) {
-            throw new AccessDeniedMissionaryStaffException();
+            throw new AccessDeniedMissionaryException();
         }
 
         return new CreateMissionaryCommandResult(missionaryService.createMissionary(createMissionaryCommand));
     }
 
+
     @Override
     @Transactional
-    public void updateMissionary(@NonNull String missionaryId, @NonNull UpdateMissionaryCommand updateMissionaryCommand) throws MissionaryException {
-        missionaryService.updateMissionary(missionaryId, updateMissionaryCommand);
+    public void updateMissionaryDetail(@NonNull String missionaryId, @NonNull UpdateMissionaryDetailCommand updateMissionaryDetailCommand)
+        throws MissionaryException {
+        missionaryService.updateMissionaryDetail(missionaryId, updateMissionaryDetailCommand);
     }
 
     @Override
@@ -358,6 +362,19 @@ class MissionaryManagement implements MissionaryExternalService {
         return MissionaryMapper.INSTANCE.toGetMissionariesByRegionQueryResult(
             missionaryService.getMissionariesByRegion(getMissionariesByRegionQuery)
         );
+    }
+
+    @Override
+    public void updateMissionary(
+        @NonNull String memberId,
+        @NonNull String missionaryId,
+        @NonNull UpdateMissionaryCommand updateMissionaryCommand
+    ) throws CommonException {
+        if (memberExternalService.getMemberServiceType(memberId).serviceType().isNotAdmin()) {
+            throw new AccessDeniedMissionaryException();
+        }
+
+        missionaryService.updateMissionary(missionaryId, updateMissionaryCommand);
     }
 
     private void validateParticipationPeriod(String missionaryId) throws CommonException {

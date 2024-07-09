@@ -5,6 +5,7 @@ import com.samill.missionary_backend.common.entity.BaseEntity;
 import com.samill.missionary_backend.common.entity.Pastor;
 import com.samill.missionary_backend.common.entity.Period;
 import com.samill.missionary_backend.missionary.enums.MissionaryRegionType;
+import com.samill.missionary_backend.missionary.missionary.model.MissionaryEditor;
 import com.samill.missionary_backend.missionary.region.entity.MissionaryRegion;
 import com.samill.missionary_backend.missionary.staff.entity.MissionaryStaff;
 import jakarta.persistence.AttributeOverride;
@@ -28,6 +29,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.SQLDelete;
@@ -102,4 +104,16 @@ public class Missionary extends BaseEntity {
     public boolean getSameRegionType(MissionaryRegionType missionaryRegionType) {
         return region.getSameType(missionaryRegionType);
     }
+
+    public void edit(@NonNull MissionaryEditor missionaryEditor) {
+        this.name = missionaryEditor.name();
+        this.period = Period.builder()
+            .startDate(missionaryEditor.startDate())
+            .endDate(missionaryEditor.endDate())
+            .build();
+        this.pastor = Pastor.builder()
+            .name(missionaryEditor.pastorName())
+            .build();
+    }
+    
 }
