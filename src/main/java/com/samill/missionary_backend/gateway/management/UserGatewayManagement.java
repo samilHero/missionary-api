@@ -56,7 +56,7 @@ public class UserGatewayManagement {
     // controller parameter 에 Usercontext 를 받으면 token 정보를 받아올수 있습니다.
     public GetUserResult getUser(MemberContext memberContext) throws Exception {
         return UserGatewayMapper.INSTANCE.getUserDtoToGetUserResult(
-            memberManagement.getUserById(memberContext.getUserId())
+            memberManagement.getUserById(memberContext.getId())
         );
     }
 
@@ -103,19 +103,24 @@ public class UserGatewayManagement {
     @PostMapping(CREATE_PARTICIPATION)
     public void createParticipation(CreateParticipationRequest createParticipationRequest, MemberContext memberContext) throws Exception {
         createParticipationRequest.setUserInfo(memberContext);
-        CreateParticipationCommand command = ParticipationGatewayMapper.INSTANCE.createParticipationToCreateParticipationCommand(createParticipationRequest);
+        CreateParticipationCommand command = ParticipationGatewayMapper.INSTANCE.createParticipationToCreateParticipationCommand(
+            createParticipationRequest);
         missionaryExternalService.createParticipation(command);
     }
 
     @PutMapping(UPDATE_PARTICIPATION)
-    public void updateParticipation(@PathVariable String participationId, UpdateParticipationRequest updateParticipationRequest) throws CommonException {
-        UpdateParticipationCommand command = ParticipationGatewayMapper.INSTANCE.updateParticipationToUpdateParticipationCommand(updateParticipationRequest);
+    public void updateParticipation(@PathVariable String participationId, UpdateParticipationRequest updateParticipationRequest)
+        throws CommonException {
+        UpdateParticipationCommand command = ParticipationGatewayMapper.INSTANCE.updateParticipationToUpdateParticipationCommand(
+            updateParticipationRequest);
         missionaryExternalService.updateParticipation(participationId, command);
     }
 
     @DeleteMapping(DELETE_PARTICIPATION)
-    public void deleteParticipation(@PathVariable String participationId, DeleteParticipationRequest deleteParticipationRequest) throws CommonException {
-        DeleteParticipationCommand command = ParticipationGatewayMapper.INSTANCE.deleteParticipationToDeleteParticipationCommand(deleteParticipationRequest);
+    public void deleteParticipation(@PathVariable String participationId, DeleteParticipationRequest deleteParticipationRequest)
+        throws CommonException {
+        DeleteParticipationCommand command = ParticipationGatewayMapper.INSTANCE.deleteParticipationToDeleteParticipationCommand(
+            deleteParticipationRequest);
         missionaryExternalService.deleteParticipation(participationId, command);
     }
 

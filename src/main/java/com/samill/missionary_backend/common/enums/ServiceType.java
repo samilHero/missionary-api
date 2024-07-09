@@ -1,7 +1,5 @@
-package com.samill.missionary_backend.member.member.enums;
+package com.samill.missionary_backend.common.enums;
 
-
-import com.samill.missionary_backend.common.enums.EnumModel;
 
 public enum ServiceType implements EnumModel {
     ADMIN_SERVICE("어드민", "admin"),
@@ -14,6 +12,14 @@ public enum ServiceType implements EnumModel {
     ServiceType(String value, String root) {
         this.value = value;
         this.root = root;
+    }
+
+    public boolean isAdmin() {
+        return this == ADMIN_SERVICE;
+    }
+
+    public boolean isUser() {
+        return this == USER_SERVICE;
     }
 
     @Override

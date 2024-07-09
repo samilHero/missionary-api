@@ -2,10 +2,10 @@ package com.samill.missionary_backend.authentication.security;
 
 import com.samill.missionary_backend.authentication.dto.GetMemberServiceTypeDto;
 import com.samill.missionary_backend.authentication.mapper.AuthenticationMapper;
+import com.samill.missionary_backend.common.enums.ServiceType;
 import com.samill.missionary_backend.common.util.RequestContextUtil;
 import com.samill.missionary_backend.member.MemberExternalService;
 import com.samill.missionary_backend.member.exception.MemberException;
-import com.samill.missionary_backend.member.member.enums.ServiceType;
 import com.samill.missionary_backend.token.provider.TokenProvider;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
