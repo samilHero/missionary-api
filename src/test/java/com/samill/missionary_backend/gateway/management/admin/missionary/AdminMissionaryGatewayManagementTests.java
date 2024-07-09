@@ -16,6 +16,7 @@ import com.samill.missionary_backend.gateway.dto.AppointMissionaryStaffsRequest;
 import com.samill.missionary_backend.gateway.dto.AppointMissionaryStaffsRequestStaff;
 import com.samill.missionary_backend.gateway.dto.CreateMissionaryRequest;
 import com.samill.missionary_backend.gateway.dto.DisappointMissionaryStaffsRequest;
+import com.samill.missionary_backend.gateway.dto.UpdateAdminMissionaryRequest;
 import com.samill.missionary_backend.gateway.endPoint.AdminGatewayManagementEndPoint;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -129,7 +130,7 @@ class AdminMissionaryGatewayManagementTests extends AbstractControllerTestsBase 
                     resource(
                         new ResourceSnippetParametersBuilder()
                             .tag("ADMIN_MISSIONARY")
-                            .description("선교 생성")
+                            .description("어드민 선교 생성")
                             .requestSchema(Schema.schema("CreateMissionaryRequest"))
                             .requestFields(
                                 fieldWithPath("missionaryRegionId").type(JsonFieldType.STRING).description("선교 지역 ID"),
@@ -143,6 +144,55 @@ class AdminMissionaryGatewayManagementTests extends AbstractControllerTestsBase 
                                 fieldWithPath("statusCode").type(JsonFieldType.NUMBER).description("결과 코드"),
                                 fieldWithPath("message").type(JsonFieldType.STRING).description("결과 메시지"),
                                 fieldWithPath("data.id").type(JsonFieldType.STRING).description("생성된 선교 ID")
+                            )
+                            .build()
+                    )
+                )
+            )
+            .andExpect(status().isOk());
+    }
+
+    @Test
+    void 어드민_선교_수정() throws Exception {
+        mockMvc.perform(
+                RestDocumentationRequestBuilders.put(
+                        AdminGatewayManagementEndPoint.UPDATE_MISSIONARY,
+                        "5c9e3daa-792f-40ea-b7bf-cb9853f6c1e1"
+                    )
+                    .accept(MediaType.APPLICATION_JSON)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .header("Authorization", getAuthorizationAdminOfHeader())
+                    .content(
+                        jacksonObjectMapper.writeValueAsString(
+                            new UpdateAdminMissionaryRequest(
+                                "군선교 2차 수정",
+                                OffsetDateTime.now(),
+                                OffsetDateTime.now().plusMonths(1),
+                                "염동욱"
+                            )
+                        )
+                    )
+            )
+            .andDo(print())
+            .andDo(
+                document(
+                    snippetPath,
+                    resource(
+                        new ResourceSnippetParametersBuilder()
+                            .tag("ADMIN_MISSIONARY")
+                            .description("어드민 선교 수정")
+                            .requestSchema(Schema.schema("UpdateMissionaryRequest"))
+                            .requestFields(
+                                fieldWithPath("name").type(JsonFieldType.STRING).description("선교 이름"),
+                                fieldWithPath("startDate").type(JsonFieldType.STRING).description("선교 시작 날짜"),
+                                fieldWithPath("endDate").type(JsonFieldType.STRING).description("선교 종료 날짜"),
+                                fieldWithPath("pastorName").type(JsonFieldType.STRING).description("담당 목사 이름")
+                            )
+                            .responseSchema(Schema.schema("UpdateMissionaryResponse"))
+                            .responseFields(
+                                fieldWithPath("statusCode").type(JsonFieldType.NUMBER).description("결과 코드"),
+                                fieldWithPath("message").type(JsonFieldType.STRING).description("결과 메시지"),
+                                fieldWithPath("data").type(JsonFieldType.NULL).description("결과")
                             )
                             .build()
                     )

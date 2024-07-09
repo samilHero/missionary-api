@@ -1,10 +1,10 @@
-package com.samill.missionary_backend.missionary.dto;
+package com.samill.missionary_backend.gateway.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import java.time.OffsetDateTime;
 import lombok.NonNull;
 
-public record UpdateMissionaryCommand(
+public record UpdateAdminMissionaryRequest(
     @NotBlank
     @NonNull
     String name,

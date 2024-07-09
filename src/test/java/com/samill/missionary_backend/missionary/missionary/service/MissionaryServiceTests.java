@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
@@ -14,11 +15,14 @@ import com.samill.missionary_backend.configs.DateTimeProviderConfig;
 import com.samill.missionary_backend.configs.JpaConfig;
 import com.samill.missionary_backend.missionary.dto.CreateMissionaryCommand;
 import com.samill.missionary_backend.missionary.dto.GetMissionariesByRegionQuery;
+import com.samill.missionary_backend.missionary.dto.UpdateMissionaryCommand;
 import com.samill.missionary_backend.missionary.missionary.entity.Missionary;
+import com.samill.missionary_backend.missionary.missionary.exception.NotFoundMissionaryException;
 import com.samill.missionary_backend.missionary.missionary.repository.MissionaryRepository;
 import com.samill.missionary_backend.missionary.region.entity.MissionaryRegion;
 import java.time.OffsetDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -122,5 +126,45 @@ class MissionaryServiceTests {
         verifyNoMoreInteractions(missionaryRepository);
     }
 
+    @Test
+    void 선교_수정() throws NotFoundMissionaryException {
+        // GIVEN
+        final Optional<Missionary> optional = mock(Optional.class);
+        final var missionary = Missionary.builder()
+            .id(UUID.randomUUID().toString())
+            .name("선교 이름")
+            .period(
+                Period.builder()
+                    .startDate(OffsetDateTime.now())
+                    .endDate(OffsetDateTime.now().plusMonths(1))
+                    .build()
+            )
+            .pastor(
+                Pastor.builder()
+                    .name("목사 이름")
+                    .build()
+            )
+            .build();
 
+        when(optional.orElseThrow(any())).thenReturn(missionary);
+        when(missionaryRepository.findById(anyString())).thenReturn(optional);
+
+        final var updateMissionaryCommand = new UpdateMissionaryCommand(
+            "수정된 선교 이름",
+            OffsetDateTime.now(),
+            OffsetDateTime.now().plusMonths(1),
+            "수정된 목사 이름"
+        );
+
+        // WHEN
+        missionaryService.updateMissionary(missionary.getId(), updateMissionaryCommand);
+
+        assertThat(missionary.getName()).isEqualTo(updateMissionaryCommand.name());
+        assertThat(missionary.getPeriod().getStartDate()).isEqualTo(updateMissionaryCommand.startDate());
+        assertThat(missionary.getPeriod().getEndDate()).isEqualTo(updateMissionaryCommand.endDate());
+        assertThat(missionary.getPastor().getName()).isEqualTo(updateMissionaryCommand.pastorName());
+        verify(optional, times(1)).orElseThrow(any());
+        verify(missionaryRepository, times(1)).findById(missionary.getId());
+        verifyNoMoreInteractions(optional, missionaryRepository);
+    }
 }

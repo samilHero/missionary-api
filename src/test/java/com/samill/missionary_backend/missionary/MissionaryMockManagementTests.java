@@ -3,8 +3,10 @@ package com.samill.missionary_backend.missionary;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -17,20 +19,23 @@ import com.samill.missionary_backend.common.exception.CommonException;
 import com.samill.missionary_backend.member.MemberExternalService;
 import com.samill.missionary_backend.member.dto.GetMemberServiceTypeDto;
 import com.samill.missionary_backend.member.dto.GetUserDto;
+import com.samill.missionary_backend.member.exception.MemberException;
 import com.samill.missionary_backend.member.member.enums.ServiceType;
 import com.samill.missionary_backend.missionary.dto.AppointMissionaryStaffsCommand;
 import com.samill.missionary_backend.missionary.dto.AppointMissionaryStaffsCommandStaff;
 import com.samill.missionary_backend.missionary.dto.CreateMissionaryCommand;
 import com.samill.missionary_backend.missionary.dto.DisappointMissionaryStaffsCommand;
 import com.samill.missionary_backend.missionary.dto.GetMissionariesByRegionQuery;
+import com.samill.missionary_backend.missionary.dto.UpdateMissionaryCommand;
 import com.samill.missionary_backend.missionary.enums.MissionaryRegionType;
 import com.samill.missionary_backend.missionary.enums.MissionaryStaffRole;
 import com.samill.missionary_backend.missionary.missionary.entity.Missionary;
+import com.samill.missionary_backend.missionary.missionary.exception.AccessDeniedMissionaryException;
+import com.samill.missionary_backend.missionary.missionary.exception.NotFoundMissionaryException;
 import com.samill.missionary_backend.missionary.missionary.service.MissionaryService;
 import com.samill.missionary_backend.missionary.region.entity.MissionaryRegion;
 import com.samill.missionary_backend.missionary.region.service.MissionaryRegionService;
 import com.samill.missionary_backend.missionary.staff.entity.MissionaryStaff;
-import com.samill.missionary_backend.missionary.staff.exception.AccessDeniedMissionaryStaffException;
 import com.samill.missionary_backend.missionary.staff.service.MissionaryStaffService;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -214,12 +219,99 @@ class MissionaryMockManagementTests {
 
         // When & Then
         assertThatThrownBy(() -> missionaryManagement.createMissionary("admin", command))
-            .isInstanceOf(AccessDeniedMissionaryStaffException.class);
+            .isInstanceOf(AccessDeniedMissionaryException.class);
 
         verify(memberExternalService, times(1)).getMemberServiceType("admin");
         verifyNoMoreInteractions(memberExternalService);
     }
 
+    @Test
+    void 선교_수정() throws CommonException {
+        final var getMemberServiceTypeDto = mock(GetMemberServiceTypeDto.class);
+        when(getMemberServiceTypeDto.serviceType()).thenReturn(ServiceType.ADMIN_SERVICE);
+
+        when(memberExternalService.getMemberServiceType(anyString()))
+            .thenReturn(getMemberServiceTypeDto);
+
+        final var command = new UpdateMissionaryCommand(
+            "regionId",
+            OffsetDateTime.now(),
+            OffsetDateTime.now().plusMonths(1),
+            "목사 이름"
+        );
+
+        missionaryManagement.updateMissionary(
+            "admin",
+            "missionaryId",
+            command
+        );
+
+        verify(memberExternalService, times(1)).getMemberServiceType("admin");
+        verify(getMemberServiceTypeDto, times(1)).serviceType();
+        verify(missionaryService, times(1)).updateMissionary("missionaryId", command);
+        verifyNoMoreInteractions(memberExternalService, getMemberServiceTypeDto, missionaryService);
+    }
+
+    @Test
+    void 선교_수정_실패_권한_없음() throws MemberException {
+        // Given
+        final var getMemberServiceTypeDto = mock(GetMemberServiceTypeDto.class);
+        when(getMemberServiceTypeDto.serviceType()).thenReturn(ServiceType.USER_SERVICE);
+
+        when(memberExternalService.getMemberServiceType(anyString()))
+            .thenReturn(getMemberServiceTypeDto);
+
+        final var command = new UpdateMissionaryCommand(
+            "regionId",
+            OffsetDateTime.now(),
+            OffsetDateTime.now().plusMonths(1),
+            "목사 이름"
+        );
+
+        // When & Then
+        assertThatThrownBy(() -> missionaryManagement.updateMissionary(
+            "admin",
+            "missionaryId",
+            command
+        )).isInstanceOf(AccessDeniedMissionaryException.class);
+
+        verify(memberExternalService, times(1)).getMemberServiceType("admin");
+        verifyNoMoreInteractions(memberExternalService);
+    }
+
+    @Test
+    void 선교_수정_실패_선교_없음() throws CommonException {
+        // Given
+        final var getMemberServiceTypeDto = mock(GetMemberServiceTypeDto.class);
+        when(getMemberServiceTypeDto.serviceType()).thenReturn(ServiceType.ADMIN_SERVICE);
+
+        when(memberExternalService.getMemberServiceType(anyString()))
+            .thenReturn(getMemberServiceTypeDto);
+
+        doThrow(NotFoundMissionaryException.class)
+            .when(missionaryService)
+            .updateMissionary(anyString(), any(UpdateMissionaryCommand.class));
+
+        final var command = new UpdateMissionaryCommand(
+            "regionId",
+            OffsetDateTime.now(),
+            OffsetDateTime.now().plusMonths(1),
+            "목사 이름"
+        );
+
+        // When & Then
+        assertThrows(
+            NotFoundMissionaryException.class,
+            () -> missionaryManagement.updateMissionary(
+                "admin",
+                "missionaryId",
+                command
+            )
+        );
+
+        verify(memberExternalService, times(1)).getMemberServiceType("admin");
+        verifyNoMoreInteractions(memberExternalService);
+    }
 
     @Test
     void 선교_준비팀_임명() throws CommonException {
@@ -309,4 +401,6 @@ class MissionaryMockManagementTests {
         );
         verifyNoMoreInteractions(missionaryStaffService, memberExternalService);
     }
+
+
 }

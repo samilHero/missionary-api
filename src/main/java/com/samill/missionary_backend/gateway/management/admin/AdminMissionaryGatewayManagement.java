@@ -9,6 +9,7 @@ import com.samill.missionary_backend.gateway.dto.DisappointMissionaryStaffsReque
 import com.samill.missionary_backend.gateway.dto.GetAdminMissionariesResult;
 import com.samill.missionary_backend.gateway.dto.GetAdminMissionaryResult;
 import com.samill.missionary_backend.gateway.dto.GetMissionaryRegionsResult;
+import com.samill.missionary_backend.gateway.dto.UpdateAdminMissionaryRequest;
 import com.samill.missionary_backend.gateway.endPoint.AdminGatewayManagementEndPoint;
 import com.samill.missionary_backend.gateway.mapper.admin.AdminMissionaryGatewayMapper;
 import com.samill.missionary_backend.missionary.MissionaryExternalService;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -76,6 +78,18 @@ public class AdminMissionaryGatewayManagement {
                 "89b1516a-d3c4-4da6-9262-20c0ec305a69",
                 AdminMissionaryGatewayMapper.INSTANCE.toCreateMissionaryCommand(createMissionaryRequest)
             )
+        );
+    }
+
+    @PutMapping(AdminGatewayManagementEndPoint.UPDATE_MISSIONARY)
+    public void updateMissionary(
+        @NonNull @PathVariable("missionaryId") String missionaryId,
+        @Valid @NonNull @RequestBody UpdateAdminMissionaryRequest updateAdminMissionaryRequest
+    ) throws CommonException {
+        missionaryExternalService.updateMissionary(
+            "89b1516a-d3c4-4da6-9262-20c0ec305a69",
+            missionaryId,
+            AdminMissionaryGatewayMapper.INSTANCE.toUpdateMissionaryCommand(updateAdminMissionaryRequest)
         );
     }
 

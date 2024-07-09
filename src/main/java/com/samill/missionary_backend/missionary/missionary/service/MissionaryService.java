@@ -4,11 +4,13 @@ import com.samill.missionary_backend.missionary.dto.CreateMissionaryCommand;
 import com.samill.missionary_backend.missionary.dto.GetMissionariesByRegionQuery;
 import com.samill.missionary_backend.missionary.dto.GetMissionaryIdsQuery;
 import com.samill.missionary_backend.missionary.dto.UpdateMissionaryCommand;
+import com.samill.missionary_backend.missionary.dto.UpdateMissionaryDetailCommand;
 import com.samill.missionary_backend.missionary.enums.MissionaryRegionType;
 import com.samill.missionary_backend.missionary.exception.MissionaryException;
 import com.samill.missionary_backend.missionary.mapper.MissionaryMapper;
 import com.samill.missionary_backend.missionary.missionary.entity.Missionary;
 import com.samill.missionary_backend.missionary.missionary.exception.NotFoundMissionaryException;
+import com.samill.missionary_backend.missionary.missionary.model.MissionaryEditor;
 import com.samill.missionary_backend.missionary.missionary.repository.MissionaryRepository;
 import java.time.OffsetDateTime;
 import java.util.AbstractMap.SimpleEntry;
@@ -33,7 +35,22 @@ public class MissionaryService {
         return missionaryRepository.save(missionary).getId();
     }
 
-    public void updateMissionary(@NonNull String missionaryId, @NonNull UpdateMissionaryCommand updateMissionaryCommand) throws MissionaryException {
+    public void updateMissionary(@NonNull String missionaryId, @NonNull UpdateMissionaryCommand updateMissionaryCommand)
+        throws NotFoundMissionaryException {
+        missionaryRepository.findById(missionaryId)
+            .orElseThrow(NotFoundMissionaryException::new)
+            .edit(
+                MissionaryEditor.builder()
+                    .name(updateMissionaryCommand.name())
+                    .startDate(updateMissionaryCommand.startDate())
+                    .endDate(updateMissionaryCommand.endDate())
+                    .pastorName(updateMissionaryCommand.pastorName())
+                    .build()
+            );
+    }
+
+    public void updateMissionaryDetail(@NonNull String missionaryId, @NonNull UpdateMissionaryDetailCommand updateMissionaryDetailCommand)
+        throws MissionaryException {
         final var missionary = missionaryRepository.findById(missionaryId).orElseThrow(NotFoundMissionaryException::new);
 //
 //        if (updateMissionaryCommand.isNotValidParticipationPeriod()) {
@@ -102,15 +119,15 @@ public class MissionaryService {
 
 
     public @NonNull Map<MissionaryRegionType, List<Missionary>> getRegionTypeMissionariesMap() {
-        final var missionaries = missionaryRepository.findLatestMissionariesByRegion();
+//        final var missionaries = missionaryRepository.findLatestMissionariesByRegion();
 
-        return groupMissionariesByRegionType(missionaries);
+        return groupMissionariesByRegionType(List.of());
     }
 
     public @NonNull Map<MissionaryRegionType, List<Missionary>> getRegionTypeMissionariesMap(@NonNull String userId) {
-        final var missionaries = missionaryRepository.findLatestMissionariesByRegion(userId);
+//        final var missionaries = missionaryRepository.findLatestMissionariesByRegion(userId);
 
-        return groupMissionariesByRegionType(missionaries);
+        return groupMissionariesByRegionType(List.of());
     }
 
     private @NonNull Map<MissionaryRegionType, List<Missionary>> groupMissionariesByRegionType(List<Missionary> missionaries) {
@@ -134,4 +151,6 @@ public class MissionaryService {
 
         return missionaryRepository.findByRegion_IdOrderByPeriod_EndDateDesc(getMissionariesByRegionQuery.regionId, pageable);
     }
+
+
 }

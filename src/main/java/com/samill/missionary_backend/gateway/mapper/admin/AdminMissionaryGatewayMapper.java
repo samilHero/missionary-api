@@ -12,6 +12,7 @@ import com.samill.missionary_backend.gateway.dto.GetAdminMissionariesResult;
 import com.samill.missionary_backend.gateway.dto.GetAdminMissionariesResultMissionary;
 import com.samill.missionary_backend.gateway.dto.GetMissionaryRegionsResult;
 import com.samill.missionary_backend.gateway.dto.GetMissionaryRegionsResultRegion;
+import com.samill.missionary_backend.gateway.dto.UpdateAdminMissionaryRequest;
 import com.samill.missionary_backend.missionary.dto.AppointMissionaryStaffsCommand;
 import com.samill.missionary_backend.missionary.dto.AppointMissionaryStaffsCommandResult;
 import com.samill.missionary_backend.missionary.dto.AppointMissionaryStaffsCommandResultStaff;
@@ -22,6 +23,7 @@ import com.samill.missionary_backend.missionary.dto.GetMissionariesByRegionQuery
 import com.samill.missionary_backend.missionary.dto.GetMissionariesByRegionQueryResultMissionary;
 import com.samill.missionary_backend.missionary.dto.GetMissionaryRegionsQueryResult;
 import com.samill.missionary_backend.missionary.dto.GetMissionaryRegionsQueryResultRegion;
+import com.samill.missionary_backend.missionary.dto.UpdateMissionaryCommand;
 import java.util.List;
 import java.util.function.Function;
 import lombok.NonNull;
@@ -118,6 +120,10 @@ public interface AdminMissionaryGatewayMapper {
     @NonNull DisappointMissionaryStaffsCommand toDisappointMissionaryStaffsCommand(
         @NonNull String missionaryId,
         @NonNull DisappointMissionaryStaffsRequest disappointMissionaryStaffsRequest
+    );
+
+    @NonNull UpdateMissionaryCommand toUpdateMissionaryCommand(
+        @NonNull UpdateAdminMissionaryRequest updateAdminMissionaryRequest
     );
 }
 
