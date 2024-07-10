@@ -31,11 +31,21 @@ public class MemberContextHandlerResolver implements HandlerMethodArgumentResolv
         WebDataBinderFactory binderFactory
     ) throws Exception {
         var auth = SecurityContextHolder.getContext().getAuthentication();
-        var getUserDto = memberManagement.getUserByMemberId(auth.getName());
+        var memberDto = memberManagement.getMemberByMemberId(auth.getName());
+        var id = "";
+        var name = "";
+        if (memberDto.serviceType().isAdmin()) {
+            id = memberDto.adminDto().id();
+            name = memberDto.adminDto().name();
+        } else if (memberDto.serviceType().isUser()) {
+            id = memberDto.userDto().id();
+            name = memberDto.userDto().name();
+        }
         return MemberContext.builder()
             .memberId(auth.getName())
-            .userId(getUserDto.id())
-            .name(getUserDto.name())
+            .serviceType(memberDto.serviceType())
+            .id(id)
+            .name(name)
             .build();
     }
 }

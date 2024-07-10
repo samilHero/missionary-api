@@ -84,5 +84,9 @@ public class UserService {
 
     }
 
+    public List<GetUserDto> getUsersByName(String name) {
+        var users = userRepository.findAllByNameContains(name);
+        return users.stream().map(UserMapper.INSTANCE::userToGetUserDto).collect(Collectors.toList());
 
+    }
 }

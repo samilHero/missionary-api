@@ -7,6 +7,7 @@ import com.samill.missionary_backend.member.admin.service.AdminService;
 import com.samill.missionary_backend.member.dto.CreateAdminCommand;
 import com.samill.missionary_backend.member.dto.CreateUserCommand;
 import com.samill.missionary_backend.member.dto.GetAdminDto;
+import com.samill.missionary_backend.member.dto.GetMemberDto;
 import com.samill.missionary_backend.member.dto.GetMemberServiceTypeDto;
 import com.samill.missionary_backend.member.dto.GetUserDto;
 import com.samill.missionary_backend.member.dto.LoginAdminQuery;
@@ -125,9 +126,19 @@ public class MemberManagement implements MemberExternalService {
         return userService.getUserByMemberId(memberId);
     }
 
+    @Transactional(readOnly = true)
+    public GetMemberDto getMemberByMemberId(@NonNull String memberId) throws MemberException {
+        return memberService.getMemberByMemberId(memberId);
+    }
+
     @Override
     public @NonNull List<GetUserDto> getUsersByIds(@NonNull List<String> userIds) {
         return userService.getUsersByUserIds(userIds);
+    }
+
+    @Override
+    public @NonNull List<GetUserDto> getUsersByName(@NonNull String name) {
+        return userService.getUsersByName(name);
     }
 
     @Transactional(readOnly = true)

@@ -1,12 +1,16 @@
 package com.samill.missionary_backend.member.member.entity;
 
 import com.samill.missionary_backend.common.entity.BaseEntity;
-import com.samill.missionary_backend.member.member.enums.ServiceType;
+import com.samill.missionary_backend.common.enums.ServiceType;
+import com.samill.missionary_backend.member.admin.entity.Admin;
+import com.samill.missionary_backend.member.user.entity.User;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import java.time.OffsetDateTime;
 import lombok.AccessLevel;
@@ -38,5 +42,13 @@ public class Member extends BaseEntity {
     private ServiceType serviceType;
 
     private OffsetDateTime deletedAt;
+
+    @Builder.Default
+    @OneToOne(mappedBy = "member", fetch = FetchType.LAZY)
+    private Admin admin = null;
+
+    @Builder.Default
+    @OneToOne(mappedBy = "member", fetch = FetchType.LAZY)
+    private User user = null;
 
 }
