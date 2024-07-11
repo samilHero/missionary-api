@@ -41,3 +41,6 @@ data/*
 .DS_Store
 
 openapi3.json
+.gitsecret/keys/random_seed
+!*.secret
+src/main/resources/application.yml

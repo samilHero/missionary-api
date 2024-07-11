@@ -32,6 +32,9 @@ jobs:
           java-version: '21'
           distribution: 'corretto'
 
+      - name: Create base application.yml
+        run: echo ${{vars.APPLICATION_YML}} > ./src/main/resources/application.yml
+
       - name: Set application.yml environment variables
         uses: microsoft/variable-substitution@v1
         with:
@@ -51,77 +54,62 @@ jobs:
           spring.data.redis.host: ${{ secrets.REDIS_HOST }}
           spring.data.redis.port: ${{ secrets.REDIS_PORT }}
 
-      - name: Create Vpn Config File From Secrets
-        run: |
-          echo "${{ secrets.VPN_CONFIG }}" > .github/workflows/client.ovpn
-
-      - name: Install OpenVPN
-        run: |
-          sudo apt update
-          sudo apt install -y openvpn openvpn-systemd-resolved
-
-      - name: Connect to VPN
-        uses: "kota65535/github-openvpn-connect-action@v2"
-        with:
-          config_file: .github/workflows/client.ovpn
-          client_key: ${{ secrets.OVPN_CLIENT_KEY }}
-
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@417ae3ccd767c252f5661f1ace9f835f9654f2b5 # v3.1.0
 
       - name: Build with Gradle Wrapper
         run: ./gradlew build
-
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ secrets.AWS_REGION }}
-
-      - name: Login to Amazon ECR
-        id: login-ecr
-        uses: aws-actions/amazon-ecr-login@v1
-
-      - name: Build, tag, and push image to Amazon ECR
-        id: build-image
-        env:
-          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          ECR_REPOSITORY: ${{ secrets.AWS_EB_APP_NAME }}
-          IMAGE_TAG: latest
-        run: |
-          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
-          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-          echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"        
-
-      - name: Get current time
-        uses: 1466587594/get-current-time@v2
-        id: current-time
-        with:
-          format: YYYYMMDD_HH-mm-ss
-          utcOffset: "+09:00"
-
-      - name: Set Dockerrun.aws.json environment variables
-        uses: microsoft/variable-substitution@v1
-        with:
-          files: ./Dockerrun.aws.json
-        env:
-          Image.Name: ${{ steps.login-ecr.outputs.registry }}/${{ secrets.AWS_EB_APP_NAME }}:latest
-
-      - name: Generate deployment package
-        run: |
-          mkdir -p deploy
-          cp Dockerrun.aws.json deploy/Dockerrun.aws.json # Elastic Beanstalk에서 Docker 실행 시 체크하는 설정 파일
-          cd deploy && zip -r deploy.zip .
-
-      - name: Beanstalk Deploy
-        uses: einaregilsson/beanstalk-deploy@v21
-        with:
-          aws_access_key: ${{ secrets.AWS_ACCESS_KEY }}
-          aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          application_name: ${{ secrets.AWS_EB_APP_NAME }}
-          environment_name: ${{ secrets.AWS_EB_ENV_NAME }}
-          version_label: ${{ secrets.AWS_EB_APP_NAME }}-${{steps.current-time.outputs.formattedTime}}
-          region: ${{ secrets.AWS_REGION }}
-          deployment_package: deploy/deploy.zip
-          wait_for_environment_recovery: 200
+#
+#      - name: Configure AWS credentials
+#        uses: aws-actions/configure-aws-credentials@v4
+#        with:
+#          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
+#          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+#          aws-region: ${{ secrets.AWS_REGION }}
+#
+#      - name: Login to Amazon ECR
+#        id: login-ecr
+#        uses: aws-actions/amazon-ecr-login@v1
+#
+#      - name: Build, tag, and push image to Amazon ECR
+#        id: build-image
+#        env:
+#          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+#          ECR_REPOSITORY: ${{ secrets.AWS_EB_APP_NAME }}
+#          IMAGE_TAG: latest
+#        run: |
+#          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+#          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+#          echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
+#
+#      - name: Get current time
+#        uses: 1466587594/get-current-time@v2
+#        id: current-time
+#        with:
+#          format: YYYYMMDD_HH-mm-ss
+#          utcOffset: "+09:00"
+#
+#      - name: Set Dockerrun.aws.json environment variables
+#        uses: microsoft/variable-substitution@v1
+#        with:
+#          files: ./Dockerrun.aws.json
+#        env:
+#          Image.Name: ${{ steps.login-ecr.outputs.registry }}/${{ secrets.AWS_EB_APP_NAME }}:latest
+#
+#      - name: Generate deployment package
+#        run: |
+#          mkdir -p deploy
+#          cp Dockerrun.aws.json deploy/Dockerrun.aws.json # Elastic Beanstalk에서 Docker 실행 시 체크하는 설정 파일
+#          cd deploy && zip -r deploy.zip .
+#
+#      - name: Beanstalk Deploy
+#        uses: einaregilsson/beanstalk-deploy@v21
+#        with:
+#          aws_access_key: ${{ secrets.AWS_ACCESS_KEY }}
+#          aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+#          application_name: ${{ secrets.AWS_EB_APP_NAME }}
+#          environment_name: ${{ secrets.AWS_EB_ENV_NAME }}
+#          version_label: ${{ secrets.AWS_EB_APP_NAME }}-${{steps.current-time.outputs.formattedTime}}
+#          region: ${{ secrets.AWS_REGION }}
+#          deployment_package: deploy/deploy.zip
+#          wait_for_environment_recovery: 200
