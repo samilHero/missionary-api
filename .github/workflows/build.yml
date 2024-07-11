@@ -32,6 +32,9 @@ jobs:
           java-version: '21'
           distribution: 'corretto'
 
+      - name: Create base application.yml
+        run: echo ${{vars.APPLICATION_YML}} > ./src/main/resources/application.yml
+
       - name: Set environment variables
         uses: microsoft/variable-substitution@v1
         with:
