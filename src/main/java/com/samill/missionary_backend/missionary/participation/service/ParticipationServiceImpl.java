@@ -100,16 +100,16 @@ public class ParticipationServiceImpl implements ParticipationService {
     }
 
     private void validateCreateParticipation(CreateParticipationServiceCommand createParticipationServiceCommand) throws CommonException {
-        Participation participation = participationRepository.findByUserIdAndMissionaryId(createParticipationServiceCommand.getUserId(),
-            createParticipationServiceCommand.getMissionaryId());
+        Participation participation = participationRepository.findByUserIdAndMissionaryId(createParticipationServiceCommand.userId(),
+            createParticipationServiceCommand.missionaryId());
 
         if (Objects.nonNull(participation)) {
             throw new CommonException(ResponseCode.PARTICIPATION_ALREADY_PARTICIPATED);
         }
 
-        Long count = participantCountRepository.increment(createParticipationServiceCommand.getMissionaryId());
+        Long count = participantCountRepository.increment(createParticipationServiceCommand.missionaryId());
 
-        if (count > createParticipationServiceCommand.getMaxCount()) {
+        if (count > createParticipationServiceCommand.maxCount()) {
             throw new CommonException(ResponseCode.PARTICIPATION_MAXIMUM_EXCEEDED);
         }
     }

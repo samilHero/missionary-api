@@ -32,6 +32,8 @@ import com.samill.missionary_backend.missionary.dto.UpdateParticipationCommand;
 import com.samill.missionary_backend.missionary.dto.UpdateTeamCommand;
 import com.samill.missionary_backend.missionary.dto.UpdateTeamMemberCommand;
 import com.samill.missionary_backend.missionary.exception.MissionaryException;
+import com.samill.missionary_backend.missionary.team.dto.GetTeamListQuery;
+import com.samill.missionary_backend.missionary.team.dto.GetTeamListQueryResult;
 import java.util.List;
 import lombok.NonNull;
 import org.springframework.data.domain.Page;
@@ -89,7 +91,7 @@ public interface MissionaryExternalService {
     ) throws CommonException;
 
 
-    void createTeam(CreateTeamCommand createTeamCommand);
+    void createTeam(CreateTeamCommand createTeamCommand) throws CommonException;
 
     void updateTeam(String teamId, UpdateTeamCommand updateTeamCommand) throws CommonException;
 
@@ -99,7 +101,7 @@ public interface MissionaryExternalService {
 
     GetTeamQueryResult getTeam(String teamId) throws CommonException;
 
-    List<GetTeamQueryResult> getTeams(String missionaryId);
+    List<GetTeamListQueryResult> getTeams(String missionaryId, GetTeamListQuery getTeamListQuery);
 
     void createParticipation(CreateParticipationCommand createParticipationDto) throws Exception;
 

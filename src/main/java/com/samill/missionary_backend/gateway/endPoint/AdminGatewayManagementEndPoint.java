@@ -37,13 +37,22 @@ public class AdminGatewayManagementEndPoint {
     public static final String UPDATE_PARTICIPATION_APPROVE = BASE_URL + "/participation/approve";
 
     public static final String GET_DOWNLOAD_PARTICIPATION_LIST = BASE_URL + "/participation/download/{missionaryId}";
-
-    public static final String UPDATE_TEAM_MEMBER = BASE_URL + "/team/{teamId}/members";
-
+    
     public static final String GET_STAFF_USERS_V1 = BASE_URL + "/v1/staffs/{missionaryId}/users";
 
     public static final String APPOINT_MISSIONARY_STAFF = BASE_URL + "/v1/staffs/{missionaryId}";
 
     public static final String DISAPPOINT_MISSIONARY_STAFF = BASE_URL + "/v1/staffs/{missionaryId}";
 
+    public static final String CREATE_TEAM = BASE_URL + "/team";
+
+    public static final String GET_TEAMS = BASE_URL + "/teams/{missionaryId}";
+
+    public static final String GET_TEAM = BASE_URL + "/team/{teamId}";
+
+    public static final String UPDATE_TEAM = BASE_URL + "/team/{teamId}";
+
+    public static final String UPDATE_TEAM_MEMBER = BASE_URL + "/team/{teamId}/members";
+
+    public static final String DELETE_TEAM = BASE_URL + "/team/{teamId}";
 }

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface TeamMemberRepository extends JpaRepository<TeamMember, String>{
+public interface TeamMemberRepository extends JpaRepository<TeamMember, String> {
+
     void deleteByIdInAndUserId(List<String> ids, String userId);
 }
