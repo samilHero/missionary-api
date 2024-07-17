@@ -46,7 +46,7 @@ public class AdminTeamGatewayManagementTests extends AbstractControllerTestsBase
             .andDo(
                 document(snippetPath,
                     new ResourceSnippetParametersBuilder()
-                        .tag("CREATE_TEAM")
+                        .tag("ADMIN_TEAM")
                         .description("팀 및 팀장 생성 API")
                         .requestFields(
                             fieldWithPath("leaderUserId").description("팀장 UserId"),
@@ -84,7 +84,7 @@ public class AdminTeamGatewayManagementTests extends AbstractControllerTestsBase
             .andDo(
                 document(snippetPath,
                     new ResourceSnippetParametersBuilder()
-                        .tag("UPDATE_TEAM")
+                        .tag("ADMIN_TEAM")
                         .description("팀 수정 API")
                         .pathParameters(parameterWithName("teamId").description("팀 ID"))
                         .requestFields(
@@ -121,7 +121,7 @@ public class AdminTeamGatewayManagementTests extends AbstractControllerTestsBase
             .andDo(
                 document(snippetPath,
                     new ResourceSnippetParametersBuilder()
-                        .tag("UPDATE_TEAM_MEMBER")
+                        .tag("ADMIN_TEAM")
                         .description("팀 멤버 추가 API")
                         .pathParameters(parameterWithName("teamId").description("팀 ID"))
                         .requestFields(
@@ -158,7 +158,7 @@ public class AdminTeamGatewayManagementTests extends AbstractControllerTestsBase
             .andDo(
                 document(snippetPath,
                     new ResourceSnippetParametersBuilder()
-                        .tag("UPDATE_TEAM_MEMBER")
+                        .tag("ADMIN_TEAM")
                         .description("팀 현황 목록조회 API")
                         .pathParameters(parameterWithName("missionaryId").description("선교 ID"))
                         .responseSchema(Schema.schema("GetTeamResults"))
