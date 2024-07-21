@@ -1,5 +1,6 @@
 package com.samill.missionary_backend.missionary;
 
+import com.samill.missionary_backend.church.ChurchExternalService;
 import com.samill.missionary_backend.church.dto.CreateMissionaryCommandResult;
 import com.samill.missionary_backend.common.enums.ResponseCode;
 import com.samill.missionary_backend.common.exception.CommonException;
@@ -18,7 +19,9 @@ import com.samill.missionary_backend.missionary.dto.CreateMissionaryBoardCommand
 import com.samill.missionary_backend.missionary.dto.CreateMissionaryBoardCommandResult;
 import com.samill.missionary_backend.missionary.dto.CreateMissionaryCommand;
 import com.samill.missionary_backend.missionary.dto.CreateParticipationCommand;
+import com.samill.missionary_backend.missionary.dto.CreateParticipationServiceCommand;
 import com.samill.missionary_backend.missionary.dto.CreateTeamCommand;
+import com.samill.missionary_backend.missionary.dto.CreateTeamServiceCommand;
 import com.samill.missionary_backend.missionary.dto.DeleteMissionaryBoardCommand;
 import com.samill.missionary_backend.missionary.dto.DeleteParticipationCommand;
 import com.samill.missionary_backend.missionary.dto.DisappointMissionaryStaffsCommand;
@@ -42,6 +45,7 @@ import com.samill.missionary_backend.missionary.dto.UpdateMissionaryDetailComman
 import com.samill.missionary_backend.missionary.dto.UpdateParticipationCommand;
 import com.samill.missionary_backend.missionary.dto.UpdateTeamCommand;
 import com.samill.missionary_backend.missionary.dto.UpdateTeamMemberCommand;
+import com.samill.missionary_backend.missionary.dto.UpdateTeamServiceCommand;
 import com.samill.missionary_backend.missionary.exception.MissionaryException;
 import com.samill.missionary_backend.missionary.mapper.MissionaryBoardMapper;
 import com.samill.missionary_backend.missionary.mapper.MissionaryMapper;
@@ -53,6 +57,8 @@ import com.samill.missionary_backend.missionary.participation.service.Participat
 import com.samill.missionary_backend.missionary.region.service.MissionaryRegionService;
 import com.samill.missionary_backend.missionary.staff.exception.AccessDeniedMissionaryStaffException;
 import com.samill.missionary_backend.missionary.staff.service.MissionaryStaffService;
+import com.samill.missionary_backend.missionary.team.dto.GetTeamListQuery;
+import com.samill.missionary_backend.missionary.team.dto.GetTeamListQueryResult;
 import com.samill.missionary_backend.missionary.team.entity.Team;
 import com.samill.missionary_backend.missionary.team.entity.TeamMember;
 import com.samill.missionary_backend.missionary.team.mapper.TeamMapper;
@@ -78,6 +84,7 @@ class MissionaryManagement implements MissionaryExternalService {
     private final ParticipationService participationService;
     private final TeamService teamService;
     private final MissionaryRegionService missionaryRegionService;
+    private final ChurchExternalService churchExternalService;
 
     @Override
     @Transactional
@@ -200,15 +207,14 @@ class MissionaryManagement implements MissionaryExternalService {
     }
 
     @Override
-    public void createTeam(CreateTeamCommand createTeamCommand) {
-        Team team = TeamMapper.INSTANCE.createTeamCommandToEntity(createTeamCommand);
-        teamService.createTeam(team);
+    public void createTeam(CreateTeamCommand createTeamCommand) throws CommonException {
+        teamService.createTeam(getCreateTeamServiceCommand(createTeamCommand));
     }
 
-    @Override
 
+    @Override
     public void updateTeam(String teamId, UpdateTeamCommand updateTeamCommand) throws CommonException {
-        teamService.updateTeam(teamId, updateTeamCommand);
+        teamService.updateTeam(teamId, getUpdateTeamServiceCommand(updateTeamCommand));
     }
 
     @Override
@@ -229,9 +235,9 @@ class MissionaryManagement implements MissionaryExternalService {
     }
 
     @Override
-    public List<GetTeamQueryResult> getTeams(String missionaryId) {
-        List<Team> teams = teamService.getTeams(missionaryId);
-        return TeamMapper.INSTANCE.entityToGetTeamsQueryResult(teams);
+    public List<GetTeamListQueryResult> getTeams(String missionaryId, GetTeamListQuery getTeamListQuery) {
+        List<GetTeamListQueryResult> teams = teamService.getTeams(missionaryId, getTeamListQuery);
+        return teams;
     }
 
     @Override
@@ -240,8 +246,11 @@ class MissionaryManagement implements MissionaryExternalService {
         validateParticipationPeriod(createParticipationCommand.getMissionaryId());
         int maxUserCount = getMissionaryMaxCount(createParticipationCommand.getMissionaryId());
         GetUserDto user = memberExternalService.getUserById(createParticipationCommand.getUserId());
-        updateCommandWithFeeAndUserInfo(createParticipationCommand, user);
-        participationService.createParticipation(createParticipationCommand, maxUserCount);
+        CreateParticipationServiceCommand createParticipationServiceCommand =
+            getCreateParticipationServiceCommand(createParticipationCommand, maxUserCount, getApplyFee(createParticipationCommand.getMissionaryId()),
+                user);
+
+        participationService.createParticipation(createParticipationServiceCommand);
     }
 
 
@@ -383,10 +392,6 @@ class MissionaryManagement implements MissionaryExternalService {
         }
     }
 
-    private void updateCommandWithFeeAndUserInfo(CreateParticipationCommand createParticipationCommand, GetUserDto user) throws Exception {
-        createParticipationCommand.setApplyFee(getApplyFee(createParticipationCommand.getMissionaryId()));
-        createParticipationCommand.updateUserInfo(user);
-    }
 
     private int getMissionaryMaxCount(String missionaryId) throws CommonException {
         return missionaryService.getMissionary(missionaryId).getDetail().getMaximumParticipantCount();
@@ -396,5 +401,37 @@ class MissionaryManagement implements MissionaryExternalService {
         return missionaryService.getMissionary(missionaryId).getDetail().getPrice();
     }
 
+    private CreateTeamServiceCommand getCreateTeamServiceCommand(CreateTeamCommand createTeamCommand) throws CommonException {
+        String churchName = churchExternalService.getChurch(createTeamCommand.churchId()).name();
+        return CreateTeamServiceCommand.builder()
+            .churchId(createTeamCommand.churchId())
+            .leaderUserId(createTeamCommand.leaderUserId())
+            .missionaryId(createTeamCommand.missionaryId())
+            .churchName(churchName)
+            .build();
+    }
 
+    private UpdateTeamServiceCommand getUpdateTeamServiceCommand(UpdateTeamCommand updateTeamCommand) throws CommonException {
+        String churchName = churchExternalService.getChurch(updateTeamCommand.churchId()).name();
+        return UpdateTeamServiceCommand.builder()
+            .churchId(updateTeamCommand.churchId())
+            .leaderUserId(updateTeamCommand.leaderUserId())
+            .churchName(churchName)
+            .build();
+    }
+
+    private CreateParticipationServiceCommand getCreateParticipationServiceCommand(CreateParticipationCommand createParticipationCommand,
+        int maxUserCount, int applyFee, GetUserDto user) {
+        return CreateParticipationServiceCommand.builder()
+            .missionaryId(createParticipationCommand.getMissionaryId())
+            .memberId(createParticipationCommand.getMemberId())
+            .name(createParticipationCommand.getName())
+            .userId(user.loginId())
+            .identificationNumber(createParticipationCommand.getIdentificationNumber())
+            .birthDate(createParticipationCommand.getBirthDate())
+            .applyFee(applyFee)
+            .isOwnCar(createParticipationCommand.getIsOwnCar())
+            .maxCount(maxUserCount)
+            .build();
+    }
 }

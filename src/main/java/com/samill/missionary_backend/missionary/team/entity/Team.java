@@ -1,15 +1,22 @@
 package com.samill.missionary_backend.missionary.team.entity;
 
-import com.samill.missionary_backend.missionary.dto.UpdateTeamCommand;
-import jakarta.persistence.*;
-import lombok.*;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.SQLRestriction;
-
+import com.samill.missionary_backend.missionary.dto.UpdateTeamServiceCommand;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.SQLRestriction;
 
 /**
  * 선교 팀
@@ -31,15 +38,15 @@ public class Team {
     private String churchId;
     private String leaderUserId;
     private String leaderUserName;
-    private String teamName;
+    private String churchName;
     @Builder.Default
     @OneToMany(mappedBy = "team", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<TeamMember> teamMemberList = new ArrayList<>();
     private OffsetDateTime deletedAt;
 
-    public void updateInfo(UpdateTeamCommand command) {
+    public void updateInfo(UpdateTeamServiceCommand command) {
         this.churchId = command.churchId();
-        this.teamName = command.teamName();
+        this.churchName = command.churchName();
         this.leaderUserId = command.leaderUserId();
     }
 

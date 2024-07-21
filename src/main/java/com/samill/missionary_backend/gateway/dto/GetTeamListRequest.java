@@ -3,7 +3,7 @@ package com.samill.missionary_backend.gateway.dto;
 import lombok.Builder;
 
 @Builder
-public record UpdateTeamRequest(
+public record GetTeamListRequest(
     String leaderUserId,
     String churchId
 ) {

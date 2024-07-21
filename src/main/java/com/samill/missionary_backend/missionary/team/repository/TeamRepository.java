@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface TeamRepository extends JpaRepository<Team, String>{
+public interface TeamRepository extends JpaRepository<Team, String>, TeamCustomRepository {
+
     List<Team> findByMissionaryId(String missionaryId);
 }

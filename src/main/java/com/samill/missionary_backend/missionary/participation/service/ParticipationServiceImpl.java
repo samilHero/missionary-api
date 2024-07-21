@@ -3,7 +3,7 @@ package com.samill.missionary_backend.missionary.participation.service;
 import com.samill.missionary_backend.common.enums.ResponseCode;
 import com.samill.missionary_backend.common.event.ParticipationCanceled;
 import com.samill.missionary_backend.common.exception.CommonException;
-import com.samill.missionary_backend.missionary.dto.CreateParticipationCommand;
+import com.samill.missionary_backend.missionary.dto.CreateParticipationServiceCommand;
 import com.samill.missionary_backend.missionary.dto.DeleteParticipationCommand;
 import com.samill.missionary_backend.missionary.dto.GetParticipationQueryResult;
 import com.samill.missionary_backend.missionary.dto.GetParticipationsDownloadQuery;
@@ -15,7 +15,6 @@ import com.samill.missionary_backend.missionary.participation.repository.Partici
 import com.samill.missionary_backend.missionary.participation.repository.ParticipationRepository;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -37,11 +36,11 @@ public class ParticipationServiceImpl implements ParticipationService {
 
     @Override
     @Transactional
-    public void createParticipation(CreateParticipationCommand createParticipationCommand, int maxUserCount) throws CommonException {
-        validateCreateParticipation(createParticipationCommand, maxUserCount);
+    public void createParticipation(CreateParticipationServiceCommand createParticipationServiceCommand) throws CommonException {
+        validateCreateParticipation(createParticipationServiceCommand);
 
         // 메시지 리스너에서 신청내역 저장
-        rabbitMqProducer.sendMessage(new MessageDto(createParticipationCommand));
+        rabbitMqProducer.sendMessage(new MessageDto(createParticipationServiceCommand));
     }
 
     @Override
@@ -100,18 +99,17 @@ public class ParticipationServiceImpl implements ParticipationService {
         return participationRepository.findAllByQueryForCsv(missionaryId, getParticipationsDownloadQuery);
     }
 
-    private void validateCreateParticipation(CreateParticipationCommand createParticipationDto, int maxUserCount) throws CommonException {
-        Participation participation = participationRepository.findByUserIdAndMissionaryId(createParticipationDto.getUserId(),
-            createParticipationDto.getMissionaryId());
+    private void validateCreateParticipation(CreateParticipationServiceCommand createParticipationServiceCommand) throws CommonException {
+        Participation participation = participationRepository.findByUserIdAndMissionaryId(createParticipationServiceCommand.userId(),
+            createParticipationServiceCommand.missionaryId());
 
         if (Objects.nonNull(participation)) {
             throw new CommonException(ResponseCode.PARTICIPATION_ALREADY_PARTICIPATED);
         }
 
-        Long count = participantCountRepository.increment(createParticipationDto.getMissionaryId());
+        Long count = participantCountRepository.increment(createParticipationServiceCommand.missionaryId());
 
-        if (count > maxUserCount) {
-            participantCountRepository.set(createParticipationDto.getMissionaryId(), String.valueOf(maxUserCount));
+        if (count > createParticipationServiceCommand.maxCount()) {
             throw new CommonException(ResponseCode.PARTICIPATION_MAXIMUM_EXCEEDED);
         }
     }

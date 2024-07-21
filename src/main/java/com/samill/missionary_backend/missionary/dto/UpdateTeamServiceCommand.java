@@ -3,8 +3,9 @@ package com.samill.missionary_backend.missionary.dto;
 import lombok.Builder;
 
 @Builder
-public record UpdateTeamCommand(
+public record UpdateTeamServiceCommand(
     String leaderUserId,
-    String churchId) {
+    String churchId,
+    String churchName) {
 
 }

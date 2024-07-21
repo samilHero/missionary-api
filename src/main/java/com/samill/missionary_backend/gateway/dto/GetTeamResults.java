@@ -1,16 +1,17 @@
 package com.samill.missionary_backend.gateway.dto;
 
-import java.util.List;
 import lombok.Builder;
 
 @Builder
-public record GetTeamResult(
+public record GetTeamResults(
     String id,
     String missionaryId,
     String churchId,
+    String churchName,
     String leaderUserId,
-    String teamName,
-    List<TeamMemberResults> teamMemberList
+    String leaderUserName,
+    int applyCount,
+    int approvedCount
 ) {
 
 }

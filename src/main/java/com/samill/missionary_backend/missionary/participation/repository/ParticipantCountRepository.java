@@ -9,28 +9,30 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Repository
 public class ParticipantCountRepository {
+
     private final RedisTemplate<String, String> redisTemplate;
+
     public Long increment(String missionaryId) {
         return redisTemplate
-                .opsForValue()
-                .increment(missionaryId);
+            .opsForValue()
+            .increment(missionaryId);
     }
 
     public void set(String missionaryId, String maxCount) {
         redisTemplate
-                .opsForValue()
-                .set(missionaryId, maxCount);
+            .opsForValue()
+            .set(missionaryId, maxCount);
     }
 
     public Long decrement(String missionaryId) {
         return redisTemplate
-                .opsForValue()
-                .decrement(missionaryId);
+            .opsForValue()
+            .decrement(missionaryId);
     }
 
-    public Integer get(String missionaryId) {
+    public Long get(String missionaryId) {
         return Optional.ofNullable(redisTemplate.opsForValue().get(missionaryId))
-                .map(Integer::parseInt)
-                .orElse(0);
+            .map(Long::parseLong)
+            .orElse(0L);
     }
 }
